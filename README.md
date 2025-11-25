@@ -28,7 +28,6 @@
 
 \# 克隆项目  
 git clone https://github.com/wsman/MY-DOGE-MACRO.git
-
 cd MY-DOGE-MACRO
 
 \# 创建并激活虚拟环境 (推荐)  
@@ -88,9 +87,9 @@ if market\_data is not None:
     \# 计算技术指标 (长短期解耦)  
     metrics \= loader.calculate\_metrics(market\_data)  
       
-    \# DeepSeek 宏观推理  
-    strategist \= DeepSeekStrategist(config)  
-    report \= strategist.generate\_strategy\_report(metrics, market\_data.tail(5))  
+    # DeepSeek 宏观推理  
+    strategist = DeepSeekStrategist(config)  
+    report = strategist.generate_strategy_report(metrics, market_data.tail(5))  
       
     print(report)
 
