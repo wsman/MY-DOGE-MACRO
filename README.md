@@ -39,7 +39,7 @@
 ```bash
 # 克隆项目
 git clone https://github.com/wsman/MY-DOGE-MACRO.git
-cd my-doge-macro
+cd my_doge_macro
 
 # 安装依赖（推荐使用虚拟环境）
 python -m venv venv
@@ -276,4 +276,5 @@ tail -f logs/app.log
 本项目仅供学习和研究使用，不构成投资建议。金融市场投资存在风险，请在充分了解风险的情况下谨慎决策。作者不对任何投资损失承担责任。
 
 ---
+
 
