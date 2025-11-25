@@ -27,7 +27,7 @@
 ### **从源码安装**
 
 \# 克隆项目  
-git clone \[https://github.com/wsman/MY-DOGE-MACRO.git\](https://github.com/wsman/MY-DOGE-MACRO.git)  
+git clone https://github.com/wsman/MY-DOGE-MACRO.git
 cd MY-DOGE-MACRO
 
 \# 创建并激活虚拟环境 (推荐)  
