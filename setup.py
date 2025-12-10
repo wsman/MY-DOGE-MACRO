@@ -7,12 +7,12 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="my-doge-macro",
     version="1.0.0",
-    author="MY-DOGE Team",
-    author_email="contact@example.com",
+    author="wsman",
+    author_email="wsman0325@gmail.com",
     description="基于 DeepSeek API 的量化宏观对冲策略工具",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/your-username/my-doge-macro",
+    url="https://github.com/wsman/my-doge-macro",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
