@@ -64,7 +64,7 @@ def main():
 
             # DeepSeek 分析
             strategist = DeepSeekStrategist(config)
-            raw_report = strategist.generate_strategy_report(metrics, market_data.tail(5))
+            raw_report = strategist.generate_strategy_report(metrics, market_data)
 
             # 格式化报告
             formatted_report = strategist.format_report_for_display(raw_report, metrics)

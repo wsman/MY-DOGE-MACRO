@@ -167,6 +167,7 @@ logs/
 *.log
 data/
 cache/
+macro_report/
 
 # =======================================================
 # 补充规则 (Supplementary Rules for MY-DOGE MACRO)

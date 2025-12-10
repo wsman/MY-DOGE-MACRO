@@ -12,6 +12,17 @@ class GlobalMacroLoader:
         logger.info(f"初始化数据加载器，配置: {config}")
 
     def fetch_combined_data(self) -> pd.DataFrame:
+        """
+        获取并清洗全球核心资产的历史价格数据。
+
+        1. 下载包括科技股(QQQ)、黄金(GLD)、数字货币(BTC-USD)及A股(000300.SS)在内的多资产历史数据。
+        2. 强制对齐到股票交易日（以 config.tech_proxy 为基准），剔除周末和节假日的非交易日期。
+        3. 对缺失值进行前向填充，确保数据完整性。
+        4. 截取指定数量的最近交易日数据作为最终输出。
+
+        Returns:
+            pd.DataFrame: 包含所有资产价格的历史数据，按交易日对齐并截取最新 lookback_days 行。
+        """
         tickers = [
             self.config.tech_proxy,
             self.config.safe_haven_proxy,
@@ -25,10 +36,11 @@ class GlobalMacroLoader:
         logger.info(f"📡 正在从全球市场同步数据: {tickers} ...")
 
         try:
-            # 获取足够长的数据以确保 lookback window 有效
+            # 获取足够长的数据以确保 lookback window 有效（超额获取）
+            fetch_days = int(self.config.lookback_days * 1.65) + 20
             data = yf.download(
                 tickers=tickers,
-                period=f"{self.config.lookback_days + 40}d",
+                period=f"{fetch_days}d",
                 interval="1d",
                 auto_adjust=True,
                 progress=False
@@ -46,10 +58,20 @@ class GlobalMacroLoader:
                 except:
                     pass
 
-            # 数据清洗
-            data = data.ffill().dropna()
+            # 数据清洗：对齐到股票交易日（以科技股代理资产为基准）
+            data = data.dropna(subset=[self.config.tech_proxy])
+            # 填充其他资产可能缺失的数据（如加密货币在交易日可能缺失）
+            data = data.ffill()
+            # 丢弃仍包含 NaN 的行（例如首行数据缺失）
+            data = data.dropna()
 
-            logger.info(f"✅ 成功获取 {len(data)} 天数据")
+            # 确保返回恰好指定数量的交易日数据（截取最后 N 行）
+            if len(data) >= self.config.lookback_days:
+                data = data.tail(self.config.lookback_days)
+                logger.info(f"✅ 成功获取 {len(data)} 个交易日的数据")
+            else:
+                logger.warning(f"⚠️ 数据不足，仅获取到 {len(data)} 个交易日（配置要求: {self.config.lookback_days}）")
+            
             return data
 
         except Exception as e:

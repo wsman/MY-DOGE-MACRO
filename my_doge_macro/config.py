@@ -24,7 +24,7 @@ class MacroConfig:
     target_asset: str = "000300.SS" # 沪深300 (A股主战场)
     
     # 观察窗口
-    lookback_days: int = 60       # 回溯60天数据
+    lookback_days: int = int(os.getenv("LOOKBACK_DAYS", "150"))      # 回溯150天数据（约等于100个交易日）
     volatility_window: int = 20   # 20天波动率计算
 
     # DeepSeek API 配置 - 从 .env 文件读取
