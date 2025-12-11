@@ -24,7 +24,7 @@ class MacroConfig:
     target_asset: str = "000300.SS" # 沪深300 (A股主战场)
     
     # 观察窗口
-    lookback_days: int = int(os.getenv("LOOKBACK_DAYS", "150"))      # 回溯150个交易日
+    lookback_days: int = int(os.getenv("LOOKBACK_DAYS", "120"))      # 回溯120个交易日
     volatility_window: int = 20   # 20天波动率计算
 
     # DeepSeek API 配置 - 从 .env 文件读取
@@ -69,4 +69,5 @@ class MacroConfig:
 def create_default_config() -> MacroConfig:
     """创建默认配置实例"""
     return MacroConfig()
+
 
