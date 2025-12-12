@@ -51,7 +51,7 @@ class DeepSeekStrategist:
 【核心规则 - 必须严格遵守】
 1. 你的每一条分析结论，必须明确引用数据来源。
 2. 引用格式必须包含方括号，例如：
-   - "科技股长期走强 [数据: 90天趋势 +5.2%]"
+   - "科技股长期走强 [数据: 120天趋势 +5.2%]"
    - "但短期出现回调 [数据: 近5日涨跌 -1.3%]"
 3. 严禁混淆短期波动和长期趋势。
 4. 必须对比 BTC 与 QQQ（风险属性）以及 BTC 与 GLD（避险属性）的相关性数据。
@@ -78,7 +78,7 @@ class DeepSeekStrategist:
                     {"role": "user", "content": user_prompt},
                 ],
                 stream=False,
-                temperature=0.3 # 降低随机性，提高精确度
+                temperature=0.6 # 降低随机性，提高精确度
             )
 
             content = response.choices[0].message.content
