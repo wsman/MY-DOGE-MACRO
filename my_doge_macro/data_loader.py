@@ -100,7 +100,7 @@ class GlobalMacroLoader:
         """
         计算分层级的时间序列指标：
         1. 波动率 (Vol)
-        2. 中期趋势 (Medium Trend): 基于整个下载周期 (约60-90天)
+        2. 中期趋势 (Medium Trend): 基于整个下载周期 (约120-180天)
         3. 短期动量 (Short Momentum): 基于最近5个交易日
         """
         try:
