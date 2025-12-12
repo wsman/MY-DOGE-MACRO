@@ -183,7 +183,7 @@ my_doge_macro/
   * `safe_haven_proxy`: 避险资产代理 (默认: GLD)
   * `crypto_proxy`: 数字货币代理 (默认: BTC-USD)
   * `target_asset`: 标的资产 (默认: 000300.SS)
-  * `lookback_days`: 回溯天数 (默认: 150)
+  * `lookback_days`: 回溯天数 (默认: 120)
   * `volatility_window`: 波动率计算窗口 (默认: 20)
 
 ### `GlobalMacroLoader`
