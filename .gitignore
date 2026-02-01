@@ -42,12 +42,15 @@ client/src-tauri/target/
 # Data files (large, generated)
 *.db
 *.sqlite
-data/
+data/*.db
+data/*.sqlite
+data/reports/*
 
 # Logs
 *.log
 __pycache__/
 *.pyc
-data/
-__pycache__/
 .DS_Store
+
+# Keep audit reports in data/audits/
+!data/audits/
