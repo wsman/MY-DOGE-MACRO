@@ -1,0 +1,50 @@
+{
+  "300342.SZ": {
+    "name": "CHANGSHU TIANYIN E",
+    "sector": "Industrials"
+  },
+  "600783.SH": {
+    "name": "LUXIN VENTURE CAPITAL GROUP CO ",
+    "sector": "Industrials"
+  },
+  "OMCL": {
+    "name": "Omnicell, Inc.",
+    "sector": "Healthcare"
+  },
+  "002519.SZ": {
+    "name": "JIANG SU YIN HE EL",
+    "sector": "Technology"
+  },
+  "688387.SH": {
+    "name": "CICT MOBILE COMMUN TECH CO LTD",
+    "sector": "Technology"
+  },
+  "HOUS": {
+    "name": "Anywhere Real Estate Inc.",
+    "sector": "Real Estate"
+  },
+  "COMP": {
+    "name": "Compass, Inc.",
+    "sector": "Real Estate"
+  },
+  "001208.SZ": {
+    "name": "HUNAN VALIN WIRE&C",
+    "sector": "Industrials"
+  },
+  "GLUE": {
+    "name": "Monte Rosa Therapeutics, Inc.",
+    "sector": "Healthcare"
+  },
+  "001331.SZ": {
+    "name": "SENTON ENERGY CO",
+    "sector": "Energy"
+  },
+  "ALMS": {
+    "name": "Alumis Inc.",
+    "sector": "Healthcare"
+  },
+  "HLF": {
+    "name": "Herbalife Ltd.",
+    "sector": "Consumer Defensive"
+  }
+}

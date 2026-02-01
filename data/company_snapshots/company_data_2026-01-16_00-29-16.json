@@ -1,0 +1,30 @@
+{
+  "301611.SZ": {
+    "name": "SUZHOU KEMATEK INC",
+    "sector": "Technology"
+  },
+  "002796.SZ": {
+    "name": "SUZHOU SHIJIA SCI.",
+    "sector": "Industrials"
+  },
+  "ONTO": {
+    "name": "Onto Innovation Inc.",
+    "sector": "Technology"
+  },
+  "NEOG": {
+    "name": "Neogen Corporation",
+    "sector": "Healthcare"
+  },
+  "KALU": {
+    "name": "Kaiser Aluminum Corporation",
+    "sector": "Basic Materials"
+  },
+  "PRAX": {
+    "name": "Praxis Precision Medicines, Inc",
+    "sector": "Healthcare"
+  },
+  "300751.SZ": {
+    "name": "SUZHOU MAXWELL TEC",
+    "sector": "Technology"
+  }
+}

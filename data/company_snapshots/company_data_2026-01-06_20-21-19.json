@@ -1,0 +1,38 @@
+{
+  "TXG": {
+    "name": "10x Genomics, Inc.",
+    "sector": "Healthcare"
+  },
+  "ATEC": {
+    "name": "Alphatec Holdings, Inc.",
+    "sector": "Healthcare"
+  },
+  "HL": {
+    "name": "Hecla Mining Company",
+    "sector": "Basic Materials"
+  },
+  "600879.SH": {
+    "name": "CHINA AEROSPACE TIMES ELECTRONI",
+    "sector": "Industrials"
+  },
+  "TLRY": {
+    "name": "Tilray Brands, Inc.",
+    "sector": "Healthcare"
+  },
+  "688031.SH": {
+    "name": "TRANSWARP TECHNOLOGY (SHANGHAI)",
+    "sector": "Technology"
+  },
+  "688270.SH": {
+    "name": "GREAT MICROWAVE TECHNOLOGY CO L",
+    "sector": "Technology"
+  },
+  "601698.SH": {
+    "name": "CHINA SATELLITE COMMUNICATIONS ",
+    "sector": "Communication Services"
+  },
+  "BEAT": {
+    "name": "Heartbeam, Inc.",
+    "sector": "Healthcare"
+  }
+}

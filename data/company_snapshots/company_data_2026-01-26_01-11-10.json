@@ -1,0 +1,98 @@
+{
+  "301286.SZ": {
+    "name": "SICHUAN QIAOYUAN G",
+    "sector": "Utilities"
+  },
+  "002716.SZ": {
+    "name": "HUNAN SILVER CO LT",
+    "sector": "Basic Materials"
+  },
+  "IAG": {
+    "name": "Iamgold Corporation",
+    "sector": "Basic Materials"
+  },
+  "SVM": {
+    "name": "Silvercorp Metals Inc.",
+    "sector": "Basic Materials"
+  },
+  "300986.SZ": {
+    "name": "JIANGXI GETO NEW M",
+    "sector": "Industrials"
+  },
+  "SBSW": {
+    "name": "D/B/A Sibanye-Stillwater Limite",
+    "sector": "Basic Materials"
+  },
+  "002931.SZ": {
+    "name": "ZHEJIANG FENGLONG",
+    "sector": "Industrials"
+  },
+  "BFLY": {
+    "name": "Butterfly Network, Inc.",
+    "sector": "Healthcare"
+  },
+  "301529.SZ": {
+    "name": "WUHU FORESIGHT TEC",
+    "sector": "Consumer Cyclical"
+  },
+  "IBRX": {
+    "name": "ImmunityBio, Inc.",
+    "sector": "Healthcare"
+  },
+  "688257.SH": {
+    "name": "SHAREATE TOOLS LTD",
+    "sector": "Industrials"
+  },
+  "000603.SZ": {
+    "name": "SHENGDA RESOURCES",
+    "sector": "Basic Materials"
+  },
+  "DJCO": {
+    "name": "Daily Journal Corp. (S.C.)",
+    "sector": "Technology"
+  },
+  "PAAS": {
+    "name": "Pan American Silver Corp.",
+    "sector": "Basic Materials"
+  },
+  "ASM": {
+    "name": "Avino Silver & Gold Mines Ltd.",
+    "sector": "Basic Materials"
+  },
+  "002865.SZ": {
+    "name": "HAINAN DRINDA NEW",
+    "sector": "Technology"
+  },
+  "ERAS": {
+    "name": "Erasca, Inc.",
+    "sector": "Healthcare"
+  },
+  "RGLD": {
+    "name": "Royal Gold, Inc.",
+    "sector": "Basic Materials"
+  },
+  "EGO": {
+    "name": "Eldorado Gold Corporation",
+    "sector": "Basic Materials"
+  },
+  "AUGO": {
+    "name": "Aura Minerals Inc.",
+    "sector": "Basic Materials"
+  },
+  "NGD": {
+    "name": "New Gold Inc.",
+    "sector": "Basic Materials"
+  },
+  "MRNA": {
+    "name": "Moderna, Inc.",
+    "sector": "Healthcare"
+  },
+  "ALM": {
+    "name": "Almonty Industries Inc.",
+    "sector": "Basic Materials"
+  },
+  "ORLA": {
+    "name": "Orla Mining Ltd.",
+    "sector": "Basic Materials"
+  }
+}

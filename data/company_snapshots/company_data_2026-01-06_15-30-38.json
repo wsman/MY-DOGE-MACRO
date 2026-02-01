@@ -1,0 +1,402 @@
+{
+  "300421.SZ": {
+    "name": "JIANGSU LIXING GEN",
+    "sector": "Basic Materials"
+  },
+  "OLMA": {
+    "name": "Olema Pharmaceuticals, Inc.",
+    "sector": "Healthcare"
+  },
+  "301005.SZ": {
+    "name": "ESSENCE FASTENING",
+    "sector": "Industrials"
+  },
+  "301377.SZ": {
+    "name": "GUANGDONG DTECH TE",
+    "sector": "Technology"
+  },
+  "603929.SH": {
+    "name": "L AND K ENGINEERING (SUZHOU) CO",
+    "sector": "Industrials"
+  },
+  "600105.SH": {
+    "name": "JIANG SU ETERN CO.LTD",
+    "sector": "Technology"
+  },
+  "300102.SZ": {
+    "name": "XIAMEN CHANGELIGHT",
+    "sector": "Technology"
+  },
+  "ANF": {
+    "name": "Abercrombie & Fitch Company",
+    "sector": "Consumer Cyclical"
+  },
+  "SPHR": {
+    "name": "Sphere Entertainment Co.",
+    "sector": "Communication Services"
+  },
+  "300900.SZ": {
+    "name": "GUANGLIAN AVIATION",
+    "sector": "Industrials"
+  },
+  "VSCO": {
+    "name": "Victorias Secret & Co.",
+    "sector": "Consumer Cyclical"
+  },
+  "002759.SZ": {
+    "name": "TONZE NEW ENERGY T",
+    "sector": "Basic Materials"
+  },
+  "001270.SZ": {
+    "name": "ZHEJIANG CHENGCHAN",
+    "sector": "Technology"
+  },
+  "688353.SH": {
+    "name": "JIANGSU HSC NEW ENERGY MATERIAL",
+    "sector": "Basic Materials"
+  },
+  "TTI": {
+    "name": "Tetra Technologies, Inc.",
+    "sector": "Industrials"
+  },
+  "301232.SZ": {
+    "name": "FINEWORK (HU NAN)",
+    "sector": "Industrials"
+  },
+  "002083.SZ": {
+    "name": "SUNVIM GROUP CO LT",
+    "sector": "Consumer Cyclical"
+  },
+  "605598.SH": {
+    "name": "SHANGHAI GEOHARBOUR CONSTRUCTIO",
+    "sector": "Industrials"
+  },
+  "301468.SZ": {
+    "name": "POURIN SPECIAL WEL",
+    "sector": "Industrials"
+  },
+  "CAPR": {
+    "name": "Capricor Therapeutics, Inc.",
+    "sector": "Healthcare"
+  },
+  "TEVA": {
+    "name": "Teva Pharmaceutical Industries ",
+    "sector": "Healthcare"
+  },
+  "600693.SH": {
+    "name": "FUJIAN DONGBAI GROUP CO LTD",
+    "sector": "Consumer Cyclical"
+  },
+  "HYMC": {
+    "name": "Hycroft Mining Holding Corporat",
+    "sector": "Basic Materials"
+  },
+  "COGT": {
+    "name": "Cogent Biosciences, Inc.",
+    "sector": "Healthcare"
+  },
+  "000547.SZ": {
+    "name": "ADDSINO CO LTD",
+    "sector": "Technology"
+  },
+  "OMER": {
+    "name": "Omeros Corporation",
+    "sector": "Healthcare"
+  },
+  "603601.SH": {
+    "name": "CHONGQING ZAISHENG TECH CORP LT",
+    "sector": "Basic Materials"
+  },
+  "688102.SH": {
+    "name": "SHAANXI SIRUI ADVANCED MATERIAL",
+    "sector": "Basic Materials"
+  },
+  "LITE": {
+    "name": "Lumentum Holdings Inc.",
+    "sector": "Technology"
+  },
+  "TERN": {
+    "name": "Terns Pharmaceuticals, Inc.",
+    "sector": "Healthcare"
+  },
+  "300456.SZ": {
+    "name": "SAI MICROELECTRONI",
+    "sector": "Technology"
+  },
+  "ESTA": {
+    "name": "Establishment Labs Holdings Inc",
+    "sector": "Healthcare"
+  },
+  "600118.SH": {
+    "name": "CHINA SPACESAT CO. LTD.",
+    "sector": "Industrials"
+  },
+  "002792.SZ": {
+    "name": "TONGYU COMMUNICATI",
+    "sector": "Technology"
+  },
+  "FRGE": {
+    "name": "Forge Global Holdings, Inc.",
+    "sector": "Financial Services"
+  },
+  "000592.SZ": {
+    "name": "ZHONGFU STRAITS (P",
+    "sector": "Basic Materials"
+  },
+  "PACS": {
+    "name": "PACS Group, Inc.",
+    "sector": "Healthcare"
+  },
+  "WBD": {
+    "name": "Warner Bros. Discovery, Inc. - ",
+    "sector": "Communication Services"
+  },
+  "RVMD": {
+    "name": "Revolution Medicines, Inc.",
+    "sector": "Healthcare"
+  },
+  "002361.SZ": {
+    "name": "ANHUI SHENJIAN NEW",
+    "sector": "Basic Materials"
+  },
+  "002163.SZ": {
+    "name": "HAINAN DEVELOPMEN.",
+    "sector": "Basic Materials"
+  },
+  "TE": {
+    "name": "T1 Energy Inc.",
+    "sector": "Industrials"
+  },
+  "FORM": {
+    "name": "FormFactor, Inc.",
+    "sector": "Technology"
+  },
+  "600343.SH": {
+    "name": "SHAANXI AEROSPACE POWER HIGH-TE",
+    "sector": "Industrials"
+  },
+  "MU": {
+    "name": "Micron Technology, Inc.",
+    "sector": "Technology"
+  },
+  "AXGN": {
+    "name": "AxoGen, Inc.",
+    "sector": "Healthcare"
+  },
+  "PRO": {
+    "name": "PROS Holdings, Inc.",
+    "sector": "Technology"
+  },
+  "301306.SZ": {
+    "name": "XI'AN XICE TESTING",
+    "sector": "Industrials"
+  },
+  "002413.SZ": {
+    "name": "BEIJING LEIKE DEFE",
+    "sector": "Technology"
+  },
+  "603778.SH": {
+    "name": "GUOSHENG SHIAN TECHNOLOGY CO LT",
+    "sector": "Industrials"
+  },
+  "CELC": {
+    "name": "Celcuity Inc.",
+    "sector": "Healthcare"
+  },
+  "VICR": {
+    "name": "Vicor Corporation",
+    "sector": "Technology"
+  },
+  "PUMP": {
+    "name": "ProPetro Holding Corp.",
+    "sector": "Energy"
+  },
+  "002149.SZ": {
+    "name": "WESTERN METAL MATE",
+    "sector": "Basic Materials"
+  },
+  "000510.SZ": {
+    "name": "SICHUAN XINJINLU G",
+    "sector": "Basic Materials"
+  },
+  "300516.SZ": {
+    "name": "HUBEI JIUZHIYANG I",
+    "sector": "Technology"
+  },
+  "600151.SH": {
+    "name": "SHANGHAI AEROSPACE AUTOMOBILE E",
+    "sector": "Consumer Cyclical"
+  },
+  "FOLD": {
+    "name": "Amicus Therapeutics, Inc.",
+    "sector": "Healthcare"
+  },
+  "688523.SH": {
+    "name": "HUNAN AEROSPACE HUANYU COMMUNIC",
+    "sector": "Industrials"
+  },
+  "300136.SZ": {
+    "name": "SHENZHEN SUNWAY CO",
+    "sector": "Technology"
+  },
+  "AA": {
+    "name": "Alcoa Corporation",
+    "sector": "Basic Materials"
+  },
+  "301292.SZ": {
+    "name": "SHANDONG HI-TECH S",
+    "sector": "Basic Materials"
+  },
+  "688227.SH": {
+    "name": "BINGO SOFTWARE CO LTD",
+    "sector": "Technology"
+  },
+  "VTYX": {
+    "name": "Ventyx Biosciences, Inc.",
+    "sector": "Healthcare"
+  },
+  "INBX": {
+    "name": "Inhibrx Biosciences, Inc.",
+    "sector": "Healthcare"
+  },
+  "605178.SH": {
+    "name": "BEIJING NEW SPACE TECHNOLOGY CO",
+    "sector": "Industrials"
+  },
+  "300300.SZ": {
+    "name": "STRAIT INNOVATION",
+    "sector": "Technology"
+  },
+  "605255.SH": {
+    "name": "NINGBO TIP RUBBER TECHNOLOGY CO",
+    "sector": "Consumer Cyclical"
+  },
+  "003041.SZ": {
+    "name": "ZHEJIANG TRUELOVE",
+    "sector": "Consumer Cyclical"
+  },
+  "300390.SZ": {
+    "name": "CANMAX TECHS CO LT",
+    "sector": "Industrials"
+  },
+  "300427.SZ": {
+    "name": "RED PHASE INC",
+    "sector": "Industrials"
+  },
+  "300437.SZ": {
+    "name": "HENAN QING SHUI YU",
+    "sector": "Basic Materials"
+  },
+  "NUVB": {
+    "name": "Nuvation Bio Inc.",
+    "sector": "Healthcare"
+  },
+  "ALB": {
+    "name": "Albemarle Corporation",
+    "sector": "Basic Materials"
+  },
+  "SEMR": {
+    "name": "SEMrush Holdings, Inc.",
+    "sector": "Technology"
+  },
+  "603122.SH": {
+    "name": "COWEALTH MEDICAL CHINA CO LTD",
+    "sector": "Healthcare"
+  },
+  "WVE": {
+    "name": "Wave Life Sciences Ltd.",
+    "sector": "Healthcare"
+  },
+  "CDTX": {
+    "name": "Cidara Therapeutics, Inc.",
+    "sector": "Healthcare"
+  },
+  "AEO": {
+    "name": "American Eagle Outfitters, Inc.",
+    "sector": "Consumer Cyclical"
+  },
+  "CSIQ": {
+    "name": "Canadian Solar Inc.",
+    "sector": "Technology"
+  },
+  "EXAS": {
+    "name": "Exact Sciences Corporation",
+    "sector": "Healthcare"
+  },
+  "SNDK": {
+    "name": "Sandisk Corporation",
+    "sector": "Technology"
+  },
+  "ZIM": {
+    "name": "ZIM Integrated Shipping Service",
+    "sector": "Industrials"
+  },
+  "SYRE": {
+    "name": "Spyre Therapeutics, Inc.",
+    "sector": "Healthcare"
+  },
+  "COHR": {
+    "name": "Coherent Corp.",
+    "sector": "Technology"
+  },
+  "002565.SZ": {
+    "name": "SHANGHAI SHUNHO NE",
+    "sector": "Consumer Cyclical"
+  },
+  "300058.SZ": {
+    "name": "BLUEFOCUS INTELLIG",
+    "sector": "Communication Services"
+  },
+  "001203.SZ": {
+    "name": "DAZHONG MINING",
+    "sector": "Basic Materials"
+  },
+  "ARWR": {
+    "name": "Arrowhead Pharmaceuticals, Inc.",
+    "sector": "Healthcare"
+  },
+  "MBX": {
+    "name": "MBX Biosciences, Inc.",
+    "sector": "Healthcare"
+  },
+  "WDC": {
+    "name": "Western Digital Corporation",
+    "sector": "Technology"
+  },
+  "603216.SH": {
+    "name": "MENGTIAN FURNITURE GROUP CO",
+    "sector": "Consumer Cyclical"
+  },
+  "GH": {
+    "name": "Guardant Health, Inc.",
+    "sector": "Healthcare"
+  },
+  "002788.SZ": {
+    "name": "LUYAN PHARMA CO LT",
+    "sector": "Healthcare"
+  },
+  "HAE": {
+    "name": "Haemonetics Corporation",
+    "sector": "Healthcare"
+  },
+  "AMKR": {
+    "name": "Amkor Technology, Inc.",
+    "sector": "Technology"
+  },
+  "300503.SZ": {
+    "name": "GUANGZHOU HAOZHI I",
+    "sector": "Industrials"
+  },
+  "KOD": {
+    "name": "Kodiak Sciences Inc",
+    "sector": "Healthcare"
+  },
+  "FIGS": {
+    "name": "FIGS, Inc.",
+    "sector": "Consumer Cyclical"
+  },
+  "NVRI": {
+    "name": "Enviri Corporation",
+    "sector": "Industrials"
+  }
+}
