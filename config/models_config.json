@@ -1,0 +1,56 @@
+{
+    "profiles": [
+        {
+            "name": "🚀 DeepSeek Chat (Standard)",
+            "base_url": "https://api.deepseek.com",
+            "model": "deepseek-chat",
+            "api_key": "${DEEPSEEK_API_KEY}"
+        },
+        {
+            "name": "🧠 DeepSeek Reasoner (R1 - Pro)",
+            "base_url": "https://api.deepseek.com",
+            "model": "deepseek-reasoner",
+            "api_key": "${DEEPSEEK_API_KEY}"
+        },
+        {
+            "name": "🏠 LM Studio (Local)",
+            "base_url": "http://localhost:1234/v1",
+            "model": "local-model",
+            "api_key": "${LM_STUDIO_API_KEY}"
+        }
+    ],
+    "default_profile": "🧠 DeepSeek Reasoner (R1 - Pro)",
+    "macro_settings": {
+        "lookback_days": 120,
+        "volatility_window": 20
+    },
+    "assets": {
+        "tech": {
+            "symbol": "QQQ",
+            "name": "科技股(纳指)"
+        },
+        "safe": {
+            "symbol": "GLD",
+            "name": "避险黄金"
+        },
+        "crypto": {
+            "symbol": "BTC-USD",
+            "name": "数字货币"
+        },
+        "target": {
+            "symbol": "000300.SS",
+            "name": "A股核心(沪深300)"
+        }
+    },
+    "proxy_settings": {
+        "enabled": true,
+        "url": "http://127.0.0.1:7890"
+    },
+    "scanner_filters": {
+        "us_blacklist": ["SQQQ", "TQQQ", "SOXL", "SOXS", "SPXU", "SPXS", "SDS", "SSO", "UPRO", "QID", "QLD", "TNA", "TZA", "UVXY", "VIXY", "SVXY", "LABU", "LABD", "YANG", "YINN", "FNGU", "FNGD", "WEBL", "WEBS", "KOLD", "BOIL", "TSLY", "NVDY", "AMDY", "MSTY", "CONY", "APLY", "GOOY", "MSFY", "AMZY", "FBY", "OARK", "XOMO", "JPMO", "DISO", "NFLY", "SQY", "PYPY", "AIYY", "YMAX", "YMAG", "ULTY", "SVOL", "TLTW", "HYGW", "LQDW", "BITX"],
+        "min_volume_cn": 200000000,
+        "min_volume_us": 20000000,
+        "max_change_pct": 400,
+        "rsrs_window": 18
+    }
+}

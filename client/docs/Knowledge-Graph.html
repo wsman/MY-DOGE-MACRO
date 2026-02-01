@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY-DOGE-MICRO 知识图谱</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f26;
+            --bg-tertiary: #242b33;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent: #00d4aa;
+            --accent-dim: rgba(0, 212, 170, 0.3);
+            --stock-color: #00d4aa;
+            --industry-color: #ff9800;
+            --concept-color: #9c27b0;
+            --region-color: #2196f3;
+            --border: #38444d;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-rows: 48px 1fr 32px;
+            grid-template-columns: 280px 1fr 320px;
+            height: 100vh;
+        }
+        
+        .header {
+            grid-column: 1 / -1;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+        }
+        
+        .logo { font-size: 16px; font-weight: 600; color: var(--accent); }
+        .header-title { font-size: 14px; color: var(--text-secondary); }
+        
+        .search-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 12px;
+            width: 240px;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+        
+        .sidebar {
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 12px;
+            overflow-y: auto;
+        }
+        
+        .sidebar-section { margin-bottom: 20px; }
+        
+        .sidebar-title {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding: 0 8px;
+        }
+        
+        .filter-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        
+        .filter-input {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 10px;
+            color: var(--text-primary);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .filter-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+        
+        .filter-tag {
+            padding: 3px 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-tag:hover, .filter-tag.active {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+        
+        .search-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: var(--bg-primary);
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        
+        .stats-card {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .stats-value { font-size: 20px; font-weight: 600; color: var(--accent); }
+        .stats-label { font-size: 11px; color: var(--text-secondary); }
+        
+        .graph-container {
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #graph-svg { width: 100%; height: 100%; }
+        
+        .node circle {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .node circle:hover {
+            stroke: var(--accent);
+            stroke-width: 3px;
+        }
+        
+        .node text {
+            font-size: 10px;
+            fill: var(--text-primary);
+            pointer-events: none;
+        }
+        
+        .link { stroke: var(--border); stroke-opacity: 0.6; }
+        
+        .tooltip {
+            position: absolute;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 100;
+            max-width: 280px;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--accent);
+        }
+        
+        .tooltip-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        
+        .tooltip-label { color: var(--text-secondary); }
+        
+        .legend {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 11px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .graph-controls {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .graph-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .graph-btn:hover { background: var(--bg-tertiary); }
+        
+        .detail-panel {
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            padding: 16px;
+            overflow-y: auto;
+        }
+        
+        .detail-header {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .detail-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+        .detail-subtitle { font-size: 12px; color: var(--text-secondary); }
+        
+        .detail-section { margin-bottom: 16px; }
+        
+        .detail-section-title {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .detail-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        
+        .detail-tag {
+            padding: 4px 10px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .detail-tag.stock { background: rgba(0, 212, 170, 0.2); color: var(--stock-color); }
+        .detail-tag.industry { background: rgba(255, 152, 0, 0.2); color: var(--industry-color); }
+        .detail-tag.concept { background: rgba(156, 39, 176, 0.2); color: var(--concept-color); }
+        .detail-tag.region { background: rgba(33, 150, 243, 0.2); color: var(--region-color); }
+        
+        .detail-metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .metric-value { font-weight: 600; color: var(--accent); }
+        
+        .related-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .related-item:hover { background: var(--bg-tertiary); }
+        .related-name { font-size: 13px; }
+        
+        .related-type {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+        
+        .status-bar {
+            grid-column: 1 / -1;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        
+        .status-item { display: flex; align-items: center; gap: 6px; }
+        
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">🦞 MY-DOGE-MICRO</div>
+            <div class="header-title">📊 上市公司知识图谱</div>
+            <div class="header-right">
+                <input type="text" class="search-box" id="globalSearch" placeholder="🔍 搜索股票/概念/行业 (Enter)">
+            </div>
+        </header>
+        
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">图谱统计</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <div class="stats-card">
+                        <div class="stats-value" id="stockCount">0</div>
+                        <div class="stats-label">股票</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-value" id="industryCount">0</div>
+                        <div class="stats-label">行业</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-value" id="conceptCount">0</div>
+                        <div class="stats-label">概念</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-value" id="regionCount">0</div>
+                        <div class="stats-label">地域</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">筛选条件</div>
+                
+                <div class="filter-group">
+                    <div class="filter-label">市场</div>
+                    <div class="filter-tags" id="marketFilters">
+                        <span class="filter-tag active" data-value="">全部</span>
+                        <span class="filter-tag" data-value="SH">A股-上海</span>
+                        <span class="filter-tag" data-value="SZ">A股-深圳</span>
+                        <span class="filter-tag" data-value="US">美股</span>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <div class="filter-label">行业分类</div>
+                    <select class="filter-input" id="industryFilter">
+                        <option value="">全部行业</option>
+                        <option value="银行">银行</option>
+                        <option value="计算机">计算机</option>
+                        <option value="电子">电子</option>
+                        <option value="医药生物">医药生物</option>
+                        <option value="新能源汽车">新能源汽车</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <div class="filter-label">概念标签</div>
+                    <input type="text" class="filter-input" id="conceptFilter" placeholder="输入概念名称...">
+                </div>
+                
+                <button class="search-btn" id="searchBtn">🔍 搜索图谱</button>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">热门概念</div>
+                <div class="filter-tags">
+                    <span class="filter-tag" data-concept="人工智能">人工智能</span>
+                    <span class="filter-tag" data-concept="新能源">新能源</span>
+                    <span class="filter-tag" data-concept="云计算">云计算</span>
+                    <span class="filter-tag" data-concept="半导体">半导体</span>
+                    <span class="filter-tag" data-concept="大数据">大数据</span>
+                </div>
+            </div>
+        </aside>
+        
+        <div class="graph-container">
+            <svg id="graph-svg">
+                <g id="graph-group"></g>
+            </svg>
+            
+            <div class="legend">
+                <div class="legend-item"><div class="legend-dot" style="background: var(--stock-color);"></div><span>股票</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background: var(--industry-color);"></div><span>行业</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background: var(--concept-color);"></div><span>概念</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background: var(--region-color);"></div><span>地域</span></div>
+            </div>
+            
+            <div class="graph-controls">
+                <button class="graph-btn" id="zoomIn" title="放大">+</button>
+                <button class="graph-btn" id="zoomOut" title="缩小">−</button>
+                <button class="graph-btn" id="resetZoom" title="重置">⌂</button>
+            </div>
+            
+            <div class="tooltip" id="tooltip"></div>
+            
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <div>加载知识图谱数据...</div>
+            </div>
+        </div>
+        
+        <aside class="detail-panel" id="detailPanel">
+            <div class="empty-state">
+                <div class="empty-icon">👆</div>
+                <div>点击图谱中的节点</div>
+                <div style="font-size: 12px; margin-top: 8px;">查看详细信息</div>
+            </div>
+        </aside>
+        
+        <footer class="status-bar">
+            <div class="status-left">
+                <div class="status-item">📊 知识图谱 v1.0</div>
+                <div class="status-item">🔗 节点: <span id="nodeCount">0</span></div>
+                <div class="status-item">🔗 关系: <span id="linkCount">0</span></div>
+            </div>
+            <div class="status-right">
+                <div class="status-item">双击节点展开关联</div>
+                <div class="status-item">滚轮缩放</div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const CONFIG = {
+            nodeRadius: { stock: 12, industry: 20, concept: 16, region: 18 },
+            colors: { stock: '#00d4aa', industry: '#ff9800', concept: '#9c27b0', region: '#2196f3' }
+        };
+        
+        let graphData = { nodes: [], links: [] };
+        let simulation = null;
+        
+        const svg = d3.select('#graph-svg');
+        const graphGroup = d3.select('#graph-group');
+        const width = svg.node().clientWidth;
+        const height = svg.node().clientHeight;
+        
+        const zoom = d3.zoom().scaleExtent([0.1, 4]).on('zoom', (event) => {
+            graphGroup.attr('transform', event.transform);
+        });
+        svg.call(zoom);
+        
+        function initSimulation() {
+            simulation = d3.forceSimulation()
+                .force('link', d3.forceLink().id(d => d.id).distance(80))
+                .force('charge', d3.forceManyBody().strength(-300))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(d => (CONFIG.nodeRadius[d.type] || 12) + 5))
+                .on('tick', () => {
+                    graphGroup.selectAll('.link')
+                        .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+                        .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+                    graphGroup.selectAll('.node')
+                        .attr('transform', d => `translate(${d.x},${d.y})`);
+                });
+        }
+        
+        function renderGraph(nodes, links) {
+            graphGroup.selectAll('.link').remove();
+            graphGroup.selectAll('.node').remove();
+            
+            const link = graphGroup.selectAll('.link').data(links).enter()
+                .append('line').attr('class', 'link').attr('stroke-width', 1.5);
+            
+            const node = graphGroup.selectAll('.node').data(nodes).enter()
+                .append('g').attr('class', 'node')
+                .call(d3.drag().on('start', (e, d) => {
+                    if (!e.active) simulation.alphaTarget(0.3).restart();
+                    d.fx = d.x; d.fy = d.y;
+                }).on('drag', (e, d) => {
+                    d.fx = e.x; d.fy = e.y;
+                }).on('end', (e, d) => {
+                    if (!e.active) simulation.alphaTarget(0);
+                    d.fx = null; d.fy = null;
+                })).on('click', (e, d) => {
+                    showDetail(d);
+                }).on('dblclick', (e, d) => {
+                    expandNode(d);
+                });
+            
+            node.append('circle')
+                .attr('r', d => CONFIG.nodeRadius[d.type] || 12)
+                .attr('fill', d => CONFIG.colors[d.type] || CONFIG.colors.stock)
+                .attr('stroke', '#1a1f26').attr('stroke-width', 2);
+            
+            node.append('text')
+                .attr('dy', d => (CONFIG.nodeRadius[d.type] || 12) + 14)
+                .attr('text-anchor', 'middle')
+                .text(d => d.name.length > 6 ? d.name.substring(0, 6) + '...' : d.name)
+                .style('font-size', d => d.type === 'industry' ? '11px' : '10px');
+            
+            simulation.nodes(nodes);
+            simulation.force('link').links(links);
+            simulation.alpha(0.3).restart();
+            
+            updateStats(nodes, links);
+        }
+        
+        function showDetail(node) {
+            const panel = document.getElementById('detailPanel');
+            let html = `
+                <div class="detail-header">
+                    <div class="detail-title">${node.name}</div>
+                    <div class="detail-subtitle">${getTypeName(node.type)}</div>
+                </div>`;
+            
+            if (node.tags && node.tags.length > 0) {
+                html += `<div class="detail-section"><div class="detail-section-title">标签</div>
+                    <div class="detail-tags">${node.tags.map(t => `<span class="detail-tag ${node.type}">${t}</span>`).join('')}</div></div>`;
+            }
+            
+            if (node.market_cap) {
+                html += `<div class="detail-section"><div class="detail-section-title">市值</div>
+                    <div class="detail-metric"><span>市值</span><span class="metric-value">${formatNumber(node.market_cap)}</span></div></div>`;
+            }
+            
+            const related = graphData.links.filter(l => l.source.id === node.id || l.target.id === node.id);
+            if (related.length > 0) {
+                html += `<div class="detail-section"><div class="detail-section-title">关联关系 (${related.length})</div>
+                    <div class="related-list">${related.map(r => {
+                        const target = r.source.id === node.id ? r.target : r.source;
+                        return `<div class="related-item"><span class="related-name">${target.name}</span>
+                            <span class="related-type">${getTypeName(target.type)}</span></div>`;
+                    }).join('')}</div></div>`;
+            }
+            
+            panel.innerHTML = html;
+        }
+        
+        function expandNode(node) {
+            document.getElementById('loading').style.display = 'block';
+            setTimeout(() => {
+                const related = graphData.links.filter(l => l.source.id === node.id || l.target.id === node.id);
+                const existing = new Set(graphData.nodes.map(n => n.id));
+                related.forEach(r => {
+                    const target = r.source.id === node.id ? r.target : r.source;
+                    if (!existing.has(target.id)) {
+                        graphData.nodes.push(target);
+                        existing.add(target.id);
+                    }
+                });
+                renderGraph(graphData.nodes, graphData.links);
+                document.getElementById('loading').style.display = 'none';
+            }, 500);
+        }
+        
+        function updateStats(nodes, links) {
+            const counts = { stock: 0, industry: 0, concept: 0, region: 0 };
+            nodes.forEach(n => counts[n.type] = (counts[n.type] || 0) + 1);
+            document.getElementById('stockCount').textContent = counts.stock || 0;
+            document.getElementById('industryCount').textContent = counts.industry || 0;
+            document.getElementById('conceptCount').textContent = counts.concept || 0;
+            document.getElementById('regionCount').textContent = counts.region || 0;
+            document.getElementById('nodeCount').textContent = nodes.length;
+            document.getElementById('linkCount').textContent = links.length;
+        }
+        
+        function getTypeName(type) {
+            const names = { stock: '股票', industry: '行业', concept: '概念', region: '地域' };
+            return names[type] || type;
+        }
+        
+        function formatNumber(num) {
+            if (!num) return '-';
+            if (num >= 100000000000) return (num / 100000000000).toFixed(1) + '万亿';
+            if (num >= 100000000) return (num / 100000000).toFixed(1) + '亿';
+            return num.toString();
+        }
+        
+        function generateMockData() {
+            const nodes = [
+                { id: 'industry_bank', name: '银行', type: 'industry' },
+                { id: 'industry_tech', name: '计算机', type: 'industry' },
+                { id: 'industry_ev', name: '新能源汽车', type: 'industry' },
+                { id: 'concept_ai', name: '人工智能', type: 'concept' },
+                { id: 'concept_cloud', name: '云计算', type: 'concept' },
+                { id: 'SH600000', name: '浦发银行', type: 'stock', industry: '银行', market_cap: 150000000000, pe_ttm: 5.2, tags: ['银行', '上证50'] },
+                { id: 'SZ000001', name: '平安银行', type: 'stock', industry: '银行', market_cap: 220000000000, pe_ttm: 6.1, tags: ['银行', '深证100'] },
+                { id: 'SZ300750', name: '宁德时代', type: 'stock', industry: '新能源汽车', market_cap: 980000000000, pe_ttm: 35.2, tags: ['新能源', '锂电池'] },
+                { id: 'AAPL', name: 'Apple', type: 'stock', industry: '计算机', market_cap: 2800000000000, pe_ttm: 28.5, tags: ['科技', 'FAANG'] },
+                { id: 'MSFT', name: 'Microsoft', type: 'stock', industry: '计算机', market_cap: 2700000000000, pe_ttm: 35.2, tags: ['科技', '云计算'] },
+            ];
+            const links = [
+                { source: 'SH600000', target: 'industry_bank' },
+                { source: 'SZ000001', target: 'industry_bank' },
+                { source: 'SZ300750', target: 'industry_ev' },
+                { source: 'AAPL', target: 'industry_tech' },
+                { source: 'MSFT', target: 'industry_tech' },
+                { source: 'SZ300750', target: 'concept_ai' },
+                { source: 'AAPL', target: 'concept_ai' },
+                { source: 'MSFT', target: 'concept_ai' },
+                { source: 'MSFT', target: 'concept_cloud' },
+                { source: 'concept_ai', target: 'concept_cloud' },
+            ];
+            return { nodes, links };
+        }
+        
+        function loadGraphData() {
+            document.getElementById('loading').style.display = 'block';
+            setTimeout(() => {
+                graphData = generateMockData();
+                renderGraph(graphData.nodes, graphData.links);
+                document.getElementById('loading').style.display = 'none';
+            }, 800);
+        }
+        
+        // 初始化
+        initSimulation();
+        loadGraphData();
+        
+        // 事件绑定
+        document.getElementById('zoomIn').onclick = () => svg.transition().call(zoom.scaleBy, 1.3);
+        document.getElementById('zoomOut').onclick = () => svg.transition().call(zoom.scaleBy, 0.7);
+        document.getElementById('resetZoom').onclick = () => svg.transition().call(zoom.transform, d3.zoomIdentity);
+    </script>
+</body>
+</html>

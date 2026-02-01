@@ -1,0 +1,38 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-02-01T14:00:00+08:00",
+  "description": "MY-DOGE-MICRO 股票池配置",
+  "pools": {
+    "cn_a": {
+      "name": "A股股票池",
+      "description": "上海和深圳交易所上市股票",
+      "exchange": ["SH", "SZ"],
+      "stocks": [],
+      "stats": {
+        "total": 0,
+        "by_exchange": {},
+        "by_industry": {}
+      }
+    },
+    "us": {
+      "name": "美股股票池",
+      "description": "美国交易所上市股票",
+      "exchange": ["NYSE", "NASDAQ"],
+      "stocks": [],
+      "stats": {
+        "total": 0,
+        "by_exchange": {},
+        "by_industry": {}
+      }
+    },
+    "watchlist": {
+      "name": "自选股",
+      "description": "用户关注的股票",
+      "exchange": [],
+      "stocks": [],
+      "stats": {
+        "total": 0
+      }
+    }
+  }
+}

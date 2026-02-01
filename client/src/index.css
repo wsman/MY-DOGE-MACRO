@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* 加载动画 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Live Preview 核心样式 */
+.cm-md-mark {
+  display: none; /* 默认隐藏标记 */
+}
+
+/* 当光标在特定区域时，我们不应用这个类，或者通过 JS 逻辑控制 */
+/* 使得标题看起来像标题 */
+.cm-heading-1 { font-size: 1.6em; font-weight: bold; color: #e5e7eb; }
+.cm-heading-2 { font-size: 1.4em; font-weight: bold; color: #e5e7eb; }
+.cm-heading-3 { font-size: 1.2em; font-weight: bold; color: #e5e7eb; }
+
+/* 强调样式 */
+.cm-bold-text { font-weight: bold; color: #fbbf24; } /* Amber-400 */
+.cm-italic-text { font-style: italic; color: #94a3b8; }

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY-DOGE-MICRO 量化交易系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f26;
+            --bg-tertiary: #242b33;
+            --text-primary: #e7e9ea;
+            --text-secondary: #8b98a5;
+            --accent: #00d4aa;
+            --border: #38444d;
+            --success: #00c853;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* 布局 */
+        .app-container {
+            display: grid;
+            grid-template-rows: 48px 1fr 32px;
+            grid-template-columns: 220px 1fr 320px;
+            height: 100vh;
+        }
+        
+        /* 顶部导航 */
+        .header {
+            grid-column: 1 / -1;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+        }
+        
+        .logo {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .nav-item {
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            color: var(--accent);
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .search-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 12px;
+            width: 200px;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+        
+        .connection-status {
+            display: flex;
+            gap: 8px;
+            font-size: 11px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .status-dot.connected { background: var(--success); }
+        .status-dot.disconnected { background: var(--danger); }
+        
+        /* 左侧边栏 */
+        .sidebar {
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 12px;
+            overflow-y: auto;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-title {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding: 0 8px;
+        }
+        
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        
+        .sidebar-item:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .sidebar-item.active {
+            background: rgba(0, 212, 170, 0.1);
+            color: var(--accent);
+        }
+        
+        .scan-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: var(--bg-primary);
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+        
+        .scan-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .scan-progress {
+            margin-top: 12px;
+            padding: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            font-size: 12px;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 60%;
+            transition: width 0.3s;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            background: var(--bg-primary);
+            padding: 16px;
+            overflow-y: auto;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .content-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .filter-btn {
+            padding: 4px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .filter-btn.active {
+            background: rgba(0, 212, 170, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        /* 股票列表 */
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .stock-table th {
+            text-align: left;
+            padding: 10px 12px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .stock-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+        
+        .stock-table tr:hover {
+            background: var(--bg-secondary);
+            cursor: pointer;
+        }
+        
+        .stock-code {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .stock-name {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+        
+        .stock-price {
+            font-family: 'SF Mono', monospace;
+        }
+        
+        .stock-change {
+            font-family: 'SF Mono', monospace;
+        }
+        
+        .stock-change.positive { color: var(--success); }
+        .stock-change.negative { color: var(--danger); }
+        
+        .rsrs-value {
+            font-family: 'SF Mono', monospace;
+        }
+        
+        .risk-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .risk-low { background: rgba(0, 200, 83, 0.2); color: var(--success); }
+        .risk-medium { background: rgba(255, 152, 0, 0.2); color: var(--warning); }
+        .risk-high { background: rgba(244, 67, 54, 0.2); color: var(--danger); }
+        
+        /* 右侧详情面板 */
+        .detail-panel {
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            padding: 16px;
+            overflow-y: auto;
+        }
+        
+        .detail-header {
+            margin-bottom: 16px;
+        }
+        
+        .detail-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .detail-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .chart-container {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .indicator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .indicator-card {
+            background: var(--bg-tertiary);
+            padding: 12px;
+            border-radius: 8px;
+        }
+        
+        .indicator-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .indicator-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .indicator-trend {
+            font-size: 11px;
+            margin-top: 4px;
+        }
+        
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+        
+        .risk-panel {
+            background: var(--bg-tertiary);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .risk-title {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .risk-level {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .risk-low-text { color: var(--success); }
+        .risk-medium-text { color: var(--warning); }
+        .risk-high-text { color: var(--danger); }
+        
+        .risk-reason {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+        
+        .action-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+        
+        .action-btn:hover {
+            background: var(--border);
+        }
+        
+        .action-btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        /* 底部状态栏 */
+        .status-bar {
+            grid-column: 1 / -1;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        
+        .status-left, .status-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* 快捷键提示 */
+        .kbd {
+            background: var(--bg-tertiary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航 -->
+        <header class="header">
+            <div class="logo">🦞 MY-DOGE-MICRO</div>
+            <nav class="nav-menu">
+                <div class="nav-item active">市场</div>
+                <div class="nav-item">指标</div>
+                <div class="nav-item">报告</div>
+                <div class="nav-item">设置</div>
+            </nav>
+            <div class="header-right">
+                <input type="text" class="search-box" placeholder="🔍 搜索股票 (Ctrl+K)">
+                <div class="connection-status">
+                    <span class="status-dot connected"></span> DeepSeek
+                    <span class="status-dot connected"></span> Yahoo
+                    <span class="status-dot connected"></span> TDX
+                </div>
+            </div>
+        </header>
+        
+        <!-- 左侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">导航</div>
+                <div class="sidebar-item active">
+                    <span>📊</span> 市场扫描
+                </div>
+                <div class="sidebar-item">
+                    <span>⭐</span> 自选股
+                </div>
+                <div class="sidebar-item">
+                    <span>📈</span> 深度分析
+                </div>
+                <div class="sidebar-item">
+                    <span>📁</span> 历史记录
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">数据源</div>
+                <div class="sidebar-item">
+                    <span class="status-dot connected"></span> A股 (3,842)
+                </div>
+                <div class="sidebar-item">
+                    <span class="status-dot connected"></span> 美股 (1,256)
+                </div>
+            </div>
+            
+            <button class="scan-btn">🚀 开始扫描</button>
+            
+            <div class="scan-progress">
+                <div>上次扫描: 2026-02-01 13:30</div>
+                <div style="margin-top: 8px;">扫描进度</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div style="margin-top: 4px;">2,847 / 5,098 只</div>
+            </div>
+        </aside>
+        
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1 class="content-title">市场扫描</h1>
+                <div class="filter-bar">
+                    <button class="filter-btn active">全部</button>
+                    <button class="filter-btn">A股</button>
+                    <button class="filter-btn">美股</button>
+                    <button class="filter-btn">RSRS > 0.5</button>
+                    <button class="filter-btn">低风险</button>
+                </div>
+            </div>
+            
+            <table class="stock-table">
+                <thead>
+                    <tr>
+                        <th>代码</th>
+                        <th>名称</th>
+                        <th>价格</th>
+                        <th>涨跌幅</th>
+                        <th>RSRS</th>
+                        <th>波动率偏度</th>
+                        <th>风险</th>
+                        <th>行业</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="stock-code">600000</span></td>
+                        <td><span class="stock-name">浦发银行</span></td>
+                        <td class="stock-price">10.25</td>
+                        <td class="stock-change positive">+2.35%</td>
+                        <td class="rsrs-value">0.85</td>
+                        <td>1.2</td>
+                        <td><span class="risk-badge risk-low">低风险</span></td>
+                        <td>银行</td>
+                    </tr>
+                    <tr>
+                        <td><span class="stock-code">000001</span></td>
+                        <td><span class="stock-name">平安银行</span></td>
+                        <td class="stock-price">12.48</td>
+                        <td class="stock-change positive">+1.89%</td>
+                        <td class="rsrs-value">0.72</td>
+                        <td>1.1</td>
+                        <td><span class="risk-badge risk-low">低风险</span></td>
+                        <td>银行</td>
+                    </tr>
+                    <tr>
+                        <td><span class="stock-code">600519</span></td>
+                        <td><span class="stock-name">贵州茅台</span></td>
+                        <td class="stock-price">1,680.00</td>
+                        <td class="stock-change negative">-0.45%</td>
+                        <td class="rsrs-value">0.35</td>
+                        <td>1.4</td>
+                        <td><span class="risk-badge risk-medium">中风险</span></td>
+                        <td>白酒</td>
+                    </tr>
+                    <tr>
+                        <td><span class="stock-code">300750</span></td>
+                        <td><span class="stock-name">宁德时代</span></td>
+                        <td class="stock-price">245.60</td>
+                        <td class="stock-change positive">+3.21%</td>
+                        <td class="rsrs-value">0.91</td>
+                        <td>1.5</td>
+                        <td><span class="risk-badge risk-low">低风险</span></td>
+                        <td>新能源</td>
+                    </tr>
+                    <tr>
+                        <td><span class="stock-code">000001</span></td>
+                        <td><span class="stock-name">上证指数</span></td>
+                        <td class="stock-price">3,425.41</td>
+                        <td class="stock-change positive">+0.78%</td>
+                        <td class="rsrs-value">0.68</td>
+                        <td>1.3</td>
+                        <td><span class="risk-badge risk-low">低风险</span></td>
+                        <td>指数</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+        
+        <!-- 右侧详情面板 -->
+        <aside class="detail-panel">
+            <div class="detail-header">
+                <div class="detail-title">600000 浦发银行</div>
+                <div class="detail-subtitle">上海证券交易所 · 银行</div>
+            </div>
+            
+            <div class="chart-container">
+                📈 K线图表区域
+            </div>
+            
+            <div class="indicator-grid">
+                <div class="indicator-card">
+                    <div class="indicator-label">RSRS 趋势强度</div>
+                    <div class="indicator-value">0.85</div>
+                    <div class="indicator-trend trend-up">↑ 上升趋势</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-label">波动率偏度</div>
+                    <div class="indicator-value">1.2</div>
+                    <div class="indicator-trend">正常区间</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-label">中期趋势</div>
+                    <div class="indicator-value">0.72</div>
+                    <div class="indicator-trend trend-up">↑ 偏强</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-label">市场热度</div>
+                    <div class="indicator-value">72</div>
+                    <div class="indicator-trend">适中</div>
+                </div>
+            </div>
+            
+            <div class="risk-panel">
+                <div class="risk-title">综合风险评估</div>
+                <div class="risk-level risk-low-text">🟢 低风险</div>
+                <div class="risk-reason">RSRS处于上升通道，波动率稳定，建议关注</div>
+            </div>
+            
+            <button class="action-btn primary">📊 生成AI策略报告</button>
+            <button class="action-btn">⭐ 加入自选</button>
+            <button class="action-btn">📈 添加到监控</button>
+        </aside>
+        
+        <!-- 底部状态栏 -->
+        <footer class="status-bar">
+            <div class="status-left">
+                <div class="status-item">
+                    <span class="status-dot connected"></span>
+                    DeepSeek: 23ms
+                </div>
+                <div class="status-item">
+                    <span class="status-dot connected"></span>
+                    Yahoo Finance: 已连接
+                </div>
+                <div class="status-item">
+                    <span class="status-dot connected"></span>
+                    TDX DB: /data/tdx
+                </div>
+            </div>
+            <div class="status-right">
+                <div class="status-item">内存: 256MB</div>
+                <div class="status-item">CPU: 12%</div>
+                <div class="status-item">最后同步: 13:45:02</div>
+                <div class="status-item"><span class="kbd">Ctrl+K</span> 搜索 <span class="kbd">Ctrl+S</span> 保存</div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

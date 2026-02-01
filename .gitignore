@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+*.egg-info/
+dist/
+.venv/
+venv/
+
+# Testing
+coverage/
+.pytest_cache/
+.coverage
+
+# Tauri
+client/src-tauri/target/
+
+# Data files (large, generated)
+*.db
+*.sqlite
+data/
+
+# Logs
+*.log
+__pycache__/
+*.pyc
+data/
+__pycache__/
+.DS_Store

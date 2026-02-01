@@ -1,0 +1,42 @@
+{
+  "identifier": "python-service-capability",
+  "description": "Permission to launch Python backend service",
+  "local": true,
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "cmd": "python",
+          "args": true
+        },
+        {
+          "cmd": "python3",
+          "args": true
+        },
+        {
+          "cmd": "py",
+          "args": true
+        }
+      ]
+    },
+    {
+      "identifier": "fs:allow-read-text-file",
+      "allow": [
+        "python_service/**"
+      ]
+    },
+    {
+      "identifier": "fs:allow-read-file",
+      "allow": [
+        "python_service/**"
+      ]
+    },
+    {
+      "identifier": "process:allow-exit",
+      "allow": true
+    }
+  ]
+}
