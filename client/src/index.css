@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: dark;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -9,6 +13,7 @@
 }
 
 body {
+  @apply bg-app-primary text-text-primary antialiased h-screen w-screen overflow-hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -21,50 +26,58 @@ code {
     monospace;
 }
 
-/* 自定义滚动条 */
+/* Custom Scrollbar from Design System */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1f2937;
+  @apply bg-app-secondary;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4b5563;
-  border-radius: 4px;
+  @apply bg-text-secondary/50 rounded-full;
+  border: 2px solid theme('colors.app.secondary');
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+  @apply bg-text-secondary;
 }
 
-/* 加载动画 */
+/* Common Components */
+.btn-primary {
+  @apply px-4 py-2 bg-accent text-app-primary font-semibold rounded-lg hover:opacity-90 transition-opacity;
+}
+
+.card-panel {
+  @apply bg-app-secondary border-l border-app-border;
+}
+
+.status-dot {
+  @apply w-2 h-2 rounded-full inline-block mr-2;
+}
+.status-dot.connected { @apply bg-app-success; }
+.status-dot.disconnected { @apply bg-app-danger; }
+
+/* Live Preview legacy styles (keep for compatibility) */
+.cm-md-mark {
+  display: none;
+}
+
+.cm-heading-1 { font-size: 1.6em; font-weight: bold; color: #e5e7eb; }
+.cm-heading-2 { font-size: 1.4em; font-weight: bold; color: #e5e7eb; }
+.cm-heading-3 { font-size: 1.2em; font-weight: bold; color: #e5e7eb; }
+
+.cm-bold-text { font-weight: bold; color: #fbbf24; }
+.cm-italic-text { font-style: italic; color: #94a3b8; }
+
+/* Loading animation */
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .animate-spin {
   animation: spin 1s linear infinite;
 }
-
-/* Live Preview 核心样式 */
-.cm-md-mark {
-  display: none; /* 默认隐藏标记 */
-}
-
-/* 当光标在特定区域时，我们不应用这个类，或者通过 JS 逻辑控制 */
-/* 使得标题看起来像标题 */
-.cm-heading-1 { font-size: 1.6em; font-weight: bold; color: #e5e7eb; }
-.cm-heading-2 { font-size: 1.4em; font-weight: bold; color: #e5e7eb; }
-.cm-heading-3 { font-size: 1.2em; font-weight: bold; color: #e5e7eb; }
-
-/* 强调样式 */
-.cm-bold-text { font-weight: bold; color: #fbbf24; } /* Amber-400 */
-.cm-italic-text { font-style: italic; color: #94a3b8; }
