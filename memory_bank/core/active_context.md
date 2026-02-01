@@ -37,9 +37,9 @@
 | Task ID | Task Name | Status | Progress |
 |---------|-----------|--------|----------|
 | **T-C2.1** | RSRS Algorithm Vectorization | ✅ Complete | 100% |
-| **T-C2.4** | Market Scanner Concurrency | ✅ Complete | 100% |
 | **T-C2.2** | Backend Caching Layer | ✅ Complete | 100% |
-| **T-C2.3** | Frontend Chart Memoization | ⏳ Pending | 0% |
+| **T-C2.3** | Frontend Chart Memoization | ✅ Complete | 100% |
+| **T-C2.4** | Market Scanner Concurrency | ✅ Complete | 100% |
 
 ## Task Progress Summary
 
