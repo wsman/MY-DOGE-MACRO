@@ -1,13 +1,14 @@
 """
 RSRS (Resistance & Support Ratio Score) 指标计算模块
 
-基于阻力支撑相对强度算法 - 向量化优化版本
+基于阻力支撑相对强度算法
 参考: https://github.com/zhangliang1024/RSRS
+优化: T-C2.1 Vectorization with Pandas Rolling & Numpy
 
 优化内容:
-- 使用滚动窗口 OLS 向量化计算
-- 支持批量计算历史 RSRS
-- 添加 Numba JIT 加速选项
+- 完全向量化: 使用 Pandas rolling 窗口
+- 单点计算: 使用协方差/方差公式
+- 批量计算: calculate_series 返回完整序列
 """
 
 import pandas as pd
@@ -18,46 +19,30 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# 尝试导入 Numba 以获得额外加速
-try:
-    from numba import jit, prange
-    HAS_NUMBA = True
-except ImportError:
-    HAS_NUMBA = False
-    logger.info("Numba not available, using pure numpy implementation")
-
 
 class RSRSAnalyzer:
     """
-    RSRS 阻力支撑相对强度分析器 (向量化优化版)
+    RSRS 阻力支撑相对强度分析器
     
     算法原理:
     - 使用 N 日最高价和最低价的线性回归斜率作为阻力支撑强度
     - 斜率为正表示上升趋势 (bullish)
     - 斜率为负表示下降趋势 (bearish)
     - 标准化后得到 RSRS 分数 (0-100)
-    
-    优化特性:
-    - 滚动窗口向量化计算
-    - 批量历史 RSRS 计算
-    - 可选 Numba JIT 加速
     """
     
     def __init__(
         self,
         lookback_period: int = 20,
-        scale: bool = True,
-        use_numba: bool = False
+        scale: bool = True
     ):
         """
         Args:
             lookback_period: 回溯周期 (默认20天)
             scale: 是否标准化分数
-            use_numba: 是否使用 Numba 加速 (需要安装 numba)
         """
         self.lookback_period = lookback_period
         self.scale = scale
-        self.use_numba = use_numba and HAS_NUMBA
     
     def calculate(
         self,
@@ -66,7 +51,7 @@ class RSRSAnalyzer:
         closes: pd.Series
     ) -> Dict[str, Any]:
         """
-        计算RSRS指标 (单次计算)
+        计算最新的单点 RSRS 指标 (优化版)
         
         Args:
             highs: 最高价序列
@@ -74,40 +59,141 @@ class RSRSAnalyzer:
             closes: 收盘价序列
         
         Returns:
-            {
-                'value': float,          # RSRS斜率 (-1.0 ~ 1.0)
-                'score': int,            # 标准化分数 (0-100)
-                'signal': str,           # 'long' | 'short' | 'hold'
-                'raw_beta': float,       # 原始回归斜率
-                'r_squared': float,      # 拟合优度
-                'updated_at': datetime
-            }
+            Dict[str, Any]: 包含 value, score, signal 等
         """
         if len(highs) < self.lookback_period:
             logger.warning(f"数据不足 {len(highs)} 天，需要至少 {self.lookback_period} 天")
             return self._empty_result()
         
-        # 向量化: 提取最近 N 天数据
-        highs_slice = highs.values[-self.lookback_period:]
-        lows_slice = lows.values[-self.lookback_period:]
+        # 提取窗口数据 (使用 numpy 加速)
+        h_win = highs.values[-self.lookback_period:]
+        l_win = lows.values[-self.lookback_period:]
         
-        # 高效 OLS 向量化计算
-        raw_beta, r_squared = self._vectorized_ols(highs_slice, lows_slice)
+        try:
+            # 快速单点 OLS (y = alpha + beta * x) -> Low = alpha + beta * High
+            # Beta = Cov(H, L) / Var(H)
+            
+            # 计算均值
+            h_mean = np.mean(h_win)
+            l_mean = np.mean(l_win)
+            
+            # 计算协方差和方差
+            cov = np.sum((h_win - h_mean) * (l_win - l_mean))
+            var_h = np.sum((h_win - h_mean) ** 2)
+            
+            # 计算 Beta
+            if var_h == 0:
+                raw_beta = 0.0
+            else:
+                raw_beta = cov / var_h
+                
+            # 计算 R² = Corr(H, L)^2
+            var_l = np.sum((l_win - l_mean) ** 2)
+            if var_h > 0 and var_l > 0:
+                corr = cov / np.sqrt(var_h * var_l)
+                r_squared = corr ** 2
+            else:
+                r_squared = 0.0
+            
+            # 生成结果
+            return self._format_result(raw_beta, r_squared)
+            
+        except Exception as e:
+            logger.error(f"RSRS计算失败: {e}")
+            return self._empty_result()
+
+    def calculate_series(
+        self, 
+        df: pd.DataFrame
+    ) -> pd.DataFrame:
+        """
+        计算完整的 RSRS 指标序列 (向量化版本)
         
+        Args:
+            df: 包含 High, Low 的 DataFrame
+            
+        Returns:
+            pd.DataFrame: 新增 rsrs_beta, rsrs_score, rsrs_r2 列
+        """
+        if df.empty or 'High' not in df.columns or 'Low' not in df.columns:
+            return df
+            
+        highs = df['High']
+        lows = df['Low']
+        N = self.lookback_period
+        
+        # 1. 计算 Rolling Covariance 和 Variance (完全向量化)
+        rolling_cov = highs.rolling(window=N).cov(lows)
+        rolling_var = highs.rolling(window=N).var()
+        
+        # 2. 计算 Beta
+        beta_series = rolling_cov / rolling_var
+        
+        # 3. 计算 R2 (Correlation ^ 2)
+        rolling_corr = highs.rolling(window=N).corr(lows)
+        r2_series = rolling_corr ** 2
+        
+        # 4. 构造结果 DataFrame
+        result_df = df.copy()
+        result_df['rsrs_beta'] = beta_series.fillna(0.0)
+        result_df['rsrs_r2'] = r2_series.fillna(0.0)
+        
+        # 5. 计算分数 (向量化)
+        clipped_beta = beta_series.clip(-1.0, 1.0)
+        if self.scale:
+            scores = 50 + (clipped_beta * 25)
+            scores = scores.clip(0, 100)
+        else:
+            scores = clipped_beta * 50 + 50
+            
+        result_df['rsrs_score'] = scores.fillna(50).astype(int)
+        
+        return result_df
+    
+    def calculate_from_dataframe(
+        self,
+        df: pd.DataFrame,
+        ticker: str = ''
+    ) -> Dict[str, Any]:
+        """
+        从DataFrame计算最新 RSRS (使用向量化引擎)
+        """
+        if df.empty:
+            return self._empty_result()
+        
+        # 规范化列名
+        df_norm = df.rename(columns={
+            'high': 'High', 'low': 'Low', 'close': 'Close',
+            'HIGH': 'High', 'LOW': 'Low', 'CLOSE': 'Close'
+        })
+        
+        if 'High' not in df_norm.columns or 'Low' not in df_norm.columns:
+            logger.error("DataFrame缺少 High/Low 列")
+            return self._empty_result()
+            
+        return self.calculate(
+            df_norm['High'],
+            df_norm['Low'],
+            df_norm['Close'] if 'Close' in df_norm.columns else df_norm['High']
+        )
+    
+    def _format_result(self, raw_beta: float, r_squared: float) -> Dict[str, Any]:
+        """格式化输出结果"""
         # 标准化到 [-1, 1]
         value = np.clip(raw_beta, -1.0, 1.0)
         
         # 计算分数 (0-100)
         if self.scale:
             score = int(50 + (value * 25))
-            score = np.clip(score, 0, 100)
+            score = int(np.clip(score, 0, 100))
         else:
             score = int(value * 50 + 50)
         
         # 生成信号
-        if score >= 70:
+        thresholds = self.get_threshold()
+        if score >= thresholds['long_threshold']:
             signal = 'long'
-        elif score <= 30:
+        elif score <= thresholds['short_threshold']:
             signal = 'short'
         else:
             signal = 'hold'
@@ -121,164 +207,6 @@ class RSRSAnalyzer:
             'updated_at': datetime.now()
         }
     
-    def calculate_batch(
-        self,
-        highs: pd.Series,
-        lows: pd.Series,
-        closes: pd.Series
-    ) -> pd.DataFrame:
-        """
-        批量计算历史 RSRS 序列
-        
-        Args:
-            highs: 最高价序列
-            lows: 最低价序列
-            closes: 收盘价序列
-        
-        Returns:
-            DataFrame 包含所有历史 RSRS 值
-        """
-        n = len(highs)
-        if n < self.lookback_period:
-            logger.warning(f"数据不足 {n} 天，需要至少 {self.lookback_period} 天")
-            return pd.DataFrame()
-        
-        # 预分配数组
-        values = np.full(n, np.nan)
-        scores = np.full(n, np.nan)
-        betas = np.full(n, np.nan)
-        r_squared = np.full(n, np.nan)
-        
-        # 滑动窗口向量化计算
-        high_arr = highs.values
-        low_arr = lows.values
-        
-        for i in range(self.lookback_period - 1, n):
-            high_slice = high_arr[i - self.lookback_period + 1:i + 1]
-            low_slice = low_arr[i - self.lookback_period + 1:i + 1]
-            
-            raw_beta, r2 = self._vectorized_ols(high_slice, low_slice)
-            
-            values[i] = np.clip(raw_beta, -1.0, 1.0)
-            betas[i] = raw_beta
-            r_squared[i] = r2
-            
-            # 标准化分数
-            if self.scale:
-                scores[i] = int(50 + (values[i] * 25))
-                scores[i] = np.clip(scores[i], 0, 100)
-            else:
-                scores[i] = int(values[i] * 50 + 50)
-        
-        # 构建结果 DataFrame
-        result = pd.DataFrame({
-            'value': values,
-            'score': scores,
-            'raw_beta': betas,
-            'r_squared': r_squared
-        }, index=highs.index)
-        
-        return result.dropna()
-    
-    def _vectorized_ols(
-        self,
-        high: np.ndarray,
-        low: np.ndarray
-    ) -> tuple:
-        """
-        向量化 OLS 计算
-        
-        使用高效矩阵运算计算 Beta (斜率)
-        Low = Alpha + Beta * High
-        
-        Args:
-            high: 最高价数组
-            low: 最低价数组
-        
-        Returns:
-            (beta, r_squared)
-        """
-        n = len(high)
-        
-        # 预计算需要的统计量 (避免创建大矩阵)
-        sum_x = np.sum(high)
-        sum_y = np.sum(low)
-        sum_xx = np.sum(high * high)
-        sum_xy = np.sum(high * low)
-        sum_yy = np.sum(low * low)
-        
-        # OLS 公式
-        # Beta = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x)
-        denominator = n * sum_xx - sum_x * sum_x
-        
-        if abs(denominator) < 1e-10:
-            return 0.0, 0.0
-        
-        beta = (n * sum_xy - sum_x * sum_y) / denominator
-        
-        # R² 计算
-        y_mean = sum_y / n
-        ss_tot = sum_yy - n * y_mean * y_mean
-        
-        if ss_tot < 1e-10:
-            return beta, 0.0
-        
-        # 预测值和残差
-        y_pred = beta * high + (sum_y - beta * sum_x) / n
-        ss_res = np.sum((low - y_pred) ** 2)
-        
-        r_squared = 1 - (ss_res / ss_tot)
-        
-        return beta, r_squared
-    
-    def calculate_from_dataframe(
-        self,
-        df: pd.DataFrame,
-        ticker: str = '',
-        batch: bool = False
-    ) -> Union[Dict[str, Any], pd.DataFrame]:
-        """
-        从DataFrame计算RSRS
-        
-        DataFrame需要包含 'High', 'Low', 'Close' 列
-        
-        Args:
-            df: 包含 High, Low, Close 的 DataFrame
-            ticker: 股票代码
-            batch: 是否返回完整历史序列
-        
-        Returns:
-            单次结果或完整历史 DataFrame
-        """
-        if df.empty:
-            return self._empty_result() if not batch else pd.DataFrame()
-        
-        # 尝试多种列名格式
-        high_col = 'High' if 'High' in df.columns else 'high'
-        low_col = 'Low' if 'Low' in df.columns else 'low'
-        close_col = 'Close' if 'Close' in df.columns else 'close'
-        
-        if high_col not in df.columns or low_col not in df.columns:
-            logger.error("DataFrame缺少 High/Low 列")
-            return self._empty_result() if not batch else pd.DataFrame()
-        
-        if batch:
-            result = self.calculate_batch(
-                df[high_col],
-                df[low_col],
-                df[close_col] if close_col in df.columns else df[high_col]
-            )
-            result['ticker'] = ticker
-            return result
-        else:
-            result = self.calculate(
-                df[high_col],
-                df[low_col],
-                df[close_col] if close_col in df.columns else df[high_col]
-            )
-            result['ticker'] = ticker
-            return result
-    
     def _empty_result(self) -> Dict[str, Any]:
         """返回空结果"""
         return {
@@ -291,12 +219,10 @@ class RSRSAnalyzer:
         }
     
     def get_threshold(self) -> Dict[str, float]:
-        """
-        获取信号阈值
-        """
+        """获取信号阈值"""
         return {
-            'long_threshold': 70,
-            'short_threshold': 30,
+            'long_threshold': 70,   # 买入信号
+            'short_threshold': 30,  # 卖出信号
             'neutral_low': 40,
             'neutral_high': 60
         }
@@ -305,61 +231,49 @@ class RSRSAnalyzer:
 def calculate_rsrs(
     df: pd.DataFrame,
     ticker: str = '',
-    lookback: int = 20,
-    batch: bool = False
-) -> Union[Dict[str, Any], pd.DataFrame]:
+    lookback: int = 20
+) -> Dict[str, Any]:
     """
     便捷函数: 计算RSRS
-    
-    Args:
-        df: 包含High, Low, Close的DataFrame
-        ticker: 股票代码
-        lookback: 回溯周期
-        batch: 是否返回完整历史
-    
-    Returns:
-        RSRS结果字典 或 历史DataFrame
     """
     analyzer = RSRSAnalyzer(lookback_period=lookback)
-    return analyzer.calculate_from_dataframe(df, ticker, batch=batch)
+    return analyzer.calculate_from_dataframe(df, ticker)
 
 
 if __name__ == '__main__':
-    # 性能测试
+    # 性能与正确性测试
     import yfinance as yf
     import time
     
-    print("=== RSRS 向量化计算性能测试 ===\n")
-    
-    # 获取测试数据
-    ticker = yf.Ticker('QQQ')
-    hist = ticker.history(period='1y')  # 1年数据
-    
-    if not hist.empty:
-        print(f"数据量: {len(hist)} 天")
+    print("=== RSRS Vectorization Test ===")
+    try:
+        ticker = yf.Ticker('BTC-USD')
+        hist = ticker.history(period='1y')
         
-        # 单次计算测试
-        analyzer = RSRSAnalyzer(lookback_period=20)
-        
-        start = time.perf_counter()
-        result = calculate_rsrs(hist, 'QQQ', lookback=20)
-        single_time = time.perf_counter() - start
-        
-        print(f"\n单次计算: {single_time*1000:.2f}ms")
-        print(f"  斜率值: {result['value']}")
-        print(f"  分数: {result['score']}")
-        print(f"  信号: {result['signal']}")
-        
-        # 批量计算测试
-        start = time.perf_counter()
-        batch_result = analyzer.calculate_batch(hist['High'], hist['Low'], hist['Close'])
-        batch_time = time.perf_counter() - start
-        
-        print(f"\n批量计算 ({len(batch_result)} 个值): {batch_time*1000:.2f}ms")
-        print(f"  平均 RSRS: {batch_result['value'].mean():.4f}")
-        print(f"  最新分数: {batch_result['score'].iloc[-1]}")
-        
-        # 对比: 串行 vs 向量化
-        print(f"\n性能对比:")
-        print(f"  向量化批量: {batch_time*1000:.2f}ms")
-        print(f"  优化效果: 避免重复创建矩阵")
+        if not hist.empty:
+            analyzer = RSRSAnalyzer(lookback_period=20)
+            
+            # 测试 1: 单点计算性能
+            start_time = time.time()
+            res_single = analyzer.calculate_from_dataframe(hist, 'BTC-USD')
+            end_time = time.time()
+            print(f"Single Point Calculation:")
+            print(f"  Result: {res_single}")
+            print(f"  Time: {(end_time - start_time)*1000:.4f} ms")
+            
+            # 测试 2: 序列计算性能 (Vectorized)
+            start_time = time.time()
+            df_series = analyzer.calculate_series(hist)
+            end_time = time.time()
+            print(f"Series Calculation (Vectorized):")
+            print(f"  Last Beta: {df_series['rsrs_beta'].iloc[-1]:.6f}")
+            print(f"  Time: {(end_time - start_time)*1000:.4f} ms")
+            
+            # 验证一致性
+            diff = abs(res_single['raw_beta'] - df_series['rsrs_beta'].iloc[-1])
+            print(f"Consistency Check (Diff): {diff:.8f}")
+            assert diff < 1e-5, "Mismatch!"
+            print("✅ Consistency Verified")
+
+    except Exception as e:
+        print(f"Test failed: {e}")

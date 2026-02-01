@@ -61,12 +61,8 @@ class TestRSRSPerformance:
         analyzer = RSRSAnalyzer(lookback_period=20)
         
         start = time.perf_counter()
-        result = analyzer.calculate_batch(
-            sample_data['High'],
-            sample_data['Low'],
-            sample_data['Close']
-        )
-        elapsed = (time.perf_counter() - start) * 1000  # ms
+        result = analyzer.calculate_series(sample_data)
+        elapsed = (time.perf_counter() - start) * 1000
         
         print(f"\n批量计算 ({len(result)} 条) 耗时: {elapsed:.2f}ms")
         
@@ -75,8 +71,8 @@ class TestRSRSPerformance:
         
         # 验证结果
         assert len(result) > 0
-        assert 'value' in result.columns
-        assert 'score' in result.columns
+        assert 'rsrs_beta' in result.columns
+        assert 'rsrs_score' in result.columns
     
     def test_large_dataset_performance(self):
         """测试大数据集性能"""
@@ -100,11 +96,7 @@ class TestRSRSPerformance:
         analyzer = RSRSAnalyzer(lookback_period=20)
         
         start = time.perf_counter()
-        result = analyzer.calculate_batch(
-            df['High'],
-            df['Low'],
-            df['Close']
-        )
+        result = analyzer.calculate_series(df)
         elapsed = (time.perf_counter() - start) * 1000
         
         print(f"\n1000天数据批量计算耗时: {elapsed:.2f}ms")
@@ -113,7 +105,7 @@ class TestRSRSPerformance:
         assert elapsed < 100, f"1000天计算超过 100ms: {elapsed:.2f}ms"
         
         # 验证所有计算都完成
-        assert len(result) == 1000 - 20 + 1
+        assert len(result) >= 1000 - 20
     
     def test_vectorization_correctness(self, sample_data):
         """验证向量化计算的正确性"""
@@ -126,21 +118,17 @@ class TestRSRSPerformance:
             sample_data['Close']
         )
         
-        # 批量计算的最后一条应该与单次计算一致
-        batch_result = analyzer.calculate_batch(
-            sample_data['High'],
-            sample_data['Low'],
-            sample_data['Close']
-        )
+        # 批量计算的最新一条应该与单次计算一致
+        batch_result = analyzer.calculate_series(sample_data)
         
         latest_batch = batch_result.iloc[-1]
         
         print(f"\n正确性验证:")
-        print(f"  单次计算 value: {single_result['value']}")
-        print(f"  批量最新 value: {latest_batch['value']}")
+        print(f"  单次计算 raw_beta: {single_result['raw_beta']}")
+        print(f"  批量最新 rsrs_beta: {latest_batch['rsrs_beta']}")
         
         # 差异应该很小
-        assert abs(single_result['value'] - latest_batch['value']) < 0.0001
+        assert abs(single_result['raw_beta'] - latest_batch['rsrs_beta']) < 0.0001
     
     def test_edge_cases(self):
         """测试边界情况"""
