@@ -12,7 +12,7 @@
 | $N_{linked}/N_{total}$ (Context Linkage) | 17 / 17 | 🟢 100% |
 | $V_{current}$ (Version) | **v1.2.0-performance** | 🚀 Live |
 | **Audit Score** | **8.5/10** | ✅ Passed (ID: cc002951) |
-| **v1.2.0-v2 Audit** | **8.58/10** | ✅ Passed (ID: dd002951-20260202) |
+| **v1.2.0-v3 Audit** | **8.58/10** | ✅ Passed (ID: dd002951-20260202-v3) |
 
 ## Health Assessment
 
