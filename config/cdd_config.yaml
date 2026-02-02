@@ -27,10 +27,17 @@ spec_kit:
     spec: "templates/standards/DS-050_feature_specification.md"
     plan: "templates/standards/DS-051_implementation_plan.md"
     tasks: "templates/standards/DS-052_atomic_tasks.md"
+    review: "spec-kit/templates/review-template.md"
+  commands:
+    analyze: "spec-kit/templates/commands/analyze.md"
+    review: "spec-kit/templates/commands/review.md"
+  scripts:
+    review: "spec-kit/scripts/bash/run-review.sh"
   output:
     specs_dir: "specs"
     plans_dir: "plans"
     checklists_dir: "memory_bank/checklists"
+    reviews_dir: "memory_bank/reviews"
 
 # 质量门禁配置
 quality_gates:

@@ -11,6 +11,7 @@
 | Feature Spec | `standards/DS-050_feature_specification.md` | Feature definition |
 | Implementation Plan | `standards/DS-051_implementation_plan.md` | Task planning |
 | Atomic Tasks | `standards/DS-052_atomic_tasks.md` | Execution units |
+| Code Review | `standards/DS-060_code_review.md` | Automated code review |
 
 ## Technology Stack Reference
 
