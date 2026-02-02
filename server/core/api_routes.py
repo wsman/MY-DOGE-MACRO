@@ -12,13 +12,42 @@ import asyncio
 from typing import Optional, Dict, Any
 from datetime import datetime
 
-from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks, Header
+from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks, Header, Path
 from fastapi.responses import StreamingResponse, JSONResponse, Response
+from pydantic import BaseModel, Field, validator, constr
 import pandas as pd
 
 from .async_wrapper import get_task_manager, run_in_thread
 from .tdx_loader import TDXReader
 from .market_scanner import MarketScanner
+
+# ==================== 输入验证模型 (T-C5.3) ====================
+
+class KlineRequest(BaseModel):
+    """K线数据请求验证模型"""
+    symbol: str = Field(..., min_length=1, max_length=20, description="股票代码")
+    period: str = Field(default="daily", regex="^(daily|weekly|monthly)$", description="K线周期")
+    limit: int = Field(default=100, ge=1, le=1000, description="数据条数")
+
+class ScanStartRequest(BaseModel):
+    """扫描启动请求验证模型"""
+    market: str = Field(..., regex="^(CN|US)$", description="市场类型")
+    mode: str = Field(default="fast", description="扫描模式")
+
+    @validator('market')
+    def validate_market(cls, v):
+        if v not in ['CN', 'US']:
+            raise ValueError('market must be CN or US')
+        return v
+
+class ScanStatusRequest(BaseModel):
+    """扫描状态查询验证模型"""
+    task_id: str = Field(..., min_length=36, max_length=36, description="任务ID (UUID)")
+
+class MarketSnapshotRequest(BaseModel):
+    """市场快照请求验证模型"""
+    symbols: str = Field(..., description="股票代码列表 (逗号分隔)")
+    limit: int = Field(default=50, ge=1, le=200)
 
 router = APIRouter(prefix="/api/v1", tags=["quant"])
 
@@ -136,8 +165,8 @@ def get_tdx_reader(tdx_path: Optional[str] = None) -> TDXReader:
 @router.get("/market/kline/{symbol}", dependencies=[Depends(verify_token)])
 @cached_dataframe_response(ttl=60)  # K线数据缓存1分钟
 async def get_kline_data(
-    symbol: str,
-    limit: int = Query(5000, ge=1, le=10000, description="返回数据条数"),
+    symbol: str = Path(..., min_length=1, max_length=20, description="股票代码"),
+    limit: int = Query(default=5000, ge=1, le=10000, description="返回数据条数"),
     tdx_path: Optional[str] = Query(None, description="TDX数据路径"),
 ):
     """
@@ -288,7 +317,9 @@ async def start_market_scan(
 
 
 @router.get("/scan/status/{task_id}", dependencies=[Depends(verify_token)])
-async def get_scan_status(task_id: str):
+async def get_scan_status(
+    task_id: str = Path(..., min_length=36, max_length=36, description="任务ID")
+):
     """
     获取扫描任务状态
     """

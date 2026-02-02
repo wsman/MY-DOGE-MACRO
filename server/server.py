@@ -10,10 +10,13 @@ from decimal import Decimal
 from typing import Optional, List
 from datetime import datetime
 
-from fastapi import FastAPI, Header, HTTPException, Depends, BackgroundTasks
+from fastapi import FastAPI, Header, HTTPException, Depends, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from pydantic import BaseModel, Field
+from datetime import datetime, timedelta
+from collections import defaultdict
+import time
 
 # 确保当前目录在Python路径中
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -61,8 +64,78 @@ app.add_middleware(
 # GZIP压缩中间件（提高数据传输性能）
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-# 内存存储扫描任务状态
+# 安全响应头中间件 (T-C5.4)
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    """添加安全响应头"""
+    response = await call_next(request)
+    
+    # 安全相关响应头
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+    
+    # 移除指纹识别头
+    response.headers.pop("Server", None)
+    response.headers.pop("X-Powered-By", None)
+    
+    return response
+
+# --- 内存存储扫描任务状态 ---
 scan_tasks = {}
+
+# --- 速率限制配置 (T-C5.2) ---
+RATE_LIMIT_WINDOW = 60  # 60秒窗口
+RATE_LIMIT_REQUESTS = 100  # 每个IP最多100请求/分钟
+
+# 简单的内存速率限制器
+rate_limit_storage = defaultdict(list)
+
+def check_rate_limit(client_ip: str) -> tuple[bool, int]:
+    """
+    检查速率限制
+    返回: (是否通过, 剩余请求数)
+    """
+    now = time.time()
+    window_start = now - RATE_LIMIT_WINDOW
+    
+    # 清理过期记录
+    rate_limit_storage[client_ip] = [
+        t for t in rate_limit_storage[client_ip] if t > window_start
+    ]
+    
+    request_count = len(rate_limit_storage[client_ip])
+    remaining = RATE_LIMIT_REQUESTS - request_count
+    
+    if request_count >= RATE_LIMIT_REQUESTS:
+        return False, 0
+    
+    # 记录请求
+    rate_limit_storage[client_ip].append(now)
+    return True, remaining
+
+# --- 速率限制依赖 ---
+async def rate_limit_dependency(request: Request):
+    """速率限制依赖注入"""
+    client_ip = request.client.host if request.client else "unknown"
+    
+    # 对于本地开发环境，放宽限制
+    if client_ip in ["127.0.0.1", "localhost", "::1"]:
+        return
+    
+    is_allowed, remaining = check_rate_limit(client_ip)
+    
+    if not is_allowed:
+        raise HTTPException(
+            status_code=429,
+            detail={
+                "error": "Rate limit exceeded",
+                "message": "Too many requests. Please try again later.",
+                "retry_after": RATE_LIMIT_WINDOW
+            }
+        )
 
 # 注册新的量化API路由
 app.include_router(quant_router)
@@ -74,7 +147,7 @@ async def verify_token(x_auth_token: str = Header(...)):
         raise HTTPException(status_code=401, detail="Invalid API Token")
 
 # --- 4. API端点 ---
-@app.get("/health", dependencies=[Depends(verify_token)])
+@app.get("/health", dependencies=[Depends(rate_limit_dependency)])
 async def health_check():
     return {
         "status": "healthy",
@@ -83,7 +156,7 @@ async def health_check():
         "service": "MY-DOGE Quant API"
     }
 
-@app.get("/market/price/{symbol}", dependencies=[Depends(verify_token)])
+@app.get("/market/price/{symbol}", dependencies=[Depends(rate_limit_dependency), Depends(verify_token)])
 async def get_price(symbol: str):
     # 模拟计算延迟
     await asyncio.sleep(0.01)
@@ -96,7 +169,7 @@ async def get_price(symbol: str):
         volume=1000000
     )
 
-@app.post("/scan/market", dependencies=[Depends(verify_token)], response_model=ScanResponse)
+@app.post("/scan/market", dependencies=[Depends(rate_limit_dependency), Depends(verify_token)], response_model=ScanResponse)
 async def start_scan(request: ScanRequest, background_tasks: BackgroundTasks):
     task_id = str(uuid.uuid4())
     
