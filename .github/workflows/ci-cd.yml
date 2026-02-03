@@ -136,6 +136,10 @@ jobs:
         run: |
           pip install pytest pyyaml --quiet
       
+      - name: Install Server Dependencies
+        run: |
+          pip install -r server/requirements.txt --quiet
+      
       - name: Run CDD Version Check
         id: version-check
         run: |
