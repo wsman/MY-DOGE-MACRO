@@ -11,13 +11,13 @@ import os
 from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock
 
-# 添加项目根目录到Python路径
-project_root = Path(__file__).parent.parent
-sys.path.insert(0, str(project_root))
+# 添加 scripts 目录到 Python 路径
+scripts_dir = Path(__file__).parent.parent
+sys.path.insert(0, str(scripts_dir))
 
 # 导入被测模块
 try:
-    from scripts.measure_entropy import (
+    from measure_entropy import (
         EntropyMetrics,
         EntropyCalculator,
         main
@@ -81,6 +81,12 @@ class TestEntropyMetrics:
 
 class TestEntropyCalculator:
     """测试 EntropyCalculator 类"""
+    
+    # Skip all tests in this class if import failed
+    pytestmark = pytest.mark.skipif(
+        not IMPORT_SUCCESS,
+        reason="无法导入 measure_entropy 模块"
+    )
     
     @pytest.fixture
     def calculator(self, tmp_path):

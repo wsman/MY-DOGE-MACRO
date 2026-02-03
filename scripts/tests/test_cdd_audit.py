@@ -4,10 +4,15 @@ Unit tests for CDD Auditor CLI (cdd_audit.py)
 """
 
 import sys
+import os
 import json
 import pytest
 from unittest.mock import MagicMock, patch, mock_open
-from scripts.cdd_audit import CDDAuditor, EC_SUCCESS, EC_GATE_1_FAIL, EC_GATE_2_FAIL, EC_GATE_3_FAIL, EC_CLEAN_FAIL, EC_GENERAL_FAIL
+
+# Add scripts directory to path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from cdd_audit import CDDAuditor, EC_SUCCESS, EC_GATE_1_FAIL, EC_GATE_2_FAIL, EC_GATE_3_FAIL, EC_CLEAN_FAIL, EC_GENERAL_FAIL
 
 # -----------------------------------------------------------------------------
 # Fixtures
