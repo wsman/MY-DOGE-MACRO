@@ -344,3 +344,63 @@ Based on Audit Recommendations (`cc002951`), the next cycle will focus on:
 *All T-C2 and T-C4 optimizations verified complete.*
 
 *System ready for next cycle.*
+
+## T-C3: Frontend-Backend Integration (2026-02-03)
+
+**Status**: ✅ Complete
+**Commit**: `0e34750`
+**Fix**: Three Integration Blockers
+
+### Blockers Fixed
+
+| # | Issue | Before | After |
+|---|-------|---------|-------|
+| 1 | Port Mismatch | 8766 | 8765 |
+| 2 | Route Prefix | /api | /api/v1 |
+| 3 | Data Format | Record Array | Split JSON |
+
+### Changes
+
+| File | Action | Description |
+|------|--------|-------------|
+| `client/src/services/api.ts` | Fix | Port, route, format adapter |
+| `client/src/stores/analysis.store.ts` | Add | fetchMarketSnapshot API call |
+
+### Solution
+
+**Port Fix**:
+```typescript
+const DEV_CONFIG = {
+  port: 8765,  // Aligned with backend default
+  token: "mydoge-token-123456",
+};
+```
+
+**Route Fix**:
+```typescript
+await api.get('/api/v1/market/snapshot');
+```
+
+**Data Format Fix**:
+```typescript
+// Convert Split JSON to Object Array
+if (response.columns && response.data) {
+  return response.data.map(row => {
+    const item = {};
+    response.columns.forEach((col, i) => item[col] = row[i]);
+    return { ticker: item.code, ... };
+  });
+}
+```
+
+### CDD Audit
+
+| Gate | Status |
+|------|--------|
+| Version Consistency | ✅ Passed |
+| Behavior Verification | ✅ Passed |
+| Entropy Monitoring | ✅ Passed |
+
+*T-C3 Integration Complete. Frontend and Backend are now connected.*
+
+*System ready for next cycle.*
