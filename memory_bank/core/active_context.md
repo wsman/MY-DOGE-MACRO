@@ -84,6 +84,49 @@ entry: python scripts/verify_versions.py
 
 ---
 
+## 🚧 NEW: Frontend Architecture Modernization (T-C5)
+
+> **Status**: 📋 Backlog (Pending Approval)
+> **Feature ID**: T-C5  
+> **Priority**: P1  
+> **Created**: 2026-02-03
+
+### Overview
+Modernize frontend architecture with Atomic Design methodology and comprehensive Design System.
+
+### Documents
+
+| Document | Path | Purpose |
+|----------|------|---------|
+| Feature Spec | `memory_bank/standards/DS-057_frontend_architecture_modernization.md` | Architecture |
+| Implementation | `memory_bank/standards/DS-051_frontend_modernization_plan.md` | Plan |
+| Atomic Tasks | `memory_bank/standards/DS-052_frontend_modernization_tasks.md` | Tasks |
+
+### Scope Summary
+
+| Phase | Focus | Tasks | Effort |
+|-------|-------|-------|--------|
+| Phase 1 | Foundation | 4 | ~9 hours |
+| Phase 2 | Components | 10 | ~40 hours |
+| Phase 3 | Migration | 8 | ~60 hours |
+| **Total** | **22 tasks** | **~109 hours** |
+
+### Key Deliverables
+
+- [ ] Atomic Design directory structure
+- [ ] Design System tokens (colors, typography, spacing)
+- [ ] 20+ atomic/molecule components
+- [ ] Storybook documentation (80%+ coverage)
+- [ ] Full component migration
+
+### Acceptance Criteria
+
+- [ ] $H_{sys} \leq 0.3$
+- [ ] Component reusability ≥ 80%
+- [ ] Design consistency 100%
+
+---
+
 ## 📚 Documentation Index
 
 | Document | Path | Purpose |
@@ -91,6 +134,7 @@ entry: python scripts/verify_versions.py
 | Feature Spec | `memory_bank/standards/DS-050_v140_infrastructure.md` | Architecture |
 | Implementation | `memory_bank/standards/DS-051_v140_implementation.md` | Plan |
 | Atomic Tasks | `memory_bank/standards/DS-052_v140_tasks.md` | Tasks |
+| **Frontend Modernization** | `memory_bank/standards/DS-057_*.md` | **NEW** |
 
 ---
 

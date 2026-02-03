@@ -58,6 +58,8 @@ MY-DOGE-MICRO/
 2. **State Management**: Zustand for frontend state
 3. **API Layer**: Python FastAPI exposes REST endpoints
 4. **IPC**: Tauri handles Rust ↔ JavaScript communication
+5. **Frontend Architecture**: Atomic Design (Atoms → Molecules → Organisms → Templates → Pages)
+6. **Design System**: Design Tokens first (colors, typography, spacing, radius)
 
 ## Tier 1 Verification Target
 
@@ -66,4 +68,48 @@ MY-DOGE-MICRO/
 # 1. File structure matches this pattern
 # 2. Import paths are relative to project root
 # 3. Configuration files are in config/ directory
+# 4. Frontend uses Atomic Design structure (T-C5)
+# 5. Components use Design Tokens for styling
 ```
+
+---
+
+## 📌 T-C5 Frontend Modernization (Pending)
+
+**Feature ID**: T-C5  
+**Status**: Backlog  
+**Target**: Transform frontend to Atomic Design + Design System
+
+### Current Structure (To Be Migrated)
+```
+src/components/
+├── charts/          # PriceChart.tsx
+├── commands/        # CommandPalette.tsx
+├── dashboard/       # Dashboard.tsx
+├── graph/           # PixiGraph.tsx
+├── layout/          # MainLayout.tsx, panels/
+└── settings/        # SettingsPanel.tsx
+```
+
+### Target Structure (Atomic Design)
+```
+src/components/
+├── atoms/           # Button, Input, Icon, Badge, Card...
+├── molecules/       # SearchBar, DataCard, FormGroup...
+├── organisms/       # MarketTable, DashboardGrid...
+├── templates/       # MainLayout, DashboardTemplate...
+└── pages/           # DashboardPage, MarketPage...
+
+src/design-system/
+├── tokens/          # colors.ts, typography.ts, spacing.ts
+└── foundations/     # colors.css, reset.css
+```
+
+### Migration Order
+1. StatusDot (ConnectionStatus)
+2. ServiceStatus → StatusIndicator
+3. Dashboard → DataCard-based
+4. MarketTable → Atomic components
+5. PriceChart → Design System
+6. CommandPalette → Atomic components
+7. MainLayout → Templates
