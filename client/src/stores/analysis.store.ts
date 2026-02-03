@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { MarketData, RSRSIndicator, VolatilitySkew, RiskSignal, PortfolioSummary } from '../types/market';
+import { marketApi } from '../services/api';
 
 interface AnalysisState {
   // 市场数据
@@ -83,6 +84,40 @@ export const useAnalysisStore = create<AnalysisState>()(
         set(() => ({
           error
         }));
+      },
+
+      // T-C3: 从后端获取市场快照
+      fetchMarketSnapshot: async () => {
+        set({ isLoading: true, error: null });
+        try {
+          console.log('🔄 正在获取市场快照...');
+          const dataList = await marketApi.getSnapshot();
+
+          // 转换为 Record 格式
+          const marketDataMap: Record<string, MarketData> = {};
+          dataList.forEach(item => {
+            marketDataMap[item.ticker] = {
+              ticker: item.ticker,
+              name: item.name,
+              price: item.price,
+              change: item.change || 0,
+              changePercent: item.changePercent,
+              volume: item.volume,
+              amount: item.volume * item.price,
+              timestamp: Date.now()
+            };
+          });
+
+          set({
+            marketData: marketDataMap,
+            lastUpdate: new Date(),
+            isLoading: false
+          });
+          console.log(`✅ 成功获取 ${dataList.length} 条市场数据`);
+        } catch (error) {
+          console.error('❌ 获取市场数据失败:', error);
+          set({ error: String(error), isLoading: false });
+        }
       },
 
       clearAll: () => {
