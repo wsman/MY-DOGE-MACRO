@@ -90,7 +90,7 @@ repos:
 # CI/CD 集成
 # ===========================================
 ci:
-  skip: [cdd-version-check, cdd-entropy-check, cdd-test-runner]
+  # CDD checks now run in GitHub Actions workflow
   autoupdate-commit-message: 'chore: update pre-commit hooks'
 
 # ===========================================
