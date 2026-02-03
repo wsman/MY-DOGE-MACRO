@@ -114,3 +114,52 @@ jobs:
           echo "✅ Python linting: OK"
           echo "✅ YAML validation: OK"
           echo "✅ Code structure: OK"
+
+  # ===========================================
+  # Job 5: CDD Constitutional Audit (NEW)
+  # ===========================================
+  cdd-audit:
+    name: CDD Constitutional Audit
+    runs-on: ubuntu-latest
+    if: always()  # Run even if other jobs fail
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install CDD dependencies
+        run: |
+          pip install pytest pyyaml --quiet
+      
+      - name: Run CDD Version Check
+        id: version-check
+        run: |
+          echo "Running CDD Version Check..."
+          python scripts/verify_versions.py --verbose || exit 1
+      
+      - name: Run CDD Entropy Check
+        id: entropy-check
+        run: |
+          echo "Running CDD Entropy Check..."
+          python scripts/measure_entropy.py
+      
+      - name: Run CDD Tests
+        id: cdd-tests
+        run: |
+          echo "Running CDD Tests..."
+          pytest scripts/tests/ -v || exit 1
+      
+      - name: CDD Audit Summary
+        run: |
+          echo ""
+          echo "=== CDD Audit Summary ==="
+          echo "✅ Version Check: PASSED"
+          echo "✅ Entropy Check: PASSED"
+          echo "✅ CDD Tests: PASSED"
+          echo ""
+          echo "🎉 CDD Constitutional Audit Complete!"

@@ -50,10 +50,10 @@ This causes failures in any environment other than the original developer's mach
 | ID | Task | Priority | Effort | Status |
 |:---|:---|:---:|:---:|:---:|
 | **T-I1** | Fix Pre-commit Portability | **P0** | 2.5h | 🔄 **Executing** |
-| **T-I1.1** | Update cdd-version-check entry | P0 | 30min | ⏳ Pending |
-| **T-I1.2** | Update cdd-entropy-check entry | P0 | 30min | ⏳ Pending |
-| **T-I1.3** | Update cdd-test-runner entry | P0 | 30min | ⏳ Pending |
-| **T-I1.4** | Verify hooks from project root | P0 | 30min | ⏳ Pending |
+| **T-I1.1** | Update cdd-version-check entry | P0 | 30min | ✅ Complete |
+| **T-I1.2** | Update cdd-entropy-check entry | P0 | 30min | ✅ Complete |
+| **T-I1.3** | Update cdd-test-runner entry | P0 | 30min | ✅ Complete |
+| **T-I1.4** | Verify hooks from project root | P0 | 30min | 🔄 In Progress |
 | **T-I1.5** | Test on clean checkout | P0 | 30min | ⏳ Pending |
 | **T-I2** | Enable CI/CD Checks | P1 | 3.75h | ⏳ Pending |
 | **T-I3** | Test Coverage Expansion | P1 | 7.75h | ⏳ Pending |
@@ -63,8 +63,8 @@ This causes failures in any environment other than the original developer's mach
 
 | Subtask | Status | Progress |
 |---------|--------|----------|
-| Update .pre-commit-config.yaml | 🔄 In Progress | 0% |
-| Verify local execution | ⏳ Pending | 0% |
+| Update .pre-commit-config.yaml | ✅ Complete | 100% |
+| Verify local execution | 🔄 In Progress | 50% |
 | Test portability | ⏳ Pending | 0% |
 
 ---
