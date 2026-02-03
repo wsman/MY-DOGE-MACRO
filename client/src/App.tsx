@@ -1,4 +1,4 @@
-import { MainLayout } from './components/layout/MainLayout';
+import MainLayout from './components/layout/MainLayout';
 import ServiceStatus from './components/ServiceStatus';
 import { CommandPalette } from './components/commands/CommandPalette';
 import { ServerSettings } from './components/ServerSettings';
