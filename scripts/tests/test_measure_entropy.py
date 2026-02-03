@@ -391,11 +391,9 @@ class TestMainFunction:
             status="🔴 危险"
         )
         
-        # 设置模拟计算器的 THRESHOLD_WARNING 属性
-        mock_calculator_instance = Mock()
-        mock_calculator_instance.THRESHOLD_WARNING = 0.7
-        mock_calculator_instance.calculate_h_sys.return_value = mock_metrics
-        mock_calculator.return_value = mock_calculator_instance
+        # 直接设置 mock_calculator 的属性和方法
+        mock_calculator.return_value.calculate_h_sys.return_value = mock_metrics
+        mock_calculator.return_value.THRESHOLD_WARNING = 0.7
         
         # 运行主函数并检查返回值
         result = main()

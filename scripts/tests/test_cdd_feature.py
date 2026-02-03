@@ -225,7 +225,7 @@ class TestErrorHandling:
 
 def test_cdd_feature_script_execution():
     """测试脚本可执行性"""
-    script_path = Path(__file__).parent.parent / "scripts" / "cdd-feature.py"
+    script_path = project_root / "cdd-feature.py"
     
     # 检查脚本是否存在
     assert script_path.exists(), f"Script not found: {script_path}"
@@ -250,7 +250,7 @@ def test_cdd_feature_script_execution():
 
 def test_cdd_feature_dry_run():
     """测试无分支创建模式（原干运行模式）"""
-    script_path = Path(__file__).parent.parent / "scripts" / "cdd-feature.py"
+    script_path = project_root / "cdd-feature.py"
     
     # 模拟运行脚本（使用 --no-branch 参数）
     import subprocess

@@ -5,6 +5,7 @@ psutil==5.9.6
 orjson==3.9.10
 pandas==2.2.0
 cachetools==5.3.2
+aiohttp==3.9.1
 # 金融分析新增依赖
 yfinance==0.2.36
 openai==1.12.0
