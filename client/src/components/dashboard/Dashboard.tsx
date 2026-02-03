@@ -1,294 +1,228 @@
 import React from 'react';
-import { useAnalysisStore } from '../../stores/analysis.store';
-import { useUIStore } from '../../stores/ui.store';
+import { useAnalysisStore, selectMarketData, selectRiskSignals, selectPortfolio } from '../../stores/analysis.store';
 import { RSRSIndicator, VolatilitySkew } from '../../types/market';
 
-interface DashboardProps {
-  className?: string;
-}
-
-export const Dashboard: React.FC<DashboardProps> = ({ className = '' }) => {
-  const { marketData, rsrsIndicators, volatilitySkews, riskSignals, portfolio } = useAnalysisStore();
-  const { theme } = useUIStore();
-  
-  const isDark = theme === 'dark';
-  
-  // 计算汇总数据
-  const totalMarketValue = Object.values(marketData).reduce((sum, m) => sum + m.price * m.volume, 0);
-  const avgChange = Object.values(marketData).reduce((sum, m) => sum + m.changePercent, 0) / Object.values(marketData).length || 0;
-  const highRiskCount = riskSignals.filter(s => s.level === 'high').length;
-  
-  return (
-    <div className={`dashboard ${className}`}>
-      {/* 标题栏 */}
-      <div className={`dashboard-header ${isDark ? 'dark' : 'light'}`}>
-        <h2>📊 市场仪表盘</h2>
-        <span className="timestamp">
-          {new Date().toLocaleString('zh-CN')}
-        </span>
-      </div>
-      
-      {/* 概览卡片 */}
-      <div className="overview-cards">
-        <OverviewCard
-          title="市场总览"
-          value={totalMarketValue.toLocaleString('zh-CN', { style: 'currency', currency: 'USD' })}
-          subtitle={`${Object.keys(marketData).length} 个标的`}
-          trend={avgChange > 0 ? 'up' : avgChange < 0 ? 'down' : 'neutral'}
-        />
-        
-        <OverviewCard
-          title="风险信号"
-          value={highRiskCount.toString()}
-          subtitle="高风险警报"
-          trend={highRiskCount > 0 ? 'warning' : 'safe'}
-          color={highRiskCount > 0 ? 'red' : 'green'}
-        />
-        
-        <OverviewCard
-          title="持仓价值"
-          value={portfolio?.totalValue.toLocaleString('zh-CN', { style: 'currency', currency: 'USD' }) || '--'}
-          subtitle={portfolio ? `${portfolio.dailyChangePercent >= 0 ? '+' : ''}${portfolio.dailyChangePercent.toFixed(2)}%` : '未加载'}
-          trend={portfolio && portfolio.dailyChangePercent >= 0 ? 'up' : 'down'}
-        />
-      </div>
-      
-      {/* 技术指标面板 */}
-      <div className="indicators-panel">
-        <h3>📈 技术指标</h3>
-        <div className="indicators-grid">
-          {Object.values(rsrsIndicators).map((rsrs: RSRSIndicator) => (
-            <IndicatorCard key={rsrs.ticker} indicator={rsrs} type="rsrs" />
-          ))}
-          
-          {Object.values(volatilitySkews).map((skew: VolatilitySkew) => (
-            <IndicatorCard key={skew.ticker} indicator={skew} type="volatility" />
-          ))}
-        </div>
-      </div>
-      
-      {/* 风险信号面板 */}
-      {riskSignals.length > 0 && (
-        <div className="risk-panel">
-          <h3>⚠️ 风险信号</h3>
-          <div className="risk-list">
-            {riskSignals.map((signal, idx) => (
-              <div key={idx} className={`risk-item ${signal.level}`}>
-                <span className="risk-level">{signal.level.toUpperCase()}</span>
-                <span className="risk-message">{signal.message}</span>
-                <span className="risk-recommendation">{signal.recommendation}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      
-      {/* 市场数据表格 */}
-      <div className="market-table-panel">
-        <h3>📋 市场数据</h3>
-        <table className="market-table">
-          <thead>
-            <tr>
-              <th>代码</th>
-              <th>名称</th>
-              <th>价格</th>
-              <th>涨跌</th>
-              <th>成交量</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.values(marketData).map((market) => (
-              <tr key={market.ticker}>
-                <td className="ticker">{market.ticker}</td>
-                <td>{market.name}</td>
-                <td className="price">{market.price.toFixed(2)}</td>
-                <td className={market.change >= 0 ? 'positive' : 'negative'}>
-                  {market.change >= 0 ? '+' : ''}{market.changePercent.toFixed(2)}%
-                </td>
-                <td className="volume">{(market.volume / 1000000).toFixed(2)}M</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      
-      <style>{`
-        .dashboard {
-          padding: 16px;
-          background: ${isDark ? '#1a1a2e' : '#f5f5f5'};
-          border-radius: 8px;
-          color: ${isDark ? '#e0e0e0' : '#333'};
-        }
-        
-        .dashboard-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 12px 16px;
-          border-radius: 6px;
-          margin-bottom: 16px;
-        }
-        
-        .dashboard-header.dark {
-          background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
-        }
-        
-        .dashboard-header h2 {
-          margin: 0;
-          font-size: 1.25rem;
-        }
-        
-        .overview-cards {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 12px;
-          margin-bottom: 20px;
-        }
-        
-        .indicators-panel, .risk-panel, .market-table-panel {
-          background: ${isDark ? '#16213e' : '#fff'};
-          border-radius: 8px;
-          padding: 16px;
-          margin-bottom: 16px;
-        }
-        
-        .indicators-panel h3, .risk-panel h3, .market-table-panel h3 {
-          margin: 0 0 12px 0;
-          font-size: 1rem;
-        }
-        
-        .indicators-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-          gap: 12px;
-        }
-        
-        .risk-list {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-        }
-        
-        .risk-item {
-          display: flex;
-          gap: 12px;
-          padding: 10px;
-          border-radius: 4px;
-          font-size: 0.875rem;
-        }
-        
-        .risk-item.high {
-          background: rgba(255, 82, 82, 0.2);
-          border-left: 3px solid #ff5252;
-        }
-        
-        .risk-item.medium {
-          background: rgba(255, 179, 0, 0.2);
-          border-left: 3px solid #ffb300;
-        }
-        
-        .risk-item.low {
-          background: rgba(76, 175, 80, 0.2);
-          border-left: 3px solid #4caf50;
-        }
-        
-        .market-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        
-        .market-table th, .market-table td {
-          padding: 8px 12px;
-          text-align: left;
-          border-bottom: 1px solid ${isDark ? '#333' : '#eee'};
-        }
-        
-        .market-table th {
-          font-weight: 600;
-          color: ${isDark ? '#888' : '#666'};
-        }
-        
-        .ticker {
-          font-weight: 600;
-          color: #2196f3;
-        }
-        
-        .positive { color: #4caf50; }
-        .negative { color: #ff5252; }
-      `}</style>
-    </div>
-  );
-};
-
-// 概览卡片组件
+// ============ 子组件：概览卡片 (纯展示) ============
 interface OverviewCardProps {
   title: string;
   value: string;
   subtitle: string;
   trend?: 'up' | 'down' | 'neutral' | 'warning' | 'safe';
-  color?: string;
+  accentColor?: 'red' | 'green' | 'default';
 }
 
-const OverviewCard: React.FC<OverviewCardProps> = ({ title, value, subtitle, trend, color }) => {
+const OverviewCard: React.FC<OverviewCardProps> = ({ title, value, subtitle, trend, accentColor = 'default' }) => {
   const getTrendIcon = () => {
     switch (trend) {
-      case 'up': return '📈';
-      case 'down': return '📉';
-      case 'warning': return '⚠️';
-      case 'safe': return '✅';
-      default: return '➡️';
+      case 'up': return <span className="text-app-success">📈</span>;
+      case 'down': return <span className="text-app-danger">📉</span>;
+      case 'warning': return <span className="text-app-warning">⚠️</span>;
+      case 'safe': return <span className="text-app-success">✅</span>;
+      default: return <span className="text-text-secondary">➡️</span>;
     }
   };
-  
+
+  const borderColor = accentColor === 'red' ? 'border-l-4 border-l-app-danger' :
+                      accentColor === 'green' ? 'border-l-4 border-l-app-success' :
+                      'border-app-border';
+
   return (
-    <div className="overview-card" style={{ borderColor: color || 'transparent' }}>
-      <div className="card-header">
-        <span className="title">{title}</span>
-        <span className="trend">{getTrendIcon()}</span>
+    <div className={`bg-app-tertiary p-4 rounded-lg border border-app-border ${accentColor !== 'default' ? borderColor : ''} shadow-sm hover:bg-app-secondary transition-colors`}>
+      <div className="flex justify-between items-center mb-2">
+        <span className="text-xs font-medium text-text-secondary uppercase tracking-wider">{title}</span>
+        {getTrendIcon()}
       </div>
-      <div className="card-value">{value}</div>
-      <div className="card-subtitle">{subtitle}</div>
+      <div className="text-2xl font-bold text-text-primary mb-1 font-mono">{value}</div>
+      <div className="text-xs text-text-secondary">{subtitle}</div>
     </div>
   );
 };
 
-// 指标卡片组件
-interface IndicatorCardProps {
-  indicator: RSRSIndicator | VolatilitySkew;
-  type: 'rsrs' | 'volatility';
-}
+// ============ 子组件：指标卡片 (纯展示) ============
+const IndicatorCard: React.FC<{ indicator: RSRSIndicator | VolatilitySkew; type: 'rsrs' | 'volatility' }> = ({ indicator, type }) => {
+  const isRsrs = type === 'rsrs';
+  const data = isRsrs ? (indicator as RSRSIndicator) : (indicator as VolatilitySkew);
 
-const IndicatorCard: React.FC<IndicatorCardProps> = ({ indicator, type }) => {
-  const isDark = useUIStore(state => state.theme) === 'dark';
-  
-  const getValue = () => {
-    if (type === 'rsrs') {
-      const rsrs = indicator as RSRSIndicator;
-      return `${rsrs.value.toFixed(3)} (${rsrs.signal.toUpperCase()})`;
-    } else {
-      const skew = indicator as VolatilitySkew;
-      return `${skew.ratio.toFixed(2)} (${skew.signal.toUpperCase()})`;
-    }
-  };
-  
-  const getColor = () => {
-    if (type === 'rsrs') {
-      const rsrs = indicator as RSRSIndicator;
-      if (rsrs.signal === 'long') return '#4caf50';
-      if (rsrs.signal === 'short') return '#ff5252';
-      return '#ffb300';
-    } else {
-      const skew = indicator as VolatilitySkew;
-      if (skew.signal === 'high') return '#ff5252';
-      if (skew.signal === 'low') return '#4caf50';
-      return '#ffb300';
-    }
-  };
-  
+  // 颜色逻辑
+  let statusColor = 'text-app-warning';
+  if (isRsrs) {
+    if (data.signal === 'long') statusColor = 'text-app-success';
+    if (data.signal === 'short') statusColor = 'text-app-danger';
+  } else {
+    if (data.signal === 'low') statusColor = 'text-app-success';
+    if (data.signal === 'high') statusColor = 'text-app-danger';
+  }
+
+  const valueDisplay = isRsrs
+    ? (data as RSRSIndicator).value.toFixed(3)
+    : (data as VolatilitySkew).ratio.toFixed(2);
+
   return (
-    <div className="indicator-card" style={{ borderColor: getColor() }}>
-      <div className="indicator-ticker">{indicator.ticker}</div>
-      <div className="indicator-value">{getValue()}</div>
+    <div className="bg-app-tertiary p-3 rounded border border-app-border flex justify-between items-center">
+      <div className="flex flex-col">
+        <span className="text-xs text-text-secondary font-mono">{data.ticker}</span>
+        <span className={`text-sm font-bold ${statusColor}`}>{data.signal.toUpperCase()}</span>
+      </div>
+      <div className="text-lg font-mono text-text-primary">{valueDisplay}</div>
+    </div>
+  );
+};
+
+// ============ 主组件：Dashboard ============
+export const Dashboard: React.FC = () => {
+  // 优化：使用 Selector 细粒度订阅，避免无关更新导致的重渲染
+  const marketData = useAnalysisStore(selectMarketData);
+  const riskSignals = useAnalysisStore(selectRiskSignals);
+  const portfolio = useAnalysisStore(selectPortfolio);
+
+  // RSRS 指标目前没有单独的 Selector，直接获取
+  const rsrsIndicators = useAnalysisStore(state => state.rsrsIndicators);
+  const volatilitySkews = useAnalysisStore(state => state.volatilitySkews);
+
+  // 计算逻辑
+  const marketList = Object.values(marketData);
+  const totalMarketValue = marketList.reduce((sum, m) => sum + m.price * m.volume, 0);
+  const avgChange = marketList.reduce((sum, m) => sum + m.changePercent, 0) / (marketList.length || 1);
+  const highRiskCount = riskSignals.filter(s => s.level === 'high').length;
+
+  return (
+    <div className="p-6 h-full overflow-y-auto bg-app-primary text-text-primary font-sans">
+
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6 bg-app-secondary p-4 rounded-lg border border-app-border shadow-sm">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">📊</span>
+          <div>
+            <h2 className="text-xl font-bold text-text-primary">市场全景概览</h2>
+            <p className="text-xs text-text-secondary">System Status: Online | Real-time Data</p>
+          </div>
+        </div>
+        <div className="font-mono text-xs text-accent bg-app-tertiary px-3 py-1 rounded border border-accent/20">
+          {new Date().toLocaleString('zh-CN')}
+        </div>
+      </div>
+
+      {/* Overview Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <OverviewCard
+          title="市场总成交额 (Est.)"
+          value={totalMarketValue.toLocaleString('zh-CN', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}
+          subtitle={`覆盖 ${marketList.length} 个活跃标的`}
+          trend={avgChange > 0 ? 'up' : avgChange < 0 ? 'down' : 'neutral'}
+        />
+        <OverviewCard
+          title="高风险警报"
+          value={highRiskCount.toString()}
+          subtitle="基于波动率偏度与RSRS背离"
+          trend={highRiskCount > 0 ? 'warning' : 'safe'}
+          accentColor={highRiskCount > 0 ? 'red' : 'green'}
+        />
+        <OverviewCard
+          title="模拟持仓净值"
+          value={portfolio?.totalValue.toLocaleString('zh-CN', { style: 'currency', currency: 'USD' }) || '--'}
+          subtitle={`日收益: ${portfolio ? (portfolio.dailyChangePercent >= 0 ? '+' : '') + portfolio.dailyChangePercent.toFixed(2) + '%' : 'N/A'}`}
+          trend={portfolio && portfolio.dailyChangePercent >= 0 ? 'up' : 'down'}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column: Indicators & Risks */}
+        <div className="lg:col-span-2 space-y-6">
+
+          {/* Technical Indicators Panel */}
+          <div className="bg-app-secondary p-4 rounded-lg border border-app-border">
+            <h3 className="text-sm font-bold text-text-primary mb-4 flex items-center gap-2">
+              <span className="text-accent">📈</span> 关键技术指标监控
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              {Object.values(rsrsIndicators).slice(0, 8).map((rsrs) => (
+                <IndicatorCard key={rsrs.ticker} indicator={rsrs} type="rsrs" />
+              ))}
+              {Object.values(volatilitySkews).slice(0, 8).map((skew) => (
+                <IndicatorCard key={skew.ticker} indicator={skew} type="volatility" />
+              ))}
+            </div>
+            {Object.keys(rsrsIndicators).length === 0 && (
+              <div className="text-center py-8 text-text-secondary text-sm">暂无指标数据，请启动市场扫描</div>
+            )}
+          </div>
+
+          {/* Market Data Table (Simple View) */}
+          <div className="bg-app-secondary rounded-lg border border-app-border overflow-hidden">
+            <div className="p-4 border-b border-app-border flex justify-between items-center">
+              <h3 className="text-sm font-bold text-text-primary">活跃异动列表</h3>
+              <button className="text-xs text-accent hover:text-white transition-colors">查看全部 →</button>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs text-text-secondary uppercase bg-app-tertiary">
+                  <tr>
+                    <th className="px-4 py-3">代码</th>
+                    <th className="px-4 py-3">名称</th>
+                    <th className="px-4 py-3 text-right">价格</th>
+                    <th className="px-4 py-3 text-right">涨跌幅</th>
+                    <th className="px-4 py-3 text-right">成交量</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-app-border">
+                  {marketList.slice(0, 10).map((market) => (
+                    <tr key={market.ticker} className="hover:bg-app-tertiary/50 transition-colors">
+                      <td className="px-4 py-3 font-mono text-accent">{market.ticker}</td>
+                      <td className="px-4 py-3 text-text-primary">{market.name}</td>
+                      <td className="px-4 py-3 text-right font-mono text-text-primary">{market.price.toFixed(2)}</td>
+                      <td className={`px-4 py-3 text-right font-mono font-medium ${market.change >= 0 ? 'text-app-success' : 'text-app-danger'}`}>
+                        {market.change >= 0 ? '+' : ''}{market.changePercent.toFixed(2)}%
+                      </td>
+                      <td className="px-4 py-3 text-right text-text-secondary font-mono">{(market.volume / 1000000).toFixed(2)}M</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Risk Alerts */}
+        <div className="lg:col-span-1">
+          <div className="bg-app-secondary p-4 rounded-lg border border-app-border h-full">
+            <h3 className="text-sm font-bold text-text-primary mb-4 flex items-center gap-2">
+              <span className="text-app-warning">⚠️</span> 实时风控日志
+            </h3>
+
+            <div className="space-y-3">
+              {riskSignals.length > 0 ? (
+                riskSignals.map((signal, idx) => (
+                  <div key={idx} className={`p-3 rounded border-l-4 ${
+                    signal.level === 'high' ? 'bg-app-danger/10 border-l-app-danger' :
+                    signal.level === 'medium' ? 'bg-app-warning/10 border-l-app-warning' :
+                    'bg-app-success/10 border-l-app-success'
+                  }`}>
+                    <div className="flex justify-between items-start mb-1">
+                      <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${
+                        signal.level === 'high' ? 'bg-app-danger text-white' :
+                        signal.level === 'medium' ? 'bg-app-warning text-black' :
+                        'bg-app-success text-black'
+                      }`}>
+                        {signal.level.toUpperCase()}
+                      </span>
+                      <span className="text-[10px] text-text-secondary">{new Date().toLocaleTimeString()}</span>
+                    </div>
+                    <p className="text-xs text-text-primary font-medium mt-2">{signal.message}</p>
+                    <p className="text-[10px] text-text-secondary mt-1 border-t border-app-border/30 pt-1">
+                      建议: {signal.recommendation}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <div className="flex flex-col items-center justify-center py-10 text-text-secondary">
+                  <span className="text-2xl mb-2">🛡️</span>
+                  <span className="text-xs">系统运行正常，无风险信号</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
