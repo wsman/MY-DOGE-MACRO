@@ -156,6 +156,18 @@ async def health_check():
         "service": "MY-DOGE Quant API"
     }
 
+@app.get("/health_check")
+async def simple_health_check():
+    """
+    简化的健康检查端点，用于前端连接测试
+    无需认证，无速率限制
+    """
+    return {
+        "status": "ok",
+        "timestamp": datetime.now().isoformat(),
+        "version": "1.0.0"
+    }
+
 @app.get("/market/price/{symbol}", dependencies=[Depends(rate_limit_dependency), Depends(verify_token)])
 async def get_price(symbol: str):
     # 模拟计算延迟
