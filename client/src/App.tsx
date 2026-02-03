@@ -1,6 +1,7 @@
 import { MainLayout } from './components/layout/MainLayout';
 import ServiceStatus from './components/ServiceStatus';
 import { CommandPalette } from './components/commands/CommandPalette';
+import { ServerSettings } from './components/ServerSettings';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <CommandPalette />
       
       {/* 悬浮状态栏 (临时方案，后续移入 Status Bar) */}
-      <div className="absolute top-1 right-1 z-50">
+      <div className="absolute top-1 right-1 z-50 flex gap-2">
+        <ServerSettings />
         <ServiceStatus />
       </div>
     </div>
