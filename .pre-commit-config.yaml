@@ -61,27 +61,27 @@ repos:
         files: 'client/.*\.(js|jsx|ts|tsx|json|css|md|yml|yaml)$'
 
   # ===========================================
-  # CDD SKILL Hooks
+  # CDD SKILL Hooks (Portable - Relative Paths)
   # ===========================================
   - repo: local
     hooks:
       - id: cdd-version-check
         name: CDD Version Check
-        entry: python /home/wsman/桌面/openclaw/skills/cdd/scripts/verify_versions.py --verbose
+        entry: python scripts/verify_versions.py --verbose
         language: system
         stages: [pre-commit]
         pass_filenames: false
 
       - id: cdd-entropy-check
         name: CDD Entropy Check
-        entry: python /home/wsman/桌面/openclaw/skills/cdd/scripts/measure_entropy.py
+        entry: python scripts/measure_entropy.py
         language: system
         stages: [pre-commit]
         pass_filenames: false
 
       - id: cdd-test-runner
         name: CDD Tests
-        entry: pytest /home/wsman/桌面/openclaw/skills/cdd/tests/ -v
+        entry: pytest scripts/tests/ -v
         language: system
         stages: [pre-commit]
         pass_filenames: false

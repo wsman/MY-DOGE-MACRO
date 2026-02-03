@@ -69,18 +69,20 @@ app.add_middleware(GZipMiddleware, minimum_size=1000)
 async def add_security_headers(request: Request, call_next):
     """添加安全响应头"""
     response = await call_next(request)
-    
+
     # 安全相关响应头
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
-    
-    # 移除指纹识别头
-    response.headers.pop("Server", None)
-    response.headers.pop("X-Powered-By", None)
-    
+
+    # 移除指纹识别头 (兼容 Starlette MutableHeaders)
+    if "Server" in response.headers:
+        del response.headers["Server"]
+    if "X-Powered-By" in response.headers:
+        del response.headers["X-Powered-By"]
+
     return response
 
 # --- 内存存储扫描任务状态 ---

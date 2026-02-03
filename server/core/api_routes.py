@@ -26,12 +26,12 @@ from .market_scanner import MarketScanner
 class KlineRequest(BaseModel):
     """K线数据请求验证模型"""
     symbol: str = Field(..., min_length=1, max_length=20, description="股票代码")
-    period: str = Field(default="daily", regex="^(daily|weekly|monthly)$", description="K线周期")
+    period: str = Field(default="daily", pattern="^(daily|weekly|monthly)$", description="K线周期")
     limit: int = Field(default=100, ge=1, le=1000, description="数据条数")
 
 class ScanStartRequest(BaseModel):
     """扫描启动请求验证模型"""
-    market: str = Field(..., regex="^(CN|US)$", description="市场类型")
+    market: str = Field(..., pattern="^(CN|US)$", description="市场类型")
     mode: str = Field(default="fast", description="扫描模式")
 
     @validator('market')

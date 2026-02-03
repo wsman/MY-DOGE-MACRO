@@ -241,7 +241,7 @@ class IndustryAnalyzer:
 
     def load_momentum_data(self, market_type: str) -> str:
         """读取动量数据CSV并注入元数据"""
-        csv_dir = self.project_root / 'data/reports/micro'
+        csv_dir = self.project_root / 'micro'
         pattern = f"Top200_Momentum_{market_type}_*.csv"
         latest_csv = self.load_latest_file(str(csv_dir / pattern))
         
@@ -257,7 +257,7 @@ class IndustryAnalyzer:
             return "数据读取失败"
 
     def run_industry_analysis(self, 
-                             data/reports/macro_path: Optional[str] = None,
+                             macro_path: Optional[str] = None,
                              cn_momentum_path: Optional[str] = None,
                              us_momentum_path: Optional[str] = None,
                              progress_callback: Optional[Callable] = None) -> Tuple[Optional[str], Optional[str]]:
@@ -265,7 +265,7 @@ class IndustryAnalyzer:
         执行行业聚类分析
         
         参数:
-            data/reports/macro_path: 宏观报告路径
+            macro_path: 宏观报告路径
             cn_momentum_path: A股动量数据路径
             us_momentum_path: 美股动量数据路径
             progress_callback: 进度回调函数
@@ -285,9 +285,9 @@ class IndustryAnalyzer:
         if progress_callback:
             progress_callback(20, "加载宏观背景数据")
         
-        if data/reports/macro_path and os.path.exists(data/reports/macro_path):
+        if macro_path and os.path.exists(macro_path):
             try:
-                with open(data/reports/macro_path, 'r', encoding='utf-8') as f:
+                with open(macro_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                 risk = "Risk-Off" if "Risk-Off" in content else "Risk-On"
                 vol = "Unknown"
@@ -463,7 +463,7 @@ def run_industry_analysis_from_files(macro_path: str, cn_path: str, us_path: str
     """
     analyzer = IndustryAnalyzer()
     report_content, filename = analyzer.run_industry_analysis(
-        data/reports/macro_path=macro_path,
+        macro_path=macro_path,
         cn_momentum_path=cn_path,
         us_momentum_path=us_path
     )

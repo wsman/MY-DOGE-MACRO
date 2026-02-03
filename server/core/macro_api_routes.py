@@ -266,7 +266,7 @@ async def get_latest_momentum_results(
 
 @router.post("/industry/analyze", dependencies=[Depends(verify_token)])
 async def analyze_industry_trends(
-    data/reports/macro_path: Optional[str] = Query(None, description="宏观报告路径"),
+    macro_path: Optional[str] = Query(None, description="宏观报告路径"),
     cn_momentum_path: Optional[str] = Query(None, description="A股动量数据路径"),
     us_momentum_path: Optional[str] = Query(None, description="美股动量数据路径"),
 ):
@@ -286,7 +286,7 @@ async def analyze_industry_trends(
             
             analyzer = IndustryAnalyzer()
             report_content, filename = analyzer.run_industry_analysis(
-                data/reports/macro_path=data/reports/macro_path,
+                macro_path=macro_path,
                 cn_momentum_path=cn_momentum_path,
                 us_momentum_path=us_momentum_path,
                 progress_callback=progress_callback
