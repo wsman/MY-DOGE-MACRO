@@ -1,20 +1,21 @@
 # My Doge Macro 🐶📈
 
 > 基于 AI Agent 的全栈量化情报与研报生成系统。  
-> **Current Version**: v1.2.0-performance
+> **Current Version**: v1.4.0
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.12-blue)
 ![React](https://img.shields.io/badge/react-19-blue)
 ![Status](https://img.shields.io/badge/status-stable-green)
 
-## 🚀 v1.2.0 性能更新 (New!)
+## 🚀 v1.4.0 基础设施更新 ✅
 
-本次更新专注于系统核心性能的深度优化：
+本次更新专注于开发流程标准化和代码质量提升：
 
-- **极速计算**: 重构 RSRS 核心算法，使用向量化运算替代循环，速度提升 **50 倍**。
-- **流畅体验**: 前端图表渲染优化，彻底消除卡顿，FPS 稳定在 **60+**。
-- **并发扫描**: 市场扫描器现在支持 **10 路并行** I/O，大幅缩短数据同步时间。
+- **可移植工具链**: CDD 工具链现在使用相对路径，支持任何开发环境
+- **CI/CD 集成**: GitHub Actions 现在运行完整的 CDD 检查
+- **测试覆盖率**: 新增 15 个单元测试，提升后端代码质量
+- **零依赖冲突**: 移除所有硬编码路径
 
 ## ✨ Core Features
 
