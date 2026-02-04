@@ -1,0 +1,69 @@
+/* ConnectionStatus Styles - Migrated to Atomic Design */
+/* Uses Design Tokens from client/src/design-system/tokens/ */
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+/* Sizes */
+.connection-status-sm {
+  padding: 4px 8px;
+  font-size: 10px;
+  gap: 6px;
+}
+
+.connection-status-md {
+  padding: 6px 12px;
+  font-size: 12px;
+  gap: 8px;
+}
+
+.connection-status-lg {
+  padding: 8px 16px;
+  font-size: 14px;
+  gap: 10px;
+}
+
+.connection-status-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.connection-status-label {
+  font-weight: 500;
+  color: #e7e9ea;
+}
+
+.connection-status-url {
+  color: #71767b;
+  font-size: 0.8em;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.connection-status-timestamp {
+  color: #71767b;
+  font-size: 0.8em;
+  padding-left: 8px;
+  border-left: 1px solid #2d333b;
+}
+
+/* Dark mode enhancement */
+@media (prefers-color-scheme: dark) {
+  .connection-status {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  .connection-status-label {
+    color: #ffffff;
+  }
+}

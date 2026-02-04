@@ -1,0 +1,223 @@
+/* Dashboard Styles - Migrated to Atomic Design */
+/* Uses Design Tokens from client/src/design-system/tokens/ */
+
+.dashboard {
+  padding: 24px;
+  height: 100%;
+  overflow-y: auto;
+  background: #f5f5f5;
+}
+
+/* Header */
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+.dashboard-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-header-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dashboard-icon {
+  font-size: 1.5rem;
+}
+
+.dashboard-header-title h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #212121;
+}
+
+.dashboard-header-title p {
+  margin: 4px 0 0 0;
+  font-size: 0.75rem;
+  color: #757575;
+}
+
+.dashboard-timestamp {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #00d4aa;
+  background: rgba(0, 212, 170, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* Main Content Grid */
+.dashboard-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.dashboard-section {
+  min-height: 300px;
+}
+
+/* Indicator Grid */
+.indicator--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.indicator--card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.indicator--card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.indicator--card-ticker {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #00d4aa;
+  font-weight: 600;
+}
+
+.indicator--card-value {
+  font-family: monospace;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #212121;
+}
+
+.indicator--card-type {
+  font-size: 0.625rem;
+  color: #9e9e9e;
+  text-transform: uppercase;
+}
+
+/* Risk Alerts */
+.risk-alerts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.risk-alert-card {
+  border-left: 3px solid;
+  padding: 12px;
+  background: #fafafa;
+  border-radius: 0 6px 6px 0;
+}
+
+.risk-alert-high {
+  border-left-color: #f44336;
+  background: rgba(244, 67, 54, 0.05);
+}
+
+.risk-alert-medium {
+  border-left-color: #ff9800;
+  background: rgba(255, 152, 0, 0.05);
+}
+
+.risk-alert-low {
+  border-left-color: #4caf50;
+  background: rgba(76, 175, 80, 0.05);
+}
+
+.risk-alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.risk-alert-time {
+  font-size: 0.625rem;
+  color: #9e9e9e;
+}
+
+.risk-alert-message {
+  font-size: 0.875rem;
+  color: #212121;
+  margin: 0 0 8px 0;
+}
+
+.risk-alert-recommendation {
+  font-size: 0.75rem;
+  color: #757575;
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px solid #eeeeee;
+}
+
+/* Empty State */
+.empty--state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px;
+  color: #9e9e9e;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .dashboard-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 16px;
+  }
+  
+  .dashboard-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .indicator--grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .dashboard {
+    background: #0f1419;
+  }
+  
+  .dashboard-header-title h2 {
+    color: #ffffff;
+  }
+  
+  .dashboard-header-title p {
+    color: #b0b0b0;
+  }
+  
+  .indicator--card-value {
+    color: #ffffff;
+  }
+  
+  .risk-alert-card {
+    background: #1a1f26;
+  }
+  
+  .risk-alert-message {
+    color: #ffffff;
+  }
+  
+  .risk-alert-recommendation {
+    color: #b0b0b0;
+    border-top-color: #2d3640;
+  }
+}

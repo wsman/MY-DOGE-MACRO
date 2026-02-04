@@ -1,0 +1,3 @@
+# This file keeps the data directory in Git while excluding its contents
+# All generated data files are excluded via .gitignore
+# See root .gitignore for data directory exclusion rules

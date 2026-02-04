@@ -1,0 +1,110 @@
+# Pre-commit Hooks Configuration for MY-DOGE-MACRO
+# 确保代码质量在提交前通过检查
+
+repos:
+  # ===========================================
+  # 通用 Hooks
+  # ===========================================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        stages: [pre-commit]
+      - id: end-of-file-fixer
+        stages: [pre-commit]
+      - id: check-yaml
+        stages: [pre-commit]
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+        stages: [pre-commit]
+      - id: detect-private-key
+        stages: [pre-commit]
+
+  # ===========================================
+  # Python Hooks
+  # ===========================================
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.6
+    hooks:
+      - id: ruff
+        stages: [pre-commit]
+        args: [--fix]
+      - id: ruff-format
+        stages: [pre-commit]
+
+  - repo: https://github.com/psf/black
+    rev: 24.1.0
+    hooks:
+      - id: black
+        stages: [pre-commit]
+        language_version: python3.12
+
+  # ===========================================
+  # TypeScript/React Hooks
+  # ===========================================
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.0.0-beta.2
+    hooks:
+      - id: eslint
+        stages: [pre-commit]
+        files: 'client/.*\.(js|jsx|ts|tsx)$'
+        additional_dependencies:
+          - eslint@8.56.0
+          - @typescript-eslint/eslint-plugin@7.0.0
+          - @typescript-eslint/parser@7.0.0
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
+    hooks:
+      - id: prettier
+        stages: [pre-commit]
+        files: 'client/.*\.(js|jsx|ts|tsx|json|css|md|yml|yaml)$'
+
+  # ===========================================
+  # CDD SKILL Hooks (Portable - Relative Paths)
+  # ===========================================
+  - repo: local
+    hooks:
+      - id: cdd-version-check
+        name: CDD Version Check
+        entry: python scripts/verify_versions.py --verbose
+        language: system
+        stages: [pre-commit]
+        pass_filenames: false
+
+      - id: cdd-entropy-check
+        name: CDD Entropy Check
+        entry: python scripts/measure_entropy.py
+        language: system
+        stages: [pre-commit]
+        pass_filenames: false
+
+      - id: cdd-test-runner
+        name: CDD Tests
+        entry: pytest scripts/tests/ -v
+        language: system
+        stages: [pre-commit]
+        pass_filenames: false
+
+# ===========================================
+# CI/CD 集成
+# ===========================================
+ci:
+  # CDD checks now run in GitHub Actions workflow
+  autoupdate-commit-message: 'chore: update pre-commit hooks'
+
+# ===========================================
+# 本地安装说明
+# ===========================================
+# 安装方法:
+# 1. pip install pre-commit
+# 2. pre-commit install
+# 3. pre-commit install -g commit-msg
+#
+# 使用方法:
+# - 自动在 git commit 时运行
+# - 手动运行: pre-commit run --all-files
+#
+# 跳过检查:
+# - git commit --no-verify
+# - git commit -n

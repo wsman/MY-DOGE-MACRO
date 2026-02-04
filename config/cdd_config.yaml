@@ -1,0 +1,95 @@
+# CDD Configuration v1.5.0
+# MY-DOGE-MICRO Project
+
+project:
+  name: "MY-DOGE-MICRO"
+  version: "1.5.0"
+  entropy_threshold: 0.3
+
+# 外部审计配置
+external_auditor:
+  enabled: true
+  provider: "deepseek-reasoner"
+  max_tokens: 8192
+  api:
+    base_url: "https://api.deepseek.com"
+    api_key: "${DEEPSEEK_API_KEY}"
+  trigger_policy:
+    on_state_change: ["State E"]
+    on_file_change: ["memory_bank/core/active_context.md"]
+  reporting:
+    format: "markdown"
+    output_dir: "research_report"
+
+# Spec-Kit 集成配置
+spec_kit:
+  templates:
+    spec: "templates/standards/DS-050_feature_specification.md"
+    plan: "templates/standards/DS-051_implementation_plan.md"
+    tasks: "templates/standards/DS-052_atomic_tasks.md"
+    review: "spec-kit/templates/review-template.md"
+  commands:
+    analyze: "spec-kit/templates/commands/analyze.md"
+    review: "spec-kit/templates/commands/review.md"
+  scripts:
+    review: "spec-kit/scripts/bash/run-review.sh"
+  output:
+    specs_dir: "specs"
+    plans_dir: "plans"
+    checklists_dir: "memory_bank/checklists"
+    reviews_dir: "memory_bank/reviews"
+
+# 质量门禁配置
+quality_gates:
+  analyze:
+    enabled: true
+    mandatory: true
+    trigger: "after DS-052 generation"
+    output: "memory_bank/protocols/analysis_report.md"
+  checklist:
+    enabled: true
+    mandatory: false
+    trigger: "after Analyze pass"
+    output_dir: "memory_bank/checklists"
+
+# GitHub 集成
+github_integration:
+  enabled: true
+  sync_on_state_b: true
+  sync_on_demand: true
+  default_labels:
+    - "cdd-task"
+    - "automated"
+  behavior: "create_and_link"
+  task_prefix: "T"
+
+# 治理配置
+governance:
+  amendment_protocol: "memory_bank/protocols/WF-001_clarify_workflow.md"
+  versioning_scheme: "semver"
+  protected_paths:
+    - "memory_bank/core/*"
+    - "memory_bank/axioms/*"
+
+# 上下文管理 (DS-007)
+context_strategy:
+  max_tokens: 8000
+  safety_margin: 0.1
+  modes:
+    planning:
+      include: ["memory_bank/axioms/system_patterns.md", "memory_bank/axioms/tech_context.md"]
+      budget_ratio: 0.5
+    coding:
+      include: ["memory_bank/standards/DS-050*.md", "memory_bank/standards/DS-051*.md", "memory_bank/standards/DS-052*.md"]
+      budget_ratio: 0.7
+    verifying:
+      include: ["memory_bank/axioms/behavior_context.md"]
+      budget_ratio: 0.6
+
+# 路径配置
+paths:
+  templates:
+    core: "memory_bank/core"
+    axioms: "memory_bank/axioms"
+    standards: "memory_bank/standards"
+    protocols: "memory_bank/protocols"

@@ -1,0 +1,18 @@
+# Data directory internal .gitignore
+# This file manages ignore rules inside the data directory
+# Root .gitignore handles the main exclusion patterns
+
+# Ignore everything in data directory by default
+*
+
+# But keep these structure files
+!.gitkeep
+!.gitignore
+
+# Keep audits directory structure
+!audits/
+audits/*
+!audits/.gitkeep
+
+# Note: All generated data files are excluded via root .gitignore
+# This includes: *.db, *.sqlite, *.sqlite3, *.json, *.csv, *.md, etc.

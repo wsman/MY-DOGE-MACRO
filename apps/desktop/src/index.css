@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@theme {
+  --color-app-primary: #0f1419;
+  --color-app-secondary: #1a1f26;
+  --color-app-tertiary: #242b33;
+  --color-app-border: #38444d;
+  --color-app-success: #00c853;
+  --color-app-warning: #ff9800;
+  --color-app-danger: #f44336;
+
+  --color-text-primary: #e7e9ea;
+  --color-text-secondary: #8b98a5;
+
+  --color-accent: #00d4aa;
+  --color-accent-hover: rgba(0, 212, 170, 0.1);
+
+  /* Grid Layout */
+  --grid-rows-layout: 48px 1fr 32px;
+  --grid-cols-layout: 220px 1fr 320px;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-app-primary);
+  color: var(--color-text-primary);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-app-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(139, 152, 165, 0.5);
+  border-radius: 9999px;
+  border: 2px solid var(--color-app-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-secondary);
+}
+
+/* Common Components */
+.btn-primary {
+  padding: 8px 16px;
+  background-color: var(--color-accent);
+  color: var(--color-app-primary);
+  font-weight: 600;
+  border-radius: 8px;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 1;
+}
+
+.card-panel {
+  background-color: var(--color-app-secondary);
+  border-left: 1px solid var(--color-app-border);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.status-dot.connected {
+  background-color: var(--color-app-success);
+}
+
+.status-dot.disconnected {
+  background-color: var(--color-app-danger);
+}
+
+/* Live Preview legacy styles */
+.cm-md-mark {
+  display: none;
+}
+
+.cm-heading-1 { font-size: 1.6em; font-weight: bold; color: var(--color-text-primary); }
+.cm-heading-2 { font-size: 1.4em; font-weight: bold; color: var(--color-text-primary); }
+.cm-heading-3 { font-size: 1.2em; font-weight: bold; color: var(--color-text-primary); }
+
+.cm-bold-text { font-weight: bold; color: #fbbf24; }
+.cm-italic-text { font-style: italic; color: #94a3b8; }
+
+/* Loading animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}

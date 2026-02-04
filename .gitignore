@@ -1,0 +1,104 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+*.egg-info/
+dist/
+.venv/
+venv/
+
+# Testing
+coverage/
+.pytest_cache/
+.coverage
+
+# Tauri
+apps/desktop/src-tauri/target/
+
+# ============================================
+# DATA DIRECTORY EXCLUSIONS (v1.6.0) - Enhanced
+# ============================================
+
+# Data files (large, generated)
+*.db
+*.sqlite
+*.sqlite3
+*.csv
+*.json
+*.xlsx
+*.xls
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.txt
+*.log
+*.md
+
+# Exclude all generated data files (preserve directory structure)
+data/*
+
+# Keep directory structure files
+!data/.gitkeep
+!data/.gitignore
+
+# Keep audits directory (but exclude its contents by default)
+!data/audits/
+
+# Exclude specific audit logs if needed
+data/audits/*.log
+
+# Legacy patterns for backward compatibility
+data/*.db
+data/*.sqlite
+data/reports/*
+
+# Additional data file patterns
+data/*.csv
+data/*.json
+data/*.xlsx
+data/*.xls
+data/*.parquet
+data/*.feather
+data/*.h5
+data/*.hdf5
+data/*.pkl
+data/*.pickle
+data/*.txt
+data/*.log
+
+# Logs
+*.log
+__pycache__/
+*.pyc
+.DS_Store
+
+*storybook.log
+storybook-static
+.git_backup/
