@@ -1,0 +1,375 @@
+# My Doge Macro 🐶📈
+
+> 基于 AI Agent 的全栈量化情报与研报生成系统。  
+> **版本**: v1.6.0 (模块化架构)  
+> **类型**: AI驱动的量化分析系统  
+> **创建**: 2026-02-03 | **更新**: 2026-02-05
+
+![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![React](https://img.shields.io/badge/react-19-blue)
+![Status](https://img.shields.io/badge/status-stable-green)
+![Architecture](https://img.shields.io/badge/architecture-Modular%20v1.6.0-blue)
+![CDD](https://img.shields.io/badge/CDD-v1.6.1-green)
+
+## 🚀 v1.6.0 模块化架构
+
+### 架构现代化正在进行中
+
+**迁移状态**: Phase 1 完成，Phase 2+ 进行中
+
+| 组件 | 目标路径 | 状态 | 详情 |
+|------|----------|------|------|
+| **设计系统** | `libs/design-system/` | ✅ 完成 | 原子设计 + BEM + 组件库 |
+| **前端应用** | `apps/desktop/` | 🔄 进行中 | React 19 + Tauri v2 桌面应用 |
+| **后端 API** | `apps/api/` | 📅 待开始 | FastAPI RESTful 服务 |
+| **量化引擎** | `libs/quant-engine/` | 📅 待开始 | 量化算法和数据采集 |
+| **基础设施** | `infrastructure/` | ✅ 部分完成 | CDD工具、CI/CD、监控 |
+
+### v1.5.0 前端架构现代化已完成
+
+**29/29 任务完成** - 原子设计 + BEM + 组件库全面升级：
+
+- **原子设计结构**: 完整的原子/分子/组织/模板目录结构
+- **设计系统**: 色彩、排版、间距、阴影等设计令牌
+- **组件库**: 7个原子组件 + 4个分子组件 (Button, Icon, Badge, Card, Input, Avatar, StatusDot, StatusIndicator, DataCard, SearchBar, FormGroup)
+- **CSS 标准**: BEM 命名规范 + CSS 变量
+- **Storybook**: 5个组件故事，80%+ 覆盖率
+- **设计系统文档**: `apps/desktop/DESIGN_SYSTEM.md` 完整文档
+
+## 🎯 项目概述
+
+My Doge Macro 是一个基于 AI Agent 的全栈量化情报与研报生成系统。
+
+### 核心目的
+- **全球宏观分析**: 科技股、黄金、数字货币、A股联动分析
+- **AI研报生成**: 基于 DeepSeek API 的自动化报告生成
+- **高级量化指标**: RSRS、波动率偏度等专业指标
+- **实时市场扫描**: 多市场并行扫描和动量分析
+
+### 技术栈
+
+| 层级 | 技术 | 说明 |
+|------|------|------|
+| **前端 UI** | React 19 + TypeScript | Tauri 桌面应用 (apps/desktop/) |
+| **App Shell** | Tauri v2 (Rust) | 跨平台桌面框架 |
+| **后端 API** | Python FastAPI | RESTful API 服务 (apps/api/) |
+| **量化引擎** | pandas, numpy, scipy | 量化算法 (libs/quant-engine/) |
+| **数据源** | yfinance, 通达信 DB | 市场数据获取 |
+| **AI 引擎** | DeepSeek API | 智能分析与报告 |
+| **架构** | Monorepo + 模块化 | 清晰的关注点分离 |
+
+## 📁 项目结构
+
+### 新架构结构 (v1.6.0+)
+```
+MY-DOGE-MACRO/
+├── apps/                    # 应用层 (桌面应用、API服务)
+├── libs/                    # 共享库 (量化引擎、设计系统)
+├── infrastructure/         # 基础设施 (CDD工具、CI/CD)
+├── config/                 # 配置管理
+├── data/                   # 数据存储
+├── docs/                   # 项目文档
+└── memory_bank/           # CDD 文档体系
+```
+
+### 详细目录结构
+```
+MY-DOGE-MACRO/
+├── apps/                    # 应用层
+│   ├── desktop/            # 桌面应用 (Tauri + React 19)
+│   │   ├── src/           # React 组件和页面
+│   │   ├── src-tauri/     # Tauri 桌面壳
+│   │   ├── stories/       # Storybook 组件故事
+│   │   └── tests/         # 前端测试
+│   └── api/                # 后端API服务 (FastAPI) [规划中]
+│       ├── src/           # API路由和业务逻辑
+│       └── tests/         # 后端测试
+│
+├── libs/                    # 共享库
+│   ├── quant-engine/       # 量化引擎 (Python算法) [规划中]
+│   │   ├── src/           # 量化算法和分析模块
+│   │   └── tests/         # 算法测试
+│   ├── design-system/      # 设计系统 (React组件) ✅
+│   │   ├── tokens/        # 设计令牌 (色彩、排版、间距)
+│   │   ├── components/    # 可复用组件库
+│   │   └── stories/       # 组件文档
+│   └── common/             # 通用工具和类型定义 [规划中]
+│       ├── types/         # 共享TypeScript类型
+│       └── utils/         # 通用工具函数
+│
+├── infrastructure/         # 基础设施
+│   ├── cdd/               # CDD工具和文档工作流
+│   ├── ci-cd/             # CI/CD配置和脚本
+│   └── monitoring/        # 监控和告警配置
+│
+├── config/                 # 配置文件
+│   ├── environments/      # 环境配置 (开发/测试/生产)
+│   ├── features/          # 功能开关和配置
+│   └── secrets/           # 密钥管理模板 (.env.example)
+│
+├── data/                   # 数据层
+│   ├── raw/               # 原始市场数据
+│   ├── processed/         # 处理后的分析数据
+│   └── reports/           # AI生成的研报
+│
+├── docs/                   # 项目文档 (v1.6.0完整文档体系)
+│   ├── README.md          # 文档中心首页
+│   ├── architecture/      # 架构设计文档
+│   │   └── v1.6.0-modular-architecture.md
+│   ├── api/              # API文档
+│   │   └── backend-api.md
+│   ├── development/       # 开发指南
+│   │   └── getting-started.md
+│   └── deployment/        # 部署指南
+│       └── deployment-guide.md
+│
+├── memory_bank/           # CDD 文档体系
+│   ├── core/              # T0 核心文档
+│   ├── axioms/            # T1 系统公理
+│   ├── protocols/         # T2 协议
+│   └── standards/         # T2 标准
+│
+├── scripts/               # 项目级脚本
+└── tests/                 # 集成测试和端到端测试
+```
+
+### 旧架构结构 (v1.5.0 及之前)
+> **注意**: 以下为正在迁移的旧结构，新开发应使用新架构
+
+```
+MY-DOGE-MACRO/ (旧路径)
+├── client/           # 前端 (正在迁移到 apps/desktop/)
+├── server/           # 后端 (正在迁移到 apps/api/)
+├── engine/           # 量化引擎 (正在迁移到 libs/quant-engine/)
+└── ...              # 其他目录
+```
+
+## 🚀 快速启动
+
+### 使用新架构 (推荐)
+
+#### 后端开发 (旧路径，等待迁移)
+```bash
+cd server
+pip install -r requirements.txt
+python server.py --host 0.0.0.0 --port 8765
+```
+
+#### 前端开发 (新路径)
+```bash
+cd apps/desktop
+npm install
+npm run tauri dev
+```
+
+#### 设计系统开发
+```bash
+cd libs/design-system
+npm install
+npm run storybook
+```
+
+### 使用旧架构 (兼容性)
+```bash
+# 前端 (旧路径)
+cd client
+npm install
+npm run tauri dev
+
+# 后端 (旧路径)
+cd server
+pip install -r requirements.txt
+python server.py --host 0.0.0.0 --port 8765
+```
+
+### 新架构导入示例
+```typescript
+// 使用路径别名导入设计系统
+import { colors } from '@design-system/tokens/colors';
+import { Button } from '@design-system/components/Button';
+
+// 导入共享类型 (规划中)
+// import { MarketData } from '@common/types/market';
+```
+
+```python
+# 量化引擎导入 (规划中)
+# from libs.quant_engine.src.analysis.rsrs import calculate_rsrs
+# from libs.quant_engine.src.data.acquisition import fetch_market_data
+```
+
+## 📖 CDD 工作流
+
+项目遵循 CDD v1.6.1 五状态工作流:
+
+```
+State A → State B → State C → State D → State E
+  加载      规划      实现      验证      收敛
+```
+
+**CDD 版本**: v1.6.1
+**系统熵 ($H_{sys}$)**: 0.50 (健康)
+
+## 📚 文档目录与体系
+
+### 文档目录
+
+| 文档 | 描述 | 状态 |
+|------|------|------|
+| [项目README](../../README.md) | 项目概述、快速开始、功能特性 | ✅ 最新 (v1.6.0) |
+| [变更日志](../../CHANGELOG.md) | 版本历史记录和变更详情 | ✅ 最新 |
+
+#### 架构文档
+| 文档 | 描述 | 适用版本 |
+|------|------|----------|
+| [v1.6.0模块化架构](./docs/architecture/v1.6.0-modular-architecture.md) | 新模块化架构设计、迁移状态、依赖关系 | v1.6.0+ |
+| [设计系统](../../apps/desktop/DESIGN_SYSTEM.md) | 前端设计系统规范、组件库、设计令牌 | v1.5.0+ |
+
+#### 开发文档
+| 文档 | 描述 | 用途 |
+|------|------|------|
+| [快速入门](./docs/development/getting-started.md) | 环境设置、安装步骤、开发工作流 | 新开发者入门 |
+| [后端API文档](./docs/api/backend-api.md) | API端点、请求/响应格式、认证机制 | API集成和开发 |
+| [CDD文档体系](../../memory_bank/core/) | Constitution-Driven Development文档 | 项目管理和工作流 |
+
+#### 部署文档
+| 文档 | 描述 | 目标环境 |
+|------|------|----------|
+| [部署指南](./docs/deployment/deployment-guide.md) | 桌面应用和API服务部署 | 生产环境 |
+| [CI/CD配置](../../.github/workflows/) | GitHub Actions工作流配置 | 持续集成/部署 |
+
+### 文档体系说明
+
+| 级别 | 目录 | 说明 |
+|------|------|------|
+| **T0** | `memory_bank/core/` | 核心意识文档 (项目种子、知识图谱) |
+| **T1** | `memory_bank/axioms/` | 系统公理 (技术上下文、行为模式) |
+| **T2** | `memory_bank/protocols/` | 工作流协议 (CDD工作流) |
+| **T2** | `memory_bank/standards/` | 实现标准 (架构标准、代码规范) |
+| **T3** | `docs/`, `memory_bank/t3_documentation/` | 用户和开发者文档 (docs/为主目录, memory_bank/t3_documentation/为CDD索引) |
+
+### 文档维护流程
+
+1. **确定更新范围**: 根据架构变更或功能更新确定需要更新的文档
+2. **更新文档内容**: 按照文档模板和规范更新内容
+3. **验证准确性**: 确保文档与实际代码和功能一致
+4. **版本控制**: 更新文档版本和最后更新日期
+5. **链接检查**: 验证所有内部和外部链接有效性
+
+### 文档标准
+
+- **Markdown格式**: 使用标准Markdown语法
+- **版本标注**: 每个文档顶部标注版本和最后更新日期
+- **目录结构**: 使用清晰的标题层级
+- **代码示例**: 提供可运行的代码示例
+- **链接引用**: 使用相对路径引用其他文档
+
+### 🆘 获取帮助
+
+#### 遇到问题？
+1. **查看相关文档**: 首先查阅本文档和具体功能文档
+2. **检查现有问题**: 查看GitHub Issues是否有类似问题
+3. **运行诊断**: 使用内置诊断工具检查系统状态
+4. **提交新问题**: 提供详细的错误信息、复现步骤和环境信息
+
+#### 联系方式
+- **主要渠道**: [GitHub Issues](https://github.com/wsman/MY-DOGE-MACRO/issues)
+- **文档问题**: 直接提交文档更新PR
+- **紧急问题**: 标注为高优先级Issue
+
+## 🔧 开发指南
+
+### 环境设置
+1. **Python 环境**: `python3.12+`, `pip install -r server/requirements.txt`
+2. **Node.js 环境**: `node18+`, `npm install` 在相应应用目录
+3. **Rust 环境**: 用于 Tauri 桌面应用 (自动安装)
+
+### 导入示例 (新架构)
+```typescript
+// 使用路径别名导入设计系统
+import { colors } from '@design-system/tokens/colors';
+import { Button } from '@design-system/components/Button';
+```
+
+## 🎉 版本历史
+
+### 版本概览表
+
+| 版本 | 发布日期 | 状态 | 核心特性 | 项目指标 |
+|------|----------|------|----------|----------|
+| **v1.6.0** | 2026-02-05 | 🚀 进行中 | 模块化架构迁移 | 系统熵: 0.50 |
+| **v1.5.0** | 2026-02-04 | ✅ 完成 | 前端架构现代化 | 组件: 12个，覆盖率: ~45% |
+| **v1.4.0** | 2026-02-03 | ✅ 完成 | 基础设施和CDD工具链 | 测试: 15个单元测试 |
+| **v1.3.0** | 2026-01-XX | ✅ 完成 | 宏观分析面板 | AI报告生成功能 |
+| **v1.2.0** | 2026-01-XX | ✅ 完成 | 性能优化 (50x RSRS加速) | React.memo + useCallback |
+| **v1.1.0** | 2026-01-XX | ✅ 完成 | T-C3 集成 | 端口配置和路由改进 |
+| **v1.0.0** | 2026-01-XX | ✅ 完成 | 初始版本发布 | CDD框架集成 |
+
+### 关键版本亮点
+
+#### v1.5.0 (2026-02-04) - 前端架构现代化
+- **原子设计结构**: 完整的原子/分子/组织/模板目录
+- **组件库**: 7个原子组件 + 4个分子组件 (Button, Icon, Badge, Card, Input, Avatar, StatusDot, StatusIndicator, DataCard, SearchBar, FormGroup)
+- **设计系统**: BEM命名 + CSS变量 + Storybook (5个故事，80%+覆盖率)
+- **迁移**: 18个组件文件现代化，29/29任务完成
+- **文档**: 完整设计系统文档 `apps/desktop/DESIGN_SYSTEM.md`
+
+#### v1.4.0 (2026-02-03) - 基础设施和CDD工具链
+- **CDD工具链**: 便携式预提交检查，移除硬编码路径
+- **CI/CD**: GitHub Actions集成，启用CDD检查
+- **单元测试**: 15个新增测试，覆盖server/core模块
+- **系统熵**: 稳定在0.50，系统健康
+- **项目质量**: 最新审计8.75/10通过
+
+#### v1.3.0 (2026-01-XX) - 宏观分析面板
+- **市场分析**: 风险信号、RSRS趋势、波动率偏度监控
+- **资产联动**: Gold/BTC比率分析，核心资产性能表
+- **AI报告**: 自动化宏观研报生成
+- **API扩展**: 新增多个宏观分析API端点
+
+### 查看完整变更记录
+
+**详细变更日志请查看**: [CHANGELOG.md](./CHANGELOG.md) - 包含每个版本的完整Added/Changed/Fixed/Removed记录，遵循Keep a Changelog标准格式。
+
+> **提示**: CHANGELOG.md是项目的标准变更日志文件，包含每个版本的详细技术变更记录。本版本历史表格提供快速概览，详细技术变更请查看CHANGELOG.md。
+
+## 📊 系统指标
+
+| 指标 | 值 | 状态 |
+|------|-----|------|
+| **当前版本** | v1.6.0 | 🚀 新架构 |
+| **系统熵** | 0.50 | 🟡 健康 |
+| **最新审计** | 8.75/10 | ✅ 通过 |
+| **组件数量** | 12个 | ✅ 良好 |
+| **测试覆盖率** | ~45% | 🟡 改进中 |
+| **CDD 版本** | v1.6.1 | ✅ 最新 |
+| **设计系统迁移** | ✅ 完成 | 已迁移到 `libs/design-system/` |
+| **路径映射配置** | ✅ 完成 | `@design-system/*`, `@libs/*` |
+
+## 🔗 相关链接
+
+- **GitHub**: https://github.com/wsman/MY-DOGE-MACRO
+- **CDD Framework**: [OpenClaw CDD Skill](../openclaw/skills/cdd/)
+- **设计系统**: `apps/desktop/DESIGN_SYSTEM.md`
+- **文档中心**: `docs/README.md`
+- **API文档**: `docs/api/backend-api.md`
+- **架构文档**: `docs/architecture/v1.6.0-modular-architecture.md`
+- **项目种子文档**: `memory_bank/core/project_readme.md` (CDD T0文档)
+
+## 🤖 AI Agent 友好架构
+
+新模块化结构为AI Agent提供清晰的模块边界和标准化接口，便于理解和开发。架构设计考虑了以下AI Agent友好特性：
+
+- **清晰的模块边界**: 应用层、库层、基础设施层分离
+- **标准化接口**: REST API、类型系统、设计令牌
+- **渐进式迁移**: 兼容新旧架构，平滑过渡
+- **文档完整性**: 完整的文档体系和版本控制
+
+## 📝 许可证
+
+Apache License 2.0
+
+---
+
+Built with ❤️ by Negentropy Lab

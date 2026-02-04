@@ -59,7 +59,6 @@ apps/desktop/src-tauri/target/
 *.pickle
 *.txt
 *.log
-*.md
 
 # Exclude all generated data files (preserve directory structure)
 data/*
