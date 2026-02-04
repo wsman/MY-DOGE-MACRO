@@ -122,6 +122,9 @@ jobs:
     name: CDD Constitutional Audit
     runs-on: ubuntu-latest
     if: always()  # Run even if other jobs fail
+    defaults:
+      run:
+        working-directory: ./
     
     steps:
       - name: Checkout code
