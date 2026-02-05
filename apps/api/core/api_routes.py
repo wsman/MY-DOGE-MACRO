@@ -134,13 +134,16 @@ def cached_dataframe_response(ttl: int = 300):
 
 
 # ==================== 依赖注入 ====================
-# 从环境变量读取 API Token，默认值为 "mydoge-token-dev"
-AUTH_TOKEN = os.getenv("API_TOKEN", "mydoge-token-dev")
+# 从环境变量读取 API Token，默认值为 "mydoge-token-123456"
+# 与 main.py 中的 MYDOGE_API_TOKEN 保持一致
+AUTH_TOKEN = os.getenv("MYDOGE_API_TOKEN", "mydoge-token-123456")
 
 
 async def verify_token(x_auth_token: str = Header(..., alias="x-auth-token")):
     """Token验证依赖 - 使用环境变量认证"""
-    if x_auth_token != AUTH_TOKEN:
+    # 每次验证时从环境变量读取，确保获取最新的 token 值
+    token_from_env = os.getenv("MYDOGE_API_TOKEN", "mydoge-token-123456")
+    if x_auth_token != token_from_env:
         raise HTTPException(status_code=401, detail="Invalid API Token")
     return True
 

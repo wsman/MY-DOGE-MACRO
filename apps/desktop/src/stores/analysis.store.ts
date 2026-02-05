@@ -39,7 +39,7 @@ interface AnalysisState {
 
 export const useAnalysisStore = create<AnalysisState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       marketData: {},
       lastUpdate: null,
       rsrsIndicators: {},
@@ -126,6 +126,223 @@ export const useAnalysisStore = create<AnalysisState>()(
         } catch (error) {
           console.error('❌ 获取市场数据失败:', error);
           set({ error: String(error), isLoading: false });
+        }
+      },
+
+      // API 集成方法
+      // 1. 获取 K 线数据
+      fetchKlineData: async (symbol: string, limit: number = 500) => {
+        set({ isLoading: true, error: null });
+        try {
+          console.log(`🔄 正在获取 ${symbol} 的K线数据...`);
+          const klineData = await marketApi.getKline(symbol, limit);
+          
+          // 更新市场数据中的最新价格
+          if (klineData.length > 0) {
+            const latest = klineData[klineData.length - 1];
+            const tickerData = get().marketData[symbol];
+            
+            if (tickerData) {
+              set((state) => ({
+                marketData: {
+                  ...state.marketData,
+                  [symbol]: {
+                    ...tickerData,
+                    price: latest.close,
+                    high: latest.high,
+                    low: latest.low,
+                    open: latest.open,
+                    volume: latest.volume,
+                    timestamp: new Date(),
+                  },
+                },
+                lastUpdate: new Date(),
+              }));
+            }
+          }
+          
+          set({ isLoading: false });
+          return klineData;
+        } catch (error) {
+          console.error(`❌ 获取 ${symbol} K线数据失败:`, error);
+          set({ error: String(error), isLoading: false });
+          throw error;
+        }
+      },
+
+      // 2. 计算 RSRS 指标
+      calculateRSRS: async (ticker: string, period: number = 20) => {
+        set({ isLoading: true, error: null });
+        try {
+          console.log(`🔄 正在计算 ${ticker} 的RSRS指标...`);
+          const rsrsData = await analysisApi.calculateRSRS(ticker, period);
+          
+          set((state) => ({
+            rsrsIndicators: {
+              ...state.rsrsIndicators,
+              [ticker]: rsrsData,
+            },
+            isLoading: false,
+          }));
+          
+          return rsrsData;
+        } catch (error) {
+          console.error(`❌ 计算 ${ticker} RSRS指标失败:`, error);
+          set({ error: String(error), isLoading: false });
+          throw error;
+        }
+      },
+
+      // 3. 计算波动率偏度
+      calculateVolatilitySkew: async (
+        ticker: string, 
+        shortPeriod: number = 5, 
+        longPeriod: number = 20
+      ) => {
+        set({ isLoading: true, error: null });
+        try {
+          console.log(`🔄 正在计算 ${ticker} 的波动率偏度...`);
+          const volatilityData = await analysisApi.calculateVolatilitySkew(
+            ticker, 
+            shortPeriod, 
+            longPeriod
+          );
+          
+          set((state) => ({
+            volatilitySkews: {
+              ...state.volatilitySkews,
+              [ticker]: volatilityData,
+            },
+            isLoading: false,
+          }));
+          
+          return volatilityData;
+        } catch (error) {
+          console.error(`❌ 计算 ${ticker} 波动率偏度失败:`, error);
+          set({ error: String(error), isLoading: false });
+          throw error;
+        }
+      },
+
+      // 4. 批量分析多个股票
+      analyzeBatch: async (tickers: string[]) => {
+        set({ isLoading: true, error: null });
+        try {
+          console.log(`🔄 正在批量分析 ${tickers.length} 个股票...`);
+          
+          const results = await Promise.allSettled(
+            tickers.map(async (ticker) => {
+              const [kline, rsrs, volatility] = await Promise.all([
+                marketApi.getKline(ticker, 100),
+                analysisApi.calculateRSRS(ticker),
+                analysisApi.calculateVolatilitySkew(ticker),
+              ]);
+              
+              return { ticker, kline, rsrs, volatility };
+            })
+          );
+          
+          // 更新 store
+          const successfulResults = results
+            .filter((r): r is PromiseFulfilledResult<any> => r.status === 'fulfilled')
+            .map(r => r.value);
+          
+          successfulResults.forEach(({ ticker, kline, rsrs, volatility }) => {
+            // 更新市场数据
+            if (kline.length > 0) {
+              const latest = kline[kline.length - 1];
+              const tickerData = get().marketData[ticker];
+              
+              if (tickerData) {
+                set((state) => ({
+                  marketData: {
+                    ...state.marketData,
+                    [ticker]: {
+                      ...tickerData,
+                      price: latest.close,
+                      high: latest.high,
+                      low: latest.low,
+                      open: latest.open,
+                      volume: latest.volume,
+                      timestamp: new Date(),
+                    },
+                  },
+                }));
+              }
+            }
+            
+            // 更新指标
+            if (rsrs) {
+              set((state) => ({
+                rsrsIndicators: {
+                  ...state.rsrsIndicators,
+                  [ticker]: rsrs,
+                },
+              }));
+            }
+            
+            if (volatility) {
+              set((state) => ({
+                volatilitySkews: {
+                  ...state.volatilitySkews,
+                  [ticker]: volatility,
+                },
+              }));
+            }
+          });
+          
+          set({ 
+            isLoading: false,
+            lastUpdate: new Date(),
+          });
+          
+          return results;
+        } catch (error) {
+          console.error('❌ 批量分析失败:', error);
+          set({ error: String(error), isLoading: false });
+          throw error;
+        }
+      },
+
+      // 5. 生成 AI 研报
+      generateAIReport: async (ticker: string, context: string = '') => {
+        set({ isLoading: true, error: null });
+        try {
+          console.log(`🔄 正在为 ${ticker} 生成AI研报...`);
+          const report = await reportApi.generateReport(ticker, context);
+          
+          // 可以在这里将研报存储到额外的状态中，如果需要的话
+          console.log('✅ AI研报生成成功');
+          
+          set({ isLoading: false });
+          return report;
+        } catch (error) {
+          console.error(`❌ 生成 ${ticker} AI研报失败:`, error);
+          set({ error: String(error), isLoading: false });
+          throw error;
+        }
+      },
+
+      // 6. 测试 API 连接
+      testApiConnection: async () => {
+        set({ isLoading: true, error: null });
+        try {
+          console.log('🔄 正在测试API连接...');
+          const result = await api.testConnection();
+          
+          set({ 
+            isLoading: false,
+            error: result.success ? null : 'API连接失败',
+          });
+          
+          return result;
+        } catch (error) {
+          console.error('❌ API连接测试失败:', error);
+          set({ 
+            error: String(error), 
+            isLoading: false,
+          });
+          throw error;
         }
       },
 

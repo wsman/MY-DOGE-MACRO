@@ -10,7 +10,7 @@ from decimal import Decimal
 from typing import Optional, List
 from datetime import datetime
 
-from fastapi import FastAPI, Header, HTTPException, Depends, BackgroundTasks, Request
+from fastapi import FastAPI, Header, HTTPException, Depends, BackgroundTasks, Request, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from pydantic import BaseModel, Field
@@ -24,6 +24,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # 导入新的API路由
 from .core.api_routes import router as quant_router
 from .core.macro_api_routes import router as macro_router
+# 导入WebSocket模块
+from .core.websocket import websocket_endpoint, manager, price_push_loop
 
 # --- 1. 数据模型严谨性 ---
 class StockPrice(BaseModel):
@@ -218,6 +220,12 @@ async def get_scan_status(task_id: str):
         message=task["message"],
         result=task["result"]
     )
+
+# --- WebSocket 端点 ---
+@app.websocket("/ws/{client_id}")
+async def websocket_route(websocket: WebSocket, client_id: str):
+    """WebSocket 实时数据推送端点"""
+    await websocket_endpoint(websocket, client_id)
 
 # --- 5. 后台任务实现 ---
 async def run_scan_task(task_id: str, mode: str, tdx_path: str):
