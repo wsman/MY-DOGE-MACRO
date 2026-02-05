@@ -1,11 +1,11 @@
 # Procedural Law Index - Workflow Pointers
 
-> **Version**: v1.0.0  
-> **Last Updated**: 2026-02-01
+> **Version**: v1.8.0  
+> **Last Updated**: 2026-02-05
 
 ## CDD Workflow Reference
 
-### Five-State Workflow (v1.5.0)
+### Five-State Workflow (v1.6.1)
 
 ```
 State A: Context Ingestion (T0 Loading)
@@ -37,10 +37,18 @@ State E: Converge & Calibrate
 | D | E | All tiers passed |
 | E | A | New task or continue |
 
+## Project-Specific Workflows
+
+| Workflow | Purpose | Last Executed |
+|----------|---------|---------------|
+| v1.5.0 Frontend Modernization | Atomic Design + BEM | ✅ 2026-02-03 |
+| v1.7.0 Architecture Migration | Modular structure | ✅ 2026-02-05 |
+| v1.8.0 Core Features | Charts + Dashboard + WebSocket | ✅ 2026-02-05 |
+
 ## Version Info
 
 | Component | Version |
 |-----------|---------|
-| CDD Framework | v1.5.0 |
-| Project | MY-DOGE-MICRO |
-| Procedural Law | v1.0.0 |
+| CDD Framework | v1.6.1 |
+| Project | MY-DOGE-MACRO v1.8.0 |
+| Procedural Law | v1.8.0 |

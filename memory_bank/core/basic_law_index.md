@@ -1,7 +1,7 @@
 # Basic Law Index - Core Constitution
 
-> **Version**: v1.0.0  
-> **Last Updated**: 2026-02-01
+> **Version**: v1.8.0  
+> **Last Updated**: 2026-02-05
 
 ## Core Axioms Summary
 
@@ -46,6 +46,10 @@ Check dependency package existence, use parameterized queries for injection defe
 
 | Component | Version |
 |-----------|---------|
-| CDD Framework | v1.5.0 |
-| Project | MY-DOGE-MICRO |
-| Constitution | v1.0.0 |
+| CDD Framework | v1.6.1 |
+| Project | MY-DOGE-MACRO v1.8.0 |
+| Architecture | Modular (Complete) |
+
+---
+
+*Constitutional Law Version: v1.8.0 | CDD v1.6.1*

@@ -1,78 +1,100 @@
-# API Reference
+# API 文档中心
 
-> **Version**: v1.6.0
-> **Base URL**: `http://localhost:8000`
+> **Version**: v1.8.0
+> **Last Updated**: 2026-02-05
 
 ## 概述
 
 MY-DOGE-MACRO 后端 API 基于 FastAPI 构建，提供量化分析和 AI 研报生成服务。
 
-## 端点列表
+## 文档索引
 
-### 健康检查
+| 文档 | 描述 |
+|------|------|
+| [API 参考](./api-reference.md) | 完整的 REST 和 WebSocket API 文档 |
+| [技术指标](./indicators.md) | 技术指标公式和使用说明 |
 
-```
-GET /health
-```
+## 快速入门
 
-返回服务健康状态。
+### 基础信息
 
-### 宏观分析
+| 项目 | 值 |
+|------|-----|
+| **基础 URL** | `http://localhost:8000` |
+| **API 版本** | v1 |
+| **数据格式** | JSON |
+| **WebSocket** | `ws://localhost:8000/ws/{client_id}` |
 
-```
-POST /api/macro/analyze
-```
+### 核心端点
 
-执行宏观市场分析。
+| 端点 | 方法 | 描述 |
+|------|------|------|
+| `/api/v1/market/{ticker}` | GET | 获取市场数据 |
+| `/api/v1/indicators/{ticker}` | GET | 计算技术指标 |
+| `/api/v1/analysis/rsrs/{ticker}` | GET | RSRS 分析 |
+| `/api/v1/ai/report` | POST | 生成 AI 研报 |
+| `/ws/{client_id}` | WS | 实时价格推送 |
 
-**请求体**:
-```json
-{
-  "symbols": ["AAPL", "GOOGL", "MSFT"],
-  "period": "1y",
-  "indicators": ["rsi", "macd", "rsrs"]
-}
-```
+### 示例请求
 
-**响应**:
-```json
-{
-  "status": "success",
-  "data": {
-    "analysis": {...},
-    "timestamp": "2026-02-05T22:00:00Z"
-  }
-}
-```
+```bash
+# 获取市场数据
+curl http://localhost:8000/api/v1/market/AAPL?days=100
 
-### 微观分析
+# 计算技术指标
+curl http://localhost:8000/api/v1/indicators/AAPL?indicators=macd,rsi,kdj
 
-```
-POST /api/micro/scan
-```
-
-执行个股扫描和分析。
-
-### AI 研报生成
-
-```
-POST /api/report/generate
+# 生成 AI 研报
+curl -X POST http://localhost:8000/api/v1/ai/report \
+  -H "Content-Type: application/json" \
+  -d '{"tickers": ["AAPL", "BTC-USD"], "language": "zh"}'
 ```
 
-生成 AI 驱动的研究报告。
+## v1.8.0 新增功能
 
-## 认证
+### WebSocket 实时推送
 
-当前版本不需要认证。生产环境将添加 API Key 认证。
+```javascript
+const ws = new WebSocket('ws://localhost:8000/ws/client-001');
 
-## 错误处理
+// 订阅 ticker
+ws.send(JSON.stringify({ action: 'subscribe', ticker: 'AAPL' }));
 
-| 状态码 | 说明 |
-|--------|------|
-| 200 | 成功 |
-| 400 | 请求参数错误 |
-| 500 | 服务器内部错误 |
+// 接收价格更新
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log(data); // { type: 'price_update', ticker: 'AAPL', data: {...} }
+};
+```
+
+### 技术指标 API
+
+支持的指标:
+- **MA**: 简单移动平均
+- **EMA**: 指数移动平均
+- **MACD**: 指数平滑异同移动平均
+- **RSI**: 相对强弱指数
+- **KDJ**: 随机指标
+- **Bollinger**: 布林带
+- **ATR**: 平均真实波幅
+
+### 通达信数据源
+
+当本地安装了通达信软件时，API 可自动读取 A 股历史数据:
+
+```bash
+# 自动检测通达信路径
+GET /api/v1/tdx/status
+
+# 读取 A 股数据
+GET /api/v1/tdx/data/600000?days=250
+```
+
+## 详细文档
+
+- [完整 API 参考](./api-reference.md) - 所有端点的详细说明
+- [技术指标文档](./indicators.md) - 指标公式和信号解释
 
 ---
 
-*文档版本: v1.6.0 | 更新日期: 2026-02-05*
+*文档版本: v1.8.0 | 更新日期: 2026-02-05*
