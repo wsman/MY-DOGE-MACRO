@@ -1,6 +1,6 @@
 # Backend API Reference (T3 Reference)
 
-> **Source**: `../../../docs/api/backend-api.md`  
+> **Source**: `../../../memory_bank/t3_documentation/api/backend-api.md`  
 > **Version**: v1.6.0  
 > **Last Updated**: 2026-02-05  
 > **Category**: API Reference  
@@ -171,16 +171,16 @@ const fetchMarketData = async () => {
 - **Active Context**: `../../core/active_context.md` - Current system state
 
 ### External Documents
-- **Full API Document**: [../../../docs/api/backend-api.md](../../../docs/api/backend-api.md)
+- **Full API Document**: [../../../memory_bank/t3_documentation/api/backend-api.md](../../../memory_bank/t3_documentation/api/backend-api.md)
 - **Root README**: `../../../README.md` - Complete project overview
 - **CHANGELOG**: `../../../CHANGELOG.md` - Version history and changes
 
 ## Access Methods
 
 ### For Detailed Information
-- **Primary Source**: [Complete API Document](../../../docs/api/backend-api.md)
-- **GitHub**: https://github.com/wsman/MY-DOGE-MACRO/tree/main/docs/api
-- **Documentation Center**: `../../../docs/README.md`
+- **Primary Source**: [Complete API Document](../../../memory_bank/t3_documentation/api/backend-api.md)
+- **GitHub**: https://github.com/wsman/MY-DOGE-MACRO/tree/main/memory_bank/t3_documentation/api
+- **Documentation Center**: `../../../memory_bank/t3_documentation/README.md`
 
 ### For AI Agents
 - **CDD Path**: `memory_bank/t3_documentation/api/`

@@ -8,13 +8,13 @@
 
 | Category | File | Purpose | Status |
 |----------|------|---------|--------|
-| Context Management | `standards/DS-007_context_management.md` | T0 document management | ✅ |
-| Feature Spec | `standards/DS-050_feature_specification.md` | Feature definition | ✅ |
-| Implementation Plan | `standards/DS-051_implementation_plan.md` | Task planning | ✅ |
-| Atomic Tasks | `standards/DS-052_atomic_tasks.md` | Execution units | ✅ |
-| Code Review | `standards/DS-060_code_review.md` | Automated code review | ✅ |
-| Architecture Modernization | `standards/DS-057_frontend_architecture_modernization.md` | Modular architecture | ✅ Complete |
-| v1.8.0 Roadmap | `standards/DS-058_v180_roadmap.md` | Core features roadmap | ✅ Complete |
+| Context Management | `t2_standards/DS-007_context_management.md` | T0 document management | ✅ |
+| Feature Spec | `t2_standards/DS-050_feature_specification.md` | Feature definition | ✅ |
+| Implementation Plan | `t2_standards/DS-051_implementation_plan.md` | Task planning | ✅ |
+| Atomic Tasks | `t2_standards/DS-052_atomic_tasks.md` | Execution units | ✅ |
+| Code Review | `t2_standards/DS-060_code_review.md` | Automated code review | ✅ |
+| Architecture Modernization | `t2_standards/DS-057_frontend_architecture_modernization.md` | Modular architecture | ✅ Complete |
+| v1.8.0 Roadmap | `t2_standards/DS-058_v180_roadmap.md` | Core features roadmap | ✅ Complete |
 
 ## Modular Architecture Reference (v1.8.0)
 
@@ -28,7 +28,7 @@
 | └─ Design System | `libs/design-system/` | UI components and tokens | ✅ Complete |
 | **Infrastructure** | `infrastructure/` | Development infrastructure | ✅ |
 | └─ CDD Framework | `infrastructure/cdd/` | CDD tools | ✅ Complete |
-| **Documentation** | `docs/` | Project documentation | ✅ Updated |
+| **Documentation** | `memory_bank/t3_documentation/` | Project documentation | ✅ Updated |
 
 ## Component Implementation Status
 

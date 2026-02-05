@@ -1,69 +1,54 @@
-# My Doge Macro - Project Seed Document (CDD T0)
+# My Doge Macro - CDD T0 Seed Document (指向根目录README)
 
-> **创建**: 2026-02-03  
-> **最后更新**: 2026-02-05  
-> **版本**: v1.6.0 (模块化架构)  
-> **类型**: AI驱动的量化分析系统  
-> **主要文档**: [README.md](../../README.md)
+> **CDD T0文档** | **版本**: v1.8.0 | **最后更新**: 2026-02-05 | **主要文档**: [根目录README.md](../../README.md)
 
-## 🔗 主要文档
+## 📍 重要提示
 
-**完整项目文档请查看根目录的README.md**：
-- [📖 完整项目README](../../README.md) - 包含完整项目概述、架构、快速启动、文档体系等
+**此文件为CDD体系中的T0种子文档。**
 
-## 🎯 核心目的（简要）
+**项目的完整文档已迁移到根目录的README.md文件：**
 
-- 全球宏观资产联动分析 (Gold, Bitcoin, NASDAQ, A-Shares)
-- 基于 LLM 的自动化研报生成
-- 内置高级量化指标 (RSRS, 波动率偏度)
+👉 **[📖 点击查看完整项目README](../../README.md)** - 包含完整项目概述、架构、快速启动、文档体系等
 
-## 🛠 技术栈（简要）
+## 🎯 核心功能（简要）
 
-- **前端**: React 19 + TypeScript + Tauri v2 (Rust)
-- **后端**: Python FastAPI
-- **数据**: pandas, numpy, scipy, yfinance, 通达信 DB
-- **AI**: DeepSeek API
-- **架构**: 模块化 (apps/libs/infrastructure)
+- **全局文档入口**: 指向项目完整README
+- **CDD T0种子**: Constitution-Driven Development的T0层文档
+- **元数据管理**: 项目核心意识和基础定义
 
-## 📊 关键指标
+## 🔗 快速导航
 
-| 指标 | 值 | 状态 |
+| 链接 | 描述 |
+|------|------|
+| [📖 完整项目文档](../../README.md) | 项目完整README（主要文档） |
+| [📚 CDD文档体系](../) | CDD三层文档结构 |
+| [🏗️ 项目结构图](../../README.md#项目结构) | 模块化架构图 |
+| [🚀 快速启动指南](../../README.md#快速启动) | 环境设置和启动步骤 |
+
+## 📊 CDD元数据
+
+| 字段 | 值 | 说明 |
 |------|-----|------|
-| **版本** | v1.6.0 (模块化) | 🚀 新 |
-| **系统熵** | 0.50 | 🟡 健康 |
-| **最新审计** | 8.75/10 | ✅ 通过 |
-| **设计系统迁移** | ✅ 完成 | 已迁移到 `libs/design-system/` |
-| **路径映射配置** | ✅ 完成 | `@design-system/*`, `@libs/*` |
+| **CDD层级** | T0 (种子文档) | Constitution-Driven Development T0层 |
+| **项目版本** | v1.8.0 | 当前项目版本 |
+| **系统熵** | 0.50 | 系统复杂度指标 |
+| **最后审计** | 8.75/10 | 质量审计结果 |
+| **文档状态** | ✅ 活跃 | 文档维护状态 |
 
-## 🚀 架构现代化进展
+## 🔧 CDD工作流提示
 
-| 组件 | 迁移状态 | 详情 |
-|------|----------|------|
-| **设计系统** | ✅ 完成 | 已迁移到 `libs/design-system/` |
-| **前端应用** | ⏳ 进行中 | 目标: `apps/desktop/` |
-| **后端 API** | ⏳ 计划中 | 目标: `apps/api/` |
-| **量化引擎** | ⏳ 计划中 | 目标: `libs/quant-engine/` |
-| **文档** | ✅ 部分完成 | 文档体系已建立 |
+- **部署前**: 此模板用于生成项目README
+- **部署后**: 项目README功能已转移到根目录`README.md`
+- **当前角色**: CDD T0种子文档入口
 
-## 📁 在CDD体系中的角色
+## 🤖 AI Agent 友好提示
 
-- **T0文档**: 项目种子文档
-- **作用**: 项目核心意识和基础定义
-- **关联文档**: 查看[完整README](../../README.md)获取详细信息
-- **CDD版本**: v1.6.1
-
-## 🔗 相关链接
-
-- **GitHub仓库**: https://github.com/wsman/MY-DOGE-MACRO
-- **完整README**: [../../README.md](../../README.md)
-- **文档中心**: [../../docs/README.md](../../docs/README.md)
-- **API文档**: [../../docs/api/backend-api.md](../../docs/api/backend-api.md)
-- **架构文档**: [../../docs/architecture/v1.6.0-modular-architecture.md](../../docs/architecture/v1.6.0-modular-architecture.md)
-- **设计系统**: [../../apps/desktop/DESIGN_SYSTEM.md](../../apps/desktop/DESIGN_SYSTEM.md)
-- **许可证**: Apache 2.0
+- **主要文档**: 根目录`README.md`包含完整项目信息
+- **CDD体系**: 本项目遵循CDD v1.6.1规范
+- **架构设计**: 模块化结构，清晰的关注点分离
 
 ---
 
-*此文档为CDD体系中的T0种子文档。完整项目信息、详细架构说明、开发指南和部署文档请参阅根目录的README.md。*
+*此文档为CDD T0种子文档入口。完整项目信息、详细架构说明、开发指南和部署文档请访问根目录的README.md。*
 
-> **AI Agent 友好提示**: 项目采用模块化架构设计，为AI Agent提供清晰的模块边界和标准化接口，便于理解和开发。
+> **许可证**: Apache 2.0 | **维护者**: Negentropy Lab AI Agent System

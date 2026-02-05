@@ -48,9 +48,9 @@ src/
 
 | Document | Path | Description |
 |----------|------|-------------|
-| **Feature Spec** | `memory_bank/standards/DS-057_frontend_architecture_modernization.md` | Full feature specification |
-| **Implementation Plan** | `memory_bank/standards/DS-051_frontend_modernization_plan.md` | Phase-by-phase plan |
-| **Atomic Tasks** | `memory_bank/standards/DS-052_frontend_modernization_tasks.md` | 22 detailed tasks |
+| **Feature Spec** | `memory_bank/t2_standards/DS-057_frontend_architecture_modernization.md` | Full feature specification |
+| **Implementation Plan** | `memory_bank/t2_standards/DS-051_implementation_plan.md` | Phase-by-phase plan |
+| **Atomic Tasks** | `memory_bank/t2_standards/DS-052_atomic_tasks.md` | 22 detailed tasks |
 
 ## 🚀 Quick Start
 
@@ -106,11 +106,11 @@ npm run storybook
 
 ## 🔗 References
 
-- [DS-057 Feature Specification](memory_bank/standards/DS-057_frontend_architecture_modernization.md)
-- [DS-051 Implementation Plan](memory_bank/standards/DS-051_frontend_modernization_plan.md)
-- [DS-052 Atomic Tasks](memory_bank/standards/DS-052_frontend_modernization_tasks.md)
-- [Frontend UI Standard (DS-055)](memory_bank/standards/DS-055_frontend_ui_standard.md)
-- [Frontend-Layout.html](client/docs/Frontend-Layout.html)
+- [DS-057 Feature Specification](memory_bank/t2_standards/DS-057_frontend_architecture_modernization.md)
+- [DS-051 Implementation Plan](memory_bank/t2_standards/DS-051_implementation_plan.md)
+- [DS-052 Atomic Tasks](memory_bank/t2_standards/DS-052_atomic_tasks.md)
+- [Frontend UI Standard (DS-055)](memory_bank/t2_standards/DS-055_frontend_ui_standard.md)
+- [Frontend-Layout.html](client/memory_bank/t3_documentation/Frontend-Layout.html)
 
 ---
 

@@ -94,8 +94,11 @@ MY-DOGE-MACRO/
 ├── infrastructure/         # 基础设施 (CDD工具、CI/CD)
 ├── config/                 # 配置管理
 ├── data/                   # 数据存储
-├── docs/                   # 项目文档
-└── memory_bank/           # CDD 文档体系
+└── memory_bank/            # 📚 统一文档体系 (CDD)
+    ├── core/               # T0 核心宪法
+    ├── axioms/             # T1 公理层
+    ├── t2_standards/      # T2 标准层
+    └── t3_documentation/   # T3 用户/开发者文档
 ```
 
 ### 详细目录结构
@@ -140,22 +143,20 @@ MY-DOGE-MACRO/
 │   ├── processed/         # 处理后的分析数据
 │   └── reports/           # AI生成的研报
 │
-├── docs/                   # 项目文档 (v1.6.0完整文档体系)
-│   ├── README.md          # 文档中心首页
-│   ├── architecture/      # 架构设计文档
-│   │   └── v1.6.0-modular-architecture.md
-│   ├── api/              # API文档
-│   │   └── backend-api.md
-│   ├── development/       # 开发指南
-│   │   └── getting-started.md
-│   └── deployment/        # 部署指南
-│       └── deployment-guide.md
-│
-├── memory_bank/           # CDD 文档体系
-│   ├── core/              # T0 核心文档
-│   ├── axioms/            # T1 系统公理
-│   ├── protocols/         # T2 协议
-│   └── standards/         # T2 标准
+├── memory_bank/            # 📚 统一文档体系 (CDD v1.8.0)
+│   ├── core/              # T0 核心宪法
+│   │   ├── active_context.md
+│   │   ├── knowledge_graph.md
+│   │   └── *_law_index.md
+│   ├── axioms/            # T1 公理层
+│   ├── t2_standards/     # T2 标准层
+│   ├── protocols/         # 工作流协议
+│   └── t3_documentation/  # T3 用户/开发者文档
+│       ├── README.md      # 文档中心
+│       ├── api/           # API 文档
+│       ├── architecture/  # 架构文档
+│       ├── deployment/    # 部署指南
+│       └── guides/        # 使用指南
 │
 ├── scripts/               # 项目级脚本
 └── tests/                 # 集成测试和端到端测试
@@ -477,31 +478,31 @@ State A → State B → State C → State D → State E
 #### 架构文档
 | 文档 | 描述 | 适用版本 |
 |------|------|----------|
-| [v1.6.0模块化架构](./docs/architecture/v1.6.0-modular-architecture.md) | 新模块化架构设计、迁移状态、依赖关系 | v1.6.0+ |
+| [v1.6.0模块化架构](./memory_bank/t3_documentation/architecture/v1.6.0-modular-architecture.md) | 新模块化架构设计、迁移状态、依赖关系 | v1.6.0+ |
 | [设计系统](../../apps/desktop/DESIGN_SYSTEM.md) | 前端设计系统规范、组件库、设计令牌 | v1.5.0+ |
 
 #### 开发文档
 | 文档 | 描述 | 用途 |
 |------|------|------|
-| [快速入门](./docs/development/getting-started.md) | 环境设置、安装步骤、开发工作流 | 新开发者入门 |
-| [后端API文档](./docs/api/backend-api.md) | API端点、请求/响应格式、认证机制 | API集成和开发 |
+| [快速入门](./memory_bank/t3_documentation/development/getting-started.md) | 环境设置、安装步骤、开发工作流 | 新开发者入门 |
+| [后端API文档](./memory_bank/t3_documentation/api/backend-api.md) | API端点、请求/响应格式、认证机制 | API集成和开发 |
 | [CDD文档体系](../../memory_bank/core/) | Constitution-Driven Development文档 | 项目管理和工作流 |
 
 #### 部署文档
 | 文档 | 描述 | 目标环境 |
 |------|------|----------|
-| [部署指南](./docs/deployment/deployment-guide.md) | 桌面应用和API服务部署 | 生产环境 |
+| [部署指南](./memory_bank/t3_documentation/deployment/deployment-guide.md) | 桌面应用和API服务部署 | 生产环境 |
 | [CI/CD配置](../../.github/workflows/) | GitHub Actions工作流配置 | 持续集成/部署 |
 
 ### 文档体系说明
 
 | 级别 | 目录 | 说明 |
 |------|------|------|
-| **T0** | `memory_bank/core/` | 核心意识文档 (项目种子、知识图谱) |
-| **T1** | `memory_bank/axioms/` | 系统公理 (技术上下文、行为模式) |
-| **T2** | `memory_bank/protocols/` | 工作流协议 (CDD工作流) |
-| **T2** | `memory_bank/standards/` | 实现标准 (架构标准、代码规范) |
-| **T3** | `docs/`, `memory_bank/t3_documentation/` | 用户和开发者文档 (docs/为主目录, memory_bank/t3_documentation/为CDD索引) |
+| **T0** | `memory_bank/core/` | 核心宪法文档 (每次会话加载) |
+| **T1** | `memory_bank/axioms/` | 公理层 (技术上下文、行为模式) |
+| **T2** | `memory_bank/protocols/` | 工作流协议 |
+| **T2** | `memory_bank/t2_standards/` | 实现标准 (架构标准、代码规范) |
+| **T3** | `memory_bank/t3_documentation/` | 用户和开发者文档 (统一存放) |
 
 ### 文档维护流程
 
@@ -606,9 +607,9 @@ import { Button } from '@design-system/components/Button';
 - **GitHub**: https://github.com/wsman/MY-DOGE-MACRO
 - **CDD Framework**: [OpenClaw CDD Skill](../openclaw/skills/cdd/)
 - **设计系统**: `apps/desktop/DESIGN_SYSTEM.md`
-- **文档中心**: `docs/README.md`
-- **API文档**: `docs/api/backend-api.md`
-- **架构文档**: `docs/architecture/v1.6.0-modular-architecture.md`
+- **文档中心**: `memory_bank/t3_documentation/README.md`
+- **API文档**: `memory_bank/t3_documentation/api/backend-api.md`
+- **架构文档**: `memory_bank/t3_documentation/architecture/v1.6.0-modular-architecture.md`
 - **项目种子文档**: `memory_bank/core/project_readme.md` (CDD T0文档)
 
 ## 🤖 AI Agent 友好架构

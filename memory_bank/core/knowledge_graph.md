@@ -41,7 +41,7 @@ Data & Configuration
 ├── data/             # Raw, processed data and reports
 └── config/           # Environment and feature configurations
 
-Documentation (docs/)
+Documentation (memory_bank/t3_documentation/)
 ├── architecture/     # Architecture design documents
 │   └── overview.md   # Updated to v1.8.0
 ├── api/              # API documentation
@@ -120,9 +120,9 @@ graph TD
 
 | Document | Path | Status |
 |----------|------|--------|
-| DS-058 v1.8.0 Roadmap | `standards/DS-058_v180_roadmap.md` | ✅ Complete |
-| DS-057 Frontend Architecture | `standards/DS-057_frontend_architecture_modernization.md` | ✅ Complete |
-| DS-055 UI Standard | `standards/DS-055_frontend_ui_standard.md` | ✅ Complete |
+| DS-058 v1.8.0 Roadmap | `t2_standards/DS-058_v180_roadmap.md` | ✅ Complete |
+| DS-057 Frontend Architecture | `t2_standards/DS-057_frontend_architecture_modernization.md` | ✅ Complete |
+| DS-055 UI Standard | `t2_standards/DS-055_frontend_ui_standard.md` | ✅ Complete |
 
 ## ✅ v1.8.0 Core Features (Complete)
 
@@ -169,4 +169,4 @@ graph TD
 - Start with `core/active_context.md`
 - Load T0 documents for any task
 - Load T1 documents when detailed constraints needed
-- Check `docs/api/` for API reference
+- Check `memory_bank/t3_documentation/api/` for API reference

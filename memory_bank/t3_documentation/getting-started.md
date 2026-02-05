@@ -1,6 +1,6 @@
 # Development Guide - Getting Started (T3 Reference)
 
-> **Source**: `../../../docs/development/getting-started.md`  
+> **Source**: `../../../memory_bank/t3_documentation/development/getting-started.md`  
 > **Version**: v1.6.0  
 > **Last Updated**: 2026-02-05  
 > **Category**: Development  
@@ -83,7 +83,7 @@ This document provides a structured reference to the complete development guide,
 - **Protocols**: `../../protocols/` - Workflow protocols and procedures
 
 ### External Documents
-- **Full Development Guide**: [../../../docs/development/getting-started.md](../../../docs/development/getting-started.md)
+- **Full Development Guide**: [../../../memory_bank/t3_documentation/development/getting-started.md](../../../memory_bank/t3_documentation/development/getting-started.md)
 - **Root README**: `../../../README.md` - Complete project overview
 - **CHANGELOG**: `../../../CHANGELOG.md` - Version history and changes
 - **Design System**: `../../../apps/desktop/DESIGN_SYSTEM.md` - UI components and tokens
@@ -129,9 +129,9 @@ The project is currently migrating from legacy architecture to the new modular a
 ## Access Methods
 
 ### For Detailed Information
-- **Primary Source**: [Complete Development Guide](../../../docs/development/getting-started.md)
-- **GitHub**: https://github.com/wsman/MY-DOGE-MACRO/tree/main/docs/development
-- **Documentation Center**: `../../../docs/README.md`
+- **Primary Source**: [Complete Development Guide](../../../memory_bank/t3_documentation/development/getting-started.md)
+- **GitHub**: https://github.com/wsman/MY-DOGE-MACRO/tree/main/memory_bank/t3_documentation/development
+- **Documentation Center**: `../../../memory_bank/t3_documentation/README.md`
 
 ### For AI Agents
 - **CDD Path**: `memory_bank/t3_documentation/development/`

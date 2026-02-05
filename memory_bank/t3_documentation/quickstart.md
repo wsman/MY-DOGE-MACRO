@@ -73,7 +73,7 @@ MY-DOGE-MACRO/
 │   │   ├── analysis/       # 技术指标 (MACD/RSI/KDJ...)
 │   │   └── data/           # 数据源 (yfinance/通达信)
 │   └── design-system/      # 设计系统
-└── docs/                   # 文档
+└── memory_bank/t3_documentation/                   # 文档
 ```
 
 ## 功能特性

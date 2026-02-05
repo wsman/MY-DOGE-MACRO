@@ -80,7 +80,7 @@ context_strategy:
       include: ["memory_bank/axioms/system_patterns.md", "memory_bank/axioms/tech_context.md"]
       budget_ratio: 0.5
     coding:
-      include: ["memory_bank/standards/DS-050*.md", "memory_bank/standards/DS-051*.md", "memory_bank/standards/DS-052*.md"]
+      include: ["memory_bank/t2_standards/DS-050*.md", "memory_bank/t2_standards/DS-051*.md", "memory_bank/t2_standards/DS-052*.md"]
       budget_ratio: 0.7
     verifying:
       include: ["memory_bank/axioms/behavior_context.md"]
@@ -91,5 +91,5 @@ paths:
   templates:
     core: "memory_bank/core"
     axioms: "memory_bank/axioms"
-    standards: "memory_bank/standards"
+    standards: "memory_bank/t2_standards"
     protocols: "memory_bank/protocols"

@@ -14,7 +14,7 @@
 
 1. **Git Remote**: 必须配置了指向 GitHub 的 remote.origin.url
 2. **MCP Server**: GitHub MCP Server 必须活跃
-3. **DS-052**: 必须存在 `memory_bank/standards/DS-052_atomic_tasks.md`
+3. **DS-052**: 必须存在 `memory_bank/t2_standards/DS-052_atomic_tasks.md`
 
 ## 3. 执行流程
 

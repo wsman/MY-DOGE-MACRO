@@ -1,127 +1,157 @@
-# T3 Documentation - User & Developer Guides
+# MY-DOGE-MACRO T3 Documentation
 
-> **Level**: T3 (User Documentation)  
-> **Version**: v1.6.0  
+> **Version**: v1.8.0  
 > **Last Updated**: 2026-02-05  
-> **Primary Location**: `../docs/`
+> **Location**: `memory_bank/t3_documentation/`  
+> **Level**: T3 (User Documentation)
 
-## Overview
+## 📚 文档体系概述
 
-T3 documents are user-facing and developer-focused documentation that provides practical guidance for using, developing, and deploying the MY-DOGE-MACRO system.
+MY-DOGE-MACRO 采用 **CDD (Constitution-Driven Development)** 文档体系，所有文档统一存放在 `memory_bank/` 目录下。
 
-These documents serve as the bridge between the internal CDD knowledge system (T0-T2) and external users/developers. They translate system concepts and standards into actionable instructions and reference materials.
+### CDD 文档层级
 
-## Documentation Categories
+| 层级 | 目录 | 用途 | 主要受众 |
+|------|------|------|----------|
+| **T0** | `../core/` | 核心宪法文档 (每次会话加载) | AI Agents, 系统架构师 |
+| **T1** | `../axioms/` | 公理层 (技术上下文、行为模式) | AI Agents, 高级开发者 |
+| **T2** | `../protocols/`, `../t2_standards/` | 工作流协议、实现标准 | 开发者, 技术负责人 |
+| **T3** | `./` | 用户和开发者文档 (本层级) | 用户, 开发者, DevOps |
 
-| Category | Document | Description | Status |
-|----------|----------|-------------|--------|
-| **Architecture** | [v1.6.0 Modular Architecture](./architecture/v1.6.0-modular-architecture.md) | Modular architecture design and migration status | ✅ Current |
-| **API Reference** | [Backend API](./api/backend-api.md) | REST API endpoints, requests/responses, authentication | ✅ Current |
-| **Development** | [Getting Started](./development/getting-started.md) | Environment setup, installation, development workflow | ✅ Current |
-| **Deployment** | [Deployment Guide](./deployment/deployment-guide.md) | Production deployment for desktop app and API services | ✅ Current |
+## 📖 文档索引
 
-## CDD Document Hierarchy
+### 入门指南
 
-| Level | Directory | Purpose | Audience |
-|-------|-----------|---------|----------|
-| **T0** | `../core/` | Core consciousness (project seed, knowledge graph) | AI Agents, System Architects |
-| **T1** | `../axioms/` | System axioms (technical context, behavior patterns) | AI Agents, Senior Developers |
-| **T2** | `../protocols/`, `../standards/` | Workflow protocols, implementation standards | Developers, Technical Leads |
-| **T3** | `./` | User and developer documentation (this level) | Users, Developers, DevOps |
+| 文档 | 描述 | 状态 |
+|------|------|------|
+| [快速入门](./quickstart.md) | 安装、配置和启动项目 | ✅ v1.8.0 |
+| [开发入门](./getting-started.md) | 开发环境配置 | ✅ v1.8.0 |
 
-## T3 Document Standards
+### 架构文档
 
-### Format Requirements
-- **Markdown**: Standard Markdown syntax with clear hierarchy
-- **Structure**: Logical organization with tables of contents
-- **Examples**: Practical, runnable code examples
-- **Links**: Valid relative links with descriptive anchor text
-- **Images**: When helpful, with alt text and captions
+| 文档 | 描述 | 状态 |
+|------|------|------|
+| [架构概览](./overview.md) | 系统架构和技术栈 (v1.8.0) | ✅ v1.8.0 |
+| [模块化架构](./modular-architecture.md) | 模块化设计详情 | ✅ v1.6.0 |
 
-### Content Standards
-- **User-focused**: Practical guidance over theoretical concepts
-- **Actionable**: Step-by-step instructions with clear outcomes
-- **Current**: Version-specific information, updated regularly
-- **Complete**: Comprehensive coverage of the topic
-- **Accessible**: Clear language, avoiding unnecessary jargon
+### API 文档
 
-### Metadata Requirements
-Each T3 document should include:
-- Version and last updated date
-- Document category and audience
-- Source location (pointing to `docs/` directory)
-- Status indicator (Current, Deprecated, In Progress)
+| 文档 | 描述 | 状态 |
+|------|------|------|
+| [API 参考](./api-reference.md) | REST 和 WebSocket API 完整参考 | ✅ v1.8.0 |
+| [后端 API](./backend-api.md) | 后端接口详情 | ✅ v1.6.0 |
+| [技术指标](./indicators.md) | 技术指标公式和使用说明 | ✅ v1.8.0 |
 
-## Access Methods
+### 部署运维
 
-### For Users
-- **Primary Access**: `docs/` directory (original location)
-- **GitHub**: https://github.com/wsman/MY-DOGE-MACRO/tree/main/docs
-- **Root README**: `README.md` includes document directory
-- **CDD System**: This index (`memory_bank/t3_documentation/`)
+| 文档 | 描述 | 状态 |
+|------|------|------|
+| [部署指南](./deployment.md) | 开发、生产环境部署指南 | ✅ v1.8.0 |
 
-### For AI Agents
-- **CDD Path**: `memory_bank/t3_documentation/`
-- **Structured Access**: Category-based navigation
-- **Metadata**: Version, status, and relationship information
-- **Context**: Connection to T0-T2 documents for complete understanding
+### 模板
 
-### For Developers
-- **Documentation Center**: `docs/README.md` provides navigation
-- **API Reference**: `docs/api/backend-api.md` for integration
-- **Architecture Docs**: `docs/architecture/` for system design
-- **Development Guides**: `docs/development/` for getting started
+| 文档 | 描述 | 状态 |
+|------|------|------|
+| [文档模板](./document-template.md) | 创建新 T3 文档的模板 | ✅ v1.6.0 |
 
-## Maintenance
+## 🏗️ 项目结构
 
-### Update Process
-1. **Source Update**: Update primary documents in `docs/` directory
-2. **T3 Sync**: Update corresponding T3 reference documents if needed
-3. **Link Verification**: Verify all internal and external links
-4. **Version Update**: Update version and last updated information
-5. **Consistency Check**: Ensure T3 documents reflect source content accurately
+```
+MY-DOGE-MACRO/
+├── apps/                    # 应用层
+│   ├── desktop/            # 桌面应用 (React 19 + Tauri v2)
+│   └── api/                # 后端 API (FastAPI + WebSocket)
+├── libs/                    # 共享库
+│   ├── quant-engine/       # 量化引擎 (技术指标 + 数据源)
+│   └── design-system/      # 设计系统 (原子设计 + BEM)
+├── infrastructure/          # 基础设施
+│   └── cdd/                # CDD 工具链
+└── memory_bank/            # 📚 统一文档体系
+    ├── core/               # T0 核心宪法
+    ├── axioms/             # T1 公理层
+    ├── t2_standards/       # T2 标准层
+    ├── protocols/          # 工作流协议
+    └── t3_documentation/   # T3 用户/开发者文档 (本目录)
+```
 
-### Version Control Strategy
-- **Source of Truth**: `docs/` directory contains the authoritative content
-- **T3 References**: Provide structured access and metadata
-- **Backward Compatibility**: Note breaking changes and migration paths
-- **Deprecation Policy**: Mark deprecated documents clearly with alternatives
+## 📊 版本历史
 
-### Quality Assurance
-- **Technical Accuracy**: Ensure all technical information is correct
-- **Link Validity**: Regular checks of all internal and external links
-- **User Testing**: Document usability from user perspective
-- **AI Agent Testing**: Ensure documents are accessible to AI systems
+| 版本 | 日期 | 主要变更 |
+|------|------|----------|
+| **v1.8.0** | 2026-02-05 | 核心功能完成 + 文档合并至 memory_bank |
+| v1.7.0 | 2026-02-05 | 完整模块化迁移 |
+| v1.6.0 | 2026-02-04 | 模块化架构启动 |
+| v1.5.0 | 2026-02-03 | 前端架构现代化 |
 
-## Related Documents
+## 🔗 相关链接
 
-### CDD Internal
-- **Technical Law Index**: `../core/technical_law_index.md` - Overview of all standards
-- **Project Readme**: `../core/project_readme.md` - T0 seed document
-- **Active Context**: `../core/active_context.md` - Current system state
+- **GitHub**: https://github.com/wsman/MY-DOGE-MACRO/tree/main/memory_bank/t3_documentation
+- **CDD 规范**: Constitution-Driven Development v1.6.1
+- **项目 README**: `../../README.md`
+- **变更日志**: `../../CHANGELOG.md`
+- **设计系统**: `../../apps/desktop/DESIGN_SYSTEM.md`
 
-### External
-- **Root README**: `../../README.md` - Complete project overview
-- **CHANGELOG**: `../../CHANGELOG.md` - Version history and changes
-- **Design System**: `../../apps/desktop/DESIGN_SYSTEM.md` - UI components and tokens
+## 📋 T3 文档标准
 
-## Contribution Guidelines
+### 格式要求
+- **Markdown**: 标准 Markdown 语法，清晰的层级结构
+- **结构**: 逻辑组织，包含目录表
+- **示例**: 实用、可运行的代码示例
+- **链接**: 有效的相对链接，包含描述性锚文本
+- **图片**: 必要时添加，包含替代文本和标题
 
-### Adding New T3 Documents
-1. **Create Source**: Add new document to appropriate `docs/` subdirectory
-2. **Create Reference**: Add corresponding T3 reference document
-3. **Update Index**: Add entry to this index table
-4. **Update Links**: Ensure all related documents link correctly
+### 内容标准
+- **用户导向**: 实用指导优先于理论概念
+- **可操作**: 明确的步骤和预期结果
+- **及时**: 版本特定的信息，定期更新
+- **完整**: 主题的全面覆盖
+- **易访问**: 清晰语言，避免不必要术语
 
-### Document Standards Enforcement
-- Follow the established template and format
-- Include all required metadata
-- Use consistent terminology and naming conventions
-- Test all code examples and commands
+### 元数据要求
+每个 T3 文档应包含：
+- 版本和最后更新日期
+- 文档类别和目标受众
+- 源位置（指向 `memory_bank/t3_documentation/` 目录）
+- 状态指示器（当前、已弃用、进行中）
+
+## 🔧 维护流程
+
+### 更新流程
+1. **源更新**: 更新 `memory_bank/t3_documentation/` 目录中的主文档
+2. **链接验证**: 验证所有内部和外部链接
+3. **版本更新**: 更新版本和最后更新信息
+4. **一致性检查**: 确保 T3 文档准确反映源内容
+
+### 版本控制策略
+- **真相源**: `memory_bank/t3_documentation/` 目录包含权威内容
+- **向后兼容**: 注明破坏性变更和迁移路径
+- **弃用策略**: 明确标记已弃用文档并提供替代方案
+
+### 质量控制
+- **技术准确性**: 确保所有技术信息正确
+- **链接有效性**: 定期检查所有链接
+- **用户测试**: 从用户角度测试文档可用性
+- **AI 代理测试**: 确保文档对 AI 系统可访问
+
+## 🤝 贡献指南
+
+### 添加新 T3 文档
+1. **创建文档**: 在 `memory_bank/t3_documentation/` 目录中添加新文档
+2. **更新索引**: 在本索引表中添加条目
+3. **更新链接**: 确保所有相关文档链接正确
+
+### 文档标准执行
+- 遵循既定模板和格式
+- 包含所有必需的元数据
+- 使用一致的术语和命名约定
+- 测试所有代码示例和命令
 
 ---
 
-**T3 Documentation Status**: ✅ Active (v1.6.0)  
-**Maintained by**: Negentropy Lab AI Agent System  
-**CDD Framework**: v1.6.1  
-**Last System Audit**: 8.75/10 (Passed)
+**T3 文档状态**: ✅ 活跃 (v1.8.0)  
+**维护者**: Negentropy Lab AI Agent System  
+**CDD 框架**: v1.6.1  
+**最后系统审计**: 8.75/10 (通过)  
+**文档数量**: 10 个核心文档
+
+*文档版本: v1.8.0 | 更新日期: 2026-02-05*

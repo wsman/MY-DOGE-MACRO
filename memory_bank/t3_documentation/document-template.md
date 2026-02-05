@@ -1,6 +1,6 @@
 # [Document Title] (T3 Reference)
 
-> **Source**: `../../../docs/[category]/[filename].md`  
+> **Source**: `../../../memory_bank/t3_documentation/[category]/[filename].md`  
 > **Version**: v1.6.0  
 > **Last Updated**: YYYY-MM-DD  
 > **Category**: [Category]  
@@ -54,7 +54,7 @@ another-command --flag
 - **[Other Relevant Documents]**: `../../[directory]/[filename].md` - [Description]
 
 ### External Documents
-- **Full Source Document**: [../../../docs/[category]/[filename].md](../../../docs/[category]/[filename].md)
+- **Full Source Document**: [../../../memory_bank/t3_documentation/[category]/[filename].md](../../../memory_bank/t3_documentation/[category]/[filename].md)
 - **Root README**: `../../../README.md` - Complete project overview
 - **CHANGELOG**: `../../../CHANGELOG.md` - Version history and changes
 - **[Other External Documents]**: [Path or URL] - [Description]
@@ -62,9 +62,9 @@ another-command --flag
 ## Access Methods
 
 ### For Detailed Information
-- **Primary Source**: [Complete Source Document](../../../docs/[category]/[filename].md)
-- **GitHub**: https://github.com/wsman/MY-DOGE-MACRO/tree/main/docs/[category]
-- **Documentation Center**: `../../../docs/README.md`
+- **Primary Source**: [Complete Source Document](../../../memory_bank/t3_documentation/[category]/[filename].md)
+- **GitHub**: https://github.com/wsman/MY-DOGE-MACRO/tree/main/memory_bank/t3_documentation/[category]
+- **Documentation Center**: `../../../memory_bank/t3_documentation/README.md`
 
 ### For AI Agents
 - **CDD Path**: `memory_bank/t3_documentation/[category]/`

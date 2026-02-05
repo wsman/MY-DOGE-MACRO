@@ -17,7 +17,7 @@
 加载 T1 文档作为审查基准：
 - `memory_bank/axioms/system_patterns.md` (架构约束)
 - `memory_bank/axioms/tech_context.md` (技术栈约束)
-- `memory_bank/standards/DS-060_code_review.md` (输出标准)
+- `memory_bank/t2_standards/DS-060_code_review.md` (输出标准)
 
 ### Step 2: 静态分析
 1. **Diff 分析**: 识别新增/修改的逻辑

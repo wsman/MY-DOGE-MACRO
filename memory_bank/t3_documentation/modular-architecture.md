@@ -1,6 +1,6 @@
 # v1.6.0 Modular Architecture (T3 Reference)
 
-> **Source**: `../../../docs/architecture/v1.6.0-modular-architecture.md`  
+> **Source**: `../../../memory_bank/t3_documentation/architecture/v1.6.0-modular-architecture.md`  
 > **Version**: v1.6.0  
 > **Last Updated**: 2026-02-05  
 > **Category**: Architecture  
@@ -169,7 +169,7 @@ tests/integration/
 - **Active Context**: `../../core/active_context.md` - Current system state
 
 ### External Documents
-- **Full Architecture Document**: [../../../docs/architecture/v1.6.0-modular-architecture.md](../../../docs/architecture/v1.6.0-modular-architecture.md)
+- **Full Architecture Document**: [../../../memory_bank/t3_documentation/architecture/v1.6.0-modular-architecture.md](../../../memory_bank/t3_documentation/architecture/v1.6.0-modular-architecture.md)
 - **Root README**: `../../../README.md` - Complete project overview
 - **CHANGELOG**: `../../../CHANGELOG.md` - Version history and changes
 - **Design System**: `../../../apps/desktop/DESIGN_SYSTEM.md` - UI components and tokens
@@ -177,9 +177,9 @@ tests/integration/
 ## Access Methods
 
 ### For Detailed Information
-- **Primary Source**: [Complete Architecture Document](../../../docs/architecture/v1.6.0-modular-architecture.md)
-- **GitHub**: https://github.com/wsman/MY-DOGE-MACRO/tree/main/docs/architecture
-- **Documentation Center**: `../../../docs/README.md`
+- **Primary Source**: [Complete Architecture Document](../../../memory_bank/t3_documentation/architecture/v1.6.0-modular-architecture.md)
+- **GitHub**: https://github.com/wsman/MY-DOGE-MACRO/tree/main/memory_bank/t3_documentation/architecture
+- **Documentation Center**: `../../../memory_bank/t3_documentation/README.md`
 
 ### For AI Agents
 - **CDD Path**: `memory_bank/t3_documentation/architecture/`

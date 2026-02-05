@@ -12,13 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - New monorepo structure with `apps/`, `libs/`, `infrastructure/` directories
   - Design System migration to `libs/design-system/` (completed)
   - Path mapping configuration (`@design-system/*`, `@libs/*` aliases)
-  - Modular architecture documentation in `docs/architecture/`
+  - Modular architecture documentation in `memory_bank/t3_documentation/architecture/`
   - Enhanced README.md with consolidated documentation
 
 ### Changed
 - **Documentation Consolidation**:
-  - Merged `docs/README.md` content into root `README.md`
-  - Created streamlined documentation center in `docs/README.md`
+  - Merged `memory_bank/t3_documentation/README.md` content into root `README.md`
+  - Created streamlined documentation center in `memory_bank/t3_documentation/README.md`
   - Updated all references to maintain consistency
   - Enhanced version history section with detailed information
 

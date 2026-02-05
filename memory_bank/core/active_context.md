@@ -28,7 +28,7 @@
 | **P1** | WebSocket 实时推送 | `apps/api/core/websocket.py` | ✅ Complete |
 | **P1** | 技术指标扩展 | `libs/quant-engine/analysis/` | ✅ Complete |
 | **P1** | 通达信数据库集成 | `libs/quant-engine/data/` | ✅ Complete |
-| **P2** | 文档完善 | `docs/api/` | ✅ Complete |
+| **P2** | 文档完善 | `memory_bank/t3_documentation/api/` | ✅ Complete |
 
 ### New Files Created
 
@@ -61,8 +61,8 @@
 #### Documentation (P2)
 | File | Purpose |
 |------|---------|
-| `docs/api/api-reference.md` | API 完整参考 |
-| `docs/api/indicators.md` | 技术指标文档 |
+| `memory_bank/t3_documentation/api/api-reference.md` | API 完整参考 |
+| `memory_bank/t3_documentation/api/indicators.md` | 技术指标文档 |
 
 ### Technical Indicators Implemented
 

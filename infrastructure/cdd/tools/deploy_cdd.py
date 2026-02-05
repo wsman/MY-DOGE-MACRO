@@ -41,14 +41,14 @@ PROTOCOL_TEMPLATES = {
 
 # DS 标准模板
 STANDARDS_TEMPLATES = {
-    "templates/04_standards/DS-007_context_management.md": "standards/DS-007_context_management.md",
-    "templates/04_standards/DS-050_feature_specification.md": "standards/DS-050_feature_specification.md",
-    "templates/04_standards/DS-051_implementation_plan.md": "standards/DS-051_implementation_plan.md",
-    "templates/04_standards/DS-052_atomic_tasks.md": "standards/DS-052_atomic_tasks.md",
-    "templates/04_standards/DS-053_quality_checklist.md": "standards/DS-053_quality_checklist.md",
-    "templates/04_standards/DS-054_environment_hardening.md": "standards/DS-054_environment_hardening.md",
-    "templates/04_standards/DS-060_code_review.md": "standards/DS-060_code_review.md",
-    "reference/07_feature_readme_template.md": "standards/feature_readme_template.md"
+    "templates/04_standards/DS-007_context_management.md": "t2_standards/DS-007_context_management.md",
+    "templates/04_standards/DS-050_feature_specification.md": "t2_standards/DS-050_feature_specification.md",
+    "templates/04_standards/DS-051_implementation_plan.md": "t2_standards/DS-051_implementation_plan.md",
+    "templates/04_standards/DS-052_atomic_tasks.md": "t2_standards/DS-052_atomic_tasks.md",
+    "templates/04_standards/DS-053_quality_checklist.md": "t2_standards/DS-053_quality_checklist.md",
+    "templates/04_standards/DS-054_environment_hardening.md": "t2_standards/DS-054_environment_hardening.md",
+    "templates/04_standards/DS-060_code_review.md": "t2_standards/DS-060_code_review.md",
+    "reference/07_feature_readme_template.md": "t2_standards/feature_readme_template.md"
 }
 
 # 配置文件和工具链
@@ -86,9 +86,9 @@ def deploy(target_dir: Path, project_name: str, force: bool = False):
 
     # 1. 创建 Memory Bank 土壤 (目录结构)
     print("\n🛖 Creating Memory Bank soil...")
-    for subdir in ["core", "axioms", "protocols", "standards"]:
+    for subdir in ["core", "axioms", "protocols", "t2_standards"]:
         (memory_bank / subdir).mkdir(parents=True, exist_ok=True)
-    print("✅ Created Memory Bank structure (core/, axioms/, protocols/, standards/)")
+    print("✅ Created Memory Bank structure (core/, axioms/, protocols/, t2_standards/)")
 
     # 2. 植入核心 DNA (种子模板)
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d")

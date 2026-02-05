@@ -33,7 +33,7 @@ MY-DOGE-MACRO/
 │
 ├── config/                  # 配置管理
 ├── data/                    # 数据存储
-├── docs/                    # 项目文档
+├── memory_bank/t3_documentation/                    # 项目文档
 │   ├── architecture/       # 架构文档
 │   ├── api/                # API 文档
 │   ├── deployment/         # 部署指南
@@ -42,7 +42,7 @@ MY-DOGE-MACRO/
 └── memory_bank/             # CDD 文档体系
     ├── core/               # T0 核心层
     ├── axioms/             # T1 公理层
-    ├── standards/          # T2 标准层
+    ├── t2_standards/       # T2 标准层
     └── protocols/          # 工作流协议
 ```
 

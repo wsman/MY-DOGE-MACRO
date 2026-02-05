@@ -7,7 +7,7 @@
 
 ## 1. Design System Tokens
 
-Extracted from `client/docs/Frontend-Layout.html`:
+Extracted from `client/memory_bank/t3_documentation/Frontend-Layout.html`:
 
 | Variable | Value | Tailwind Name | Usage |
 |----------|-------|---------------|-------|
