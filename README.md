@@ -144,13 +144,13 @@ MY-DOGE-MACRO/
 │   └── reports/           # AI生成的研报
 │
 ├── memory_bank/            # 📚 统一文档体系 (CDD v1.8.0)
-│   ├── core/              # T0 核心宪法
+│   ├── t0_core/          # T0 核心宪法
 │   │   ├── active_context.md
 │   │   ├── knowledge_graph.md
 │   │   └── *_law_index.md
 │   ├── t1_axioms/            # T1 公理层
 │   ├── t2_standards/     # T2 标准层
-│   ├── t2_protocols/      # 工作流协议
+│   ├── t2_protocols/      # T2 工作流协议
 │   └── t3_documentation/  # T3 用户/开发者文档
 │       ├── README.md      # 文档中心
 │       ├── api/           # API 文档
@@ -168,7 +168,7 @@ MY-DOGE-MACRO/
 ```
 MY-DOGE-MACRO/ (旧路径)
 ├── client/           # 前端 (正在迁移到 apps/desktop/)
-├── server/           # 后端 (正在迁移到 apps/api/)
+├── apps/api/         # 后端API服务 (已迁移到 apps/api/)
 ├── engine/           # 量化引擎 (正在迁移到 libs/quant-engine/)
 └── ...              # 其他目录
 ```
@@ -177,11 +177,11 @@ MY-DOGE-MACRO/ (旧路径)
 
 ### 使用新架构 (推荐)
 
-#### 后端开发 (旧路径，等待迁移)
+#### 后端开发 (新架构)
 ```bash
-cd server
+cd apps/api
 pip install -r requirements.txt
-python server.py --host 0.0.0.0 --port 8765
+python main.py --host 0.0.0.0 --port 8765
 ```
 
 #### 前端开发 (新路径)
@@ -233,7 +233,7 @@ import { Button } from '@design-system/components/Button';
 
 ### 概述
 MY-DOGE-MACRO 是一个基于AI Agent的量化情报与研报生成系统，采用模块化架构（v1.6.0）。项目包含：
-- **后端API服务**：Python FastAPI (server/)
+- **后端API服务**：Python FastAPI (apps/api/)
 - **前端桌面应用**：Tauri v2 + React 19 (apps/desktop/)
 - **设计系统**：React组件库 (libs/design-system/)
 
@@ -271,7 +271,7 @@ sudo apt install -y libgtk-3-dev libwebkit2gtk-4.1-dev \
 
 #### 第二步：安装Python依赖（后端）
 ```bash
-cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/server
+cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/apps/api
 pip install -r requirements.txt
 ```
 
@@ -300,8 +300,8 @@ cargo --version
 
 **终端1 - 启动后端API服务：**
 ```bash
-cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO
-python -m server.server --host 0.0.0.0 --port 8765
+cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/apps/api
+python main.py --host 0.0.0.0 --port 8765
 ```
 
 **终端2 - 启动前端桌面应用：**
