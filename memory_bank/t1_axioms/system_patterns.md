@@ -43,7 +43,7 @@ MY-DOGE-MICRO/
 │   └── utils/             # 工具函数
 ├── memory_bank/           # CDD documents
 │   ├── core/              # T0 documents
-│   ├── axioms/            # T1 documents
+│   ├── t1_axioms/            # T1 documents
 │   ├── t2_protocols/      # T2 protocols
 │   └── t2_standards/     # T2 standards
 ├── specs/                 # 功能规格 (v1.5.0新增)

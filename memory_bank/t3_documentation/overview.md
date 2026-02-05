@@ -41,7 +41,7 @@ MY-DOGE-MACRO/
 │
 └── memory_bank/             # CDD 文档体系
     ├── core/               # T0 核心层
-    ├── axioms/             # T1 公理层
+    ├── t1_axioms/             # T1 公理层
     ├── t2_standards/       # T2 标准层
     └── t2_protocols/       # 工作流协议
 ```

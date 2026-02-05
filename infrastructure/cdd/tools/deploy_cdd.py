@@ -24,9 +24,9 @@ CORE_TEMPLATES = {
 }
 
 AXIOMS_TEMPLATES = {
-    "templates/02_axioms/behavior_context.md": "axioms/behavior_context.md",
-    "templates/02_axioms/system_patterns.md": "axioms/system_patterns.md",
-    "templates/02_axioms/tech_context.md": "axioms/tech_context.md"
+    "templates/02_axioms/behavior_context.md": "t1_axioms/behavior_context.md",
+    "templates/02_axioms/system_patterns.md": "t1_axioms/system_patterns.md",
+    "templates/02_axioms/tech_context.md": "t1_axioms/tech_context.md"
 }
 
 # 协议和工作流模板
@@ -86,9 +86,9 @@ def deploy(target_dir: Path, project_name: str, force: bool = False):
 
     # 1. 创建 Memory Bank 土壤 (目录结构)
     print("\n🛖 Creating Memory Bank soil...")
-    for subdir in ["core", "axioms", "t2_protocols", "t2_standards"]:
+    for subdir in ["core", "t1_axioms", "t2_protocols", "t2_standards"]:
         (memory_bank / subdir).mkdir(parents=True, exist_ok=True)
-    print("✅ Created Memory Bank structure (core/, axioms/, t2_protocols/, t2_standards/)")
+    print("✅ Created Memory Bank structure (core/, t1_axioms/, t2_protocols/, t2_standards/)")
 
     # 2. 植入核心 DNA (种子模板)
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d")

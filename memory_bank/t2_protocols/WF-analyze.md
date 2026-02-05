@@ -19,7 +19,7 @@
 | DS-050 | `memory_bank/t2_standards/DS-050_*.md` | 功能需求 |
 | DS-051 | `memory_bank/t2_standards/DS-051_*.md` | 架构设计 |
 | DS-052 | `memory_bank/t2_standards/DS-052_*.md` | 原子任务 |
-| T1 Axioms | `memory_bank/axioms/*.md` | 架构约束 |
+| T1 Axioms | `memory_bank/t1_axioms/*.md` | 架构约束 |
 
 ### Step 2: 检测分析
 - **重复检测**: 识别相似需求

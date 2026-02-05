@@ -114,9 +114,9 @@ graph TD
 
 | Document | Path | Purpose |
 |----------|------|---------|
-| System Patterns | `axioms/system_patterns.md` | Architecture constraints |
-| Tech Context | `axioms/tech_context.md` | Interface definitions |
-| Behavior Context | `axioms/behavior_context.md` | Runtime assertions |
+| System Patterns | `t1_axioms/system_patterns.md` | Architecture constraints |
+| Tech Context | `t1_axioms/tech_context.md` | Interface definitions |
+| Behavior Context | `t1_axioms/behavior_context.md` | Runtime assertions |
 
 ## T2 Standards Index
 

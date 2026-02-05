@@ -145,7 +145,7 @@ class ContextBuilder:
                 "templates/01_core/active_context.md"
             ),
             "system_patterns": self._resolve_path(
-                "memory_bank/axioms/system_patterns.md", 
+                "memory_bank/t1_axioms/system_patterns.md",
                 "templates/02_axioms/system_patterns.md"
             )
         }

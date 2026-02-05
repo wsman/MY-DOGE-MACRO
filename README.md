@@ -96,7 +96,7 @@ MY-DOGE-MACRO/
 ├── data/                   # 数据存储
 └── memory_bank/            # 📚 统一文档体系 (CDD)
     ├── core/               # T0 核心宪法
-    ├── axioms/             # T1 公理层
+    ├── t1_axioms/             # T1 公理层
     ├── t2_standards/      # T2 标准层
     └── t3_documentation/   # T3 用户/开发者文档
 ```
@@ -148,7 +148,7 @@ MY-DOGE-MACRO/
 │   │   ├── active_context.md
 │   │   ├── knowledge_graph.md
 │   │   └── *_law_index.md
-│   ├── axioms/            # T1 公理层
+│   ├── t1_axioms/            # T1 公理层
 │   ├── t2_standards/     # T2 标准层
 │   ├── t2_protocols/      # 工作流协议
 │   └── t3_documentation/  # T3 用户/开发者文档
@@ -499,7 +499,7 @@ State A → State B → State C → State D → State E
 | 级别 | 目录 | 说明 |
 |------|------|------|
 | **T0** | `memory_bank/core/` | 核心宪法文档 (每次会话加载) |
-| **T1** | `memory_bank/axioms/` | 公理层 (技术上下文、行为模式) |
+| **T1** | `memory_bank/t1_axioms/` | 公理层 (技术上下文、行为模式) |
 | **T2** | `memory_bank/t2_protocols/` | 工作流协议 |
 | **T2** | `memory_bank/t2_standards/` | 实现标准 (架构标准、代码规范) |
 | **T3** | `memory_bank/t3_documentation/` | 用户和开发者文档 (统一存放) |

@@ -14,7 +14,7 @@
 
 ## State A: Context Ingestion
 - Load all T0 documents from `core/`
-- Load relevant T1 documents from `axioms/`
+- Load relevant T1 documents from `t1_axioms/`
 - Calculate $H_{sys}$
 
 ## State B: Documentation First
