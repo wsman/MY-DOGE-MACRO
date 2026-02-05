@@ -1,7 +1,7 @@
 # My Doge Macro 🐶📈
 
 > 基于 AI Agent 的全栈量化情报与研报生成系统。  
-> **版本**: v1.6.0 (模块化架构)  
+> **版本**: v1.8.0 (核心功能完成)  
 > **类型**: AI驱动的量化分析系统  
 > **创建**: 2026-02-03 | **更新**: 2026-02-05
 
@@ -9,22 +9,47 @@
 ![Python](https://img.shields.io/badge/python-3.12-blue)
 ![React](https://img.shields.io/badge/react-19-blue)
 ![Status](https://img.shields.io/badge/status-stable-green)
-![Architecture](https://img.shields.io/badge/architecture-Modular%20v1.6.0-blue)
+![Architecture](https://img.shields.io/badge/architecture-Modular%20v1.8.0-blue)
 ![CDD](https://img.shields.io/badge/CDD-v1.6.1-green)
 
-## 🚀 v1.6.0 模块化架构
+## 🚀 v1.8.0 核心功能完成
 
-### 架构现代化正在进行中
+### ✨ 新增功能 (2026-02-05)
 
-**迁移状态**: Phase 1 完成，Phase 2+ 进行中
+#### 图表可视化组件
+- **技术指标**: MA/EMA/MACD/RSI/Bollinger/KDJ 完整支持
+- **子图系统**: MACD/RSI/KDJ/Volume 独立子图
+- **图表面板**: 可配置的完整 K 线图表
+
+#### Dashboard 组件
+- **市场概览**: 多资产行情展示
+- **分析面板**: 资产详情 + 技术指标
+- **AI 研报**: DeepSeek 驱动的研报展示
+
+#### 后端增强
+- **WebSocket**: 实时价格推送
+- **技术指标库**: Python 完整实现
+- **通达信集成**: 本地 A 股数据读取
+
+### 📊 模块化架构状态
+
+**迁移状态**: ✅ Phase 2 完成
 
 | 组件 | 目标路径 | 状态 | 详情 |
 |------|----------|------|------|
 | **设计系统** | `libs/design-system/` | ✅ 完成 | 原子设计 + BEM + 组件库 |
-| **前端应用** | `apps/desktop/` | 🔄 进行中 | React 19 + Tauri v2 桌面应用 |
-| **后端 API** | `apps/api/` | 📅 待开始 | FastAPI RESTful 服务 |
-| **量化引擎** | `libs/quant-engine/` | 📅 待开始 | 量化算法和数据采集 |
-| **基础设施** | `infrastructure/` | ✅ 部分完成 | CDD工具、CI/CD、监控 |
+| **前端应用** | `apps/desktop/` | ✅ 完成 | React 19 + Tauri v2 桌面应用 |
+| **后端 API** | `apps/api/` | ✅ 完成 | FastAPI + WebSocket |
+| **量化引擎** | `libs/quant-engine/` | ✅ 完成 | 技术指标 + 通达信读取 |
+| **基础设施** | `infrastructure/` | ✅ 完成 | CDD工具、CI/CD、监控 |
+
+### v1.7.0 完整模块化迁移
+
+**架构迁移完成**:
+- `client/` → `apps/desktop/` ✅
+- `server/` → `apps/api/` ✅
+- `engine/` → `libs/quant-engine/` ✅
+- `scripts/` → `infrastructure/cdd/tools/` ✅
 
 ### v1.5.0 前端架构现代化已完成
 
@@ -82,14 +107,16 @@ MY-DOGE-MACRO/
 │   │   ├── src-tauri/     # Tauri 桌面壳
 │   │   ├── stories/       # Storybook 组件故事
 │   │   └── tests/         # 前端测试
-│   └── api/                # 后端API服务 (FastAPI) [规划中]
-│       ├── src/           # API路由和业务逻辑
-│       └── tests/         # 后端测试
+│   └── api/                # 后端API服务 (FastAPI) ✅
+│       ├── core/           # 核心模块 (WebSocket, 配置)
+│       ├── routes/         # API 路由
+│       └── tests/          # 后端测试
 │
 ├── libs/                    # 共享库
-│   ├── quant-engine/       # 量化引擎 (Python算法) [规划中]
-│   │   ├── src/           # 量化算法和分析模块
-│   │   └── tests/         # 算法测试
+│   ├── quant-engine/       # 量化引擎 (Python算法) ✅
+│   │   ├── analysis/       # 技术指标、RSRS、波动率
+│   │   ├── data/           # 数据读取 (yfinance, 通达信)
+│   │   └── tests/          # 算法测试
 │   ├── design-system/      # 设计系统 (React组件) ✅
 │   │   ├── tokens/        # 设计令牌 (色彩、排版、间距)
 │   │   ├── components/    # 可复用组件库
