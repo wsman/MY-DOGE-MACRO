@@ -17,6 +17,9 @@ Refactoring must satisfy semantic preservation ($S' = S$) and entropy reduction 
 ### §152 Single Source of Truth
 `memory_bank` is the single source of executable specifications. Reference, don't duplicate.
 
+### §153 T3 Documentation Structure
+`memory_bank/t3_documentation/` must maintain a flat structure with all documentation files at the top level. No subdirectories are permitted in the T3 layer to ensure consistent accessibility and maintain single-source integrity.
+
 ### §381 Security Axiom
 Check dependency package existence, use parameterized queries for injection defense.
 

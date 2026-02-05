@@ -109,9 +109,9 @@ MY-DOGE-MACRO/
 ## 下一步
 
 - 查看 [架构文档](../architecture/overview.md)
-- 查看 [API 参考](../api/api-reference.md)
-- 查看 [技术指标文档](../api/indicators.md)
-- 查看 [部署指南](../deployment/README.md)
+- 查看 [API 参考](./api-reference.md)
+- 查看 [技术指标文档](./indicators.md)
+- 查看 [部署指南](./deployment.md)
 
 ---
 

@@ -41,15 +41,17 @@ Data & Configuration
 ├── data/             # Raw, processed data and reports
 └── config/           # Environment and feature configurations
 
-Documentation (memory_bank/t3_documentation/)
-├── architecture/     # Architecture design documents
-│   └── overview.md   # Updated to v1.8.0
-├── api/              # API documentation
-│   ├── api-reference.md   # Full REST/WebSocket API
-│   └── indicators.md      # Technical indicators formulas
-├── deployment/       # Deployment guides
-└── guides/           # Usage guides
-    └── quickstart.md # Updated to v1.8.0
+Documentation (memory_bank/t3_documentation/)  # 扁平结构
+├── api-reference.md   # Full REST/WebSocket API
+├── backend-api.md     # 后端接口详情
+├── deployment.md      # 部署指南
+├── getting-started.md # 开发入门
+├── index.md          # 文档索引
+├── indicators.md      # Technical indicators formulas
+├── modular-architecture.md # 模块化架构
+├── overview.md       # 架构概览
+├── quickstart.md     # 快速入门
+└── document-template.md # 文档模板
 ```
 
 ## System Topology
@@ -169,4 +171,4 @@ graph TD
 - Start with `core/active_context.md`
 - Load T0 documents for any task
 - Load T1 documents when detailed constraints needed
-- Check `memory_bank/t3_documentation/api/` for API reference
+- Check `memory_bank/t3_documentation/` for API reference (扁平结构)
