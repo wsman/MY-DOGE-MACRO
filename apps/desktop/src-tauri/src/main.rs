@@ -26,11 +26,15 @@ fn get_python_config(state: State<'_, AppState>) -> PythonConfig {
 
 fn main() {
     // A. 动态准备配置
-    let port = portpicker::pick_unused_port().expect("No free ports available");
-    let token = Uuid::new_v4().to_string();
+    // 使用固定端口，方便开发时手动启动后端
+    let port = 8765;
+    let token = "mydoge-token-123456".to_string();
     let api_url = format!("http://127.0.0.1:{}", port);
     
     println!("🚀 Python服务配置: 端口={}, token={}...", port, &token[..8]);
+    println!("💡 提示: 请在另一个终端手动启动 Python 后端:");
+    println!("   cd D:\\Users\\Administrator\\Desktop\\MY-DOGE-MACRO");
+    println!("   python -m server.server --host 0.0.0.0 --port {}", port);
     
     // 初始化状态
     let app_state = AppState {
@@ -45,8 +49,10 @@ fn main() {
         .plugin(tauri_plugin_shell::init())
         .manage(app_state) // 注入状态
         .invoke_handler(tauri::generate_handler![get_python_config])
-        .setup(move |app| {
-            // B. 启动 Sidecar (Python打包的EXE服务)
+        .setup(move |_app| {
+            // B. 开发模式：跳过 sidecar，后端需要手动启动
+            // 打包生产版本时，可以取消注释以下代码来启用 sidecar
+            /*
             let (mut rx, child) = app.shell()
                 .sidecar("backend_api")
                 .expect("Failed to create sidecar command")
@@ -80,7 +86,11 @@ fn main() {
                     }
                 }
             });
+            */
 
+            println!("✅ Tauri 应用启动成功！");
+            println!("🌐 请确保 Python 后端正在运行...");
+            
             Ok(())
         })
         .run(tauri::generate_context!())

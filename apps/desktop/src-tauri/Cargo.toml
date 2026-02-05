@@ -2,7 +2,7 @@
 name = "my-doge-tauri"
 version = "1.0.0"
 description = "MY-DOGE Quant System - Tauri Frontend"
-authors = ["MY-DOGE Team"]
+authors = ["wsman"]
 license = "Apache-2.0"
 edition = "2021"
 rust-version = "1.70"
