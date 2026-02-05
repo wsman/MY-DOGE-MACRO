@@ -1,0 +1,96 @@
+/* MarketOverview.css - v1.8.0 */
+/* BEM Naming Convention */
+
+.market-overview {
+  width: 100%;
+}
+
+.market-overview__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.market-overview__summary {
+  display: flex;
+  gap: var(--spacing-xs, 4px);
+}
+
+.market-overview__content {
+  padding: var(--spacing-md, 16px);
+}
+
+.market-overview__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--spacing-md, 16px);
+}
+
+.market-overview__item {
+  padding: var(--spacing-sm, 8px);
+  background: var(--color-surface-secondary, #f5f5f5);
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.market-overview__item:hover {
+  background: var(--color-surface-hover, #eeeeee);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.market-overview__item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xs, 4px);
+}
+
+.market-overview__ticker {
+  font-weight: var(--font-weight-bold, 600);
+  font-size: var(--font-size-md, 14px);
+}
+
+.market-overview__item-name {
+  font-size: var(--font-size-xs, 10px);
+  color: var(--color-text-secondary, #666);
+  margin-bottom: var(--spacing-xs, 4px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.market-overview__item-price {
+  font-size: var(--font-size-lg, 18px);
+  font-weight: var(--font-weight-bold, 600);
+  margin-bottom: var(--spacing-xs, 4px);
+}
+
+.market-overview__item-change {
+  font-size: var(--font-size-sm, 12px);
+  font-weight: var(--font-weight-medium, 500);
+}
+
+.market-overview__item-change.positive {
+  color: var(--color-success, #4caf50);
+}
+
+.market-overview__item-change.negative {
+  color: var(--color-danger, #f44336);
+}
+
+.market-overview__item-volume {
+  font-size: var(--font-size-xs, 10px);
+  color: var(--color-text-tertiary, #999);
+  margin-top: var(--spacing-xs, 4px);
+}
+
+/* Dark Mode */
+[data-theme="dark"] .market-overview__item {
+  background: var(--color-surface-secondary-dark, #2a2a3e);
+}
+
+[data-theme="dark"] .market-overview__item:hover {
+  background: var(--color-surface-hover-dark, #3a3a4e);
+}
