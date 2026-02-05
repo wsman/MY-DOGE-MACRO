@@ -15,7 +15,7 @@ MY-DOGE-MACRO 采用 **CDD (Constitution-Driven Development)** 文档体系，�
 |------|------|------|----------|
 | **T0** | `../core/` | 核心宪法文档 (每次会话加载) | AI Agents, 系统架构师 |
 | **T1** | `../axioms/` | 公理层 (技术上下文、行为模式) | AI Agents, 高级开发者 |
-| **T2** | `../protocols/`, `../t2_standards/` | 工作流协议、实现标准 | 开发者, 技术负责人 |
+| **T2** | `../t2_protocols/`, `../t2_standards/` | 工作流协议、实现标准 | 开发者, 技术负责人 |
 | **T3** | `./` | 用户和开发者文档 (本层级) | 用户, 开发者, DevOps |
 
 ## 📖 文档索引
@@ -70,7 +70,7 @@ MY-DOGE-MACRO/
     ├── core/               # T0 核心宪法
     ├── axioms/             # T1 公理层
     ├── t2_standards/       # T2 标准层
-    ├── protocols/          # 工作流协议
+    ├── t2_protocols/       # 工作流协议
     └── t3_documentation/   # T3 用户/开发者文档 (本目录)
 ```
 

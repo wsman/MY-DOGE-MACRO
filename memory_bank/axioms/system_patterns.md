@@ -44,7 +44,7 @@ MY-DOGE-MICRO/
 ├── memory_bank/           # CDD documents
 │   ├── core/              # T0 documents
 │   ├── axioms/            # T1 documents
-│   ├── protocols/         # T2 protocols
+│   ├── t2_protocols/      # T2 protocols
 │   └── t2_standards/     # T2 standards
 ├── specs/                 # 功能规格 (v1.5.0新增)
 ├── tests/                 # 测试文件 (v1.5.0新增)

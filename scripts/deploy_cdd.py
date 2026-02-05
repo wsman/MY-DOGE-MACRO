@@ -31,12 +31,12 @@ AXIOMS_TEMPLATES = {
 
 # 协议和工作流模板
 PROTOCOL_TEMPLATES = {
-    "templates/03_protocols/WF-001_clarify_workflow.md": "protocols/WF-001_clarify_workflow.md",
-    "templates/03_protocols/WF-201_cdd_workflow.md": "protocols/WF-201_cdd_workflow.md",
-    "templates/03_protocols/WF-amend.md": "protocols/WF-amend.md",
-    "templates/03_protocols/WF-analyze.md": "protocols/WF-analyze.md",
-    "templates/03_protocols/WF-review.md": "protocols/WF-review.md",
-    "templates/03_protocols/WF-sync-issues.md": "protocols/WF-sync-issues.md"
+    "templates/03_protocols/WF-001_clarify_workflow.md": "t2_protocols/WF-001_clarify_workflow.md",
+    "templates/03_protocols/WF-201_cdd_workflow.md": "t2_protocols/WF-201_cdd_workflow.md",
+    "templates/03_protocols/WF-amend.md": "t2_protocols/WF-amend.md",
+    "templates/03_protocols/WF-analyze.md": "t2_protocols/WF-analyze.md",
+    "templates/03_protocols/WF-review.md": "t2_protocols/WF-review.md",
+    "templates/03_protocols/WF-sync-issues.md": "t2_protocols/WF-sync-issues.md"
 }
 
 # DS 标准模板
@@ -86,9 +86,9 @@ def deploy(target_dir: Path, project_name: str, force: bool = False):
 
     # 1. 创建 Memory Bank 土壤 (目录结构)
     print("\n🛖 Creating Memory Bank soil...")
-    for subdir in ["core", "axioms", "protocols", "t2_standards"]:
+    for subdir in ["core", "axioms", "t2_protocols", "t2_standards"]:
         (memory_bank / subdir).mkdir(parents=True, exist_ok=True)
-    print("✅ Created Memory Bank structure (core/, axioms/, protocols/, t2_standards/)")
+    print("✅ Created Memory Bank structure (core/, axioms/, t2_protocols/, t2_standards/)")
 
     # 2. 植入核心 DNA (种子模板)
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d")

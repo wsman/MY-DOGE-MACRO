@@ -23,8 +23,8 @@ State E: Converge & Calibrate
 
 | Workflow | File | Purpose |
 |----------|------|---------|
-| Clarify | `protocols/WF-001_clarify_workflow.md` | Problem clarification |
-| Main CDD | `protocols/WF-201_cdd_workflow.md` | Core workflow |
+| Clarify | `t2_protocols/WF-001_clarify_workflow.md` | Problem clarification |
+| Main CDD | `t2_protocols/WF-201_cdd_workflow.md` | Core workflow |
 
 ## State Transitions
 

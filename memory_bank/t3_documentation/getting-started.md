@@ -80,7 +80,7 @@ This document provides a structured reference to the complete development guide,
 - **Technical Law Index**: `../../core/technical_law_index.md` - Overview of all standards
 - **Project Readme**: `../../core/project_readme.md` - T0 seed document
 - **Active Context**: `../../core/active_context.md` - Current system state
-- **Protocols**: `../../protocols/` - Workflow protocols and procedures
+- **Protocols**: `../../t2_protocols/` - Workflow protocols and procedures
 
 ### External Documents
 - **Full Development Guide**: [../../../memory_bank/t3_documentation/development/getting-started.md](../../../memory_bank/t3_documentation/development/getting-started.md)

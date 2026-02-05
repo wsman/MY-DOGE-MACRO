@@ -43,7 +43,7 @@ MY-DOGE-MACRO/
     ├── core/               # T0 核心层
     ├── axioms/             # T1 公理层
     ├── t2_standards/       # T2 标准层
-    └── protocols/          # 工作流协议
+    └── t2_protocols/       # 工作流协议
 ```
 
 ## 系统拓扑

@@ -45,7 +45,7 @@ quality_gates:
     enabled: true
     mandatory: true
     trigger: "after DS-052 generation"
-    output: "memory_bank/protocols/analysis_report.md"
+    output: "memory_bank/t2_protocols/analysis_report.md"
   checklist:
     enabled: true
     mandatory: false
@@ -65,7 +65,7 @@ github_integration:
 
 # 治理配置
 governance:
-  amendment_protocol: "memory_bank/protocols/WF-001_clarify_workflow.md"
+  amendment_protocol: "memory_bank/t2_protocols/WF-001_clarify_workflow.md"
   versioning_scheme: "semver"
   protected_paths:
     - "memory_bank/core/*"
@@ -92,4 +92,4 @@ paths:
     core: "memory_bank/core"
     axioms: "memory_bank/axioms"
     standards: "memory_bank/t2_standards"
-    protocols: "memory_bank/protocols"
+    protocols: "memory_bank/t2_protocols"
