@@ -199,6 +199,233 @@ import { Button } from '@design-system/components/Button';
 # from libs.quant_engine.src.data.acquisition import fetch_market_data
 ```
 
+## 🎯 完整启动指南
+
+> **注意**: 本部分整合自 `START_GUIDE.md`，提供详细的启动操作指南和环境设置说明。
+
+### 概述
+MY-DOGE-MACRO 是一个基于AI Agent的量化情报与研报生成系统，采用模块化架构（v1.6.0）。项目包含：
+- **后端API服务**：Python FastAPI (server/)
+- **前端桌面应用**：Tauri v2 + React 19 (apps/desktop/)
+- **设计系统**：React组件库 (libs/design-system/)
+
+### 环境要求
+
+#### 1. Python环境 (后端)
+- Python 3.12+ (已安装：Python 3.13.11)
+- 安装依赖：`pip install -r server/requirements.txt`
+
+#### 2. Node.js环境 (前端)
+- Node.js 18+ 
+- npm包管理器
+
+#### 3. Rust环境 (Tauri桌面应用)
+- Rust工具链（包括cargo）
+- 运行：`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+
+#### 4. 系统依赖 (Ubuntu/Linux)
+- GTK+库和开发工具
+- 运行：`sudo apt install -y libgtk-3-dev libwebkit2gtk-4.1-dev build-essential pkg-config`
+
+### 完整的启动流程
+
+#### 第一步：安装系统依赖（仅限Ubuntu/Debian）
+```bash
+# 更新包管理器
+sudo apt update
+
+# 安装Tauri所需系统依赖
+sudo apt install -y libgtk-3-dev libwebkit2gtk-4.1-dev \
+    build-essential curl wget file libssl-dev \
+    libayatana-appindicator3-dev librsvg2-dev \
+    pkg-config
+```
+
+#### 第二步：安装Python依赖（后端）
+```bash
+cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/server
+pip install -r requirements.txt
+```
+
+#### 第三步：安装Node.js依赖（前端）
+```bash
+cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/apps/desktop
+npm install
+```
+
+#### 第四步：安装Rust工具链（仅首次需要）
+```bash
+# 安装Rust（包括cargo）
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# 重新加载shell配置
+source "$HOME/.cargo/env"
+
+# 验证安装
+rustc --version
+cargo --version
+```
+
+### 启动项目
+
+#### 方案A：完整启动（推荐）
+
+**终端1 - 启动后端API服务：**
+```bash
+cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO
+python -m server.server --host 0.0.0.0 --port 8765
+```
+
+**终端2 - 启动前端桌面应用：**
+```bash
+cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/apps/desktop
+npm run tauri dev
+```
+
+#### 方案B：仅启动后端（API开发）
+```bash
+cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO
+python -m server.server --host localhost --port 8765
+```
+
+访问API文档：http://localhost:8765/docs
+
+#### 方案C：仅启动前端（UI开发）
+```bash
+cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/apps/desktop
+npm run tauri dev
+```
+
+#### 方案D：使用快速启动脚本
+创建启动脚本 `start_mydoge.sh`：
+```bash
+#!/bin/bash
+# MY-DOGE-MACRO 快速启动脚本
+
+# 切换到项目目录
+cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO
+
+# 启动后端
+echo "启动后端API服务..."
+nohup python -m server.server --host 0.0.0.0 --port 8765 > /tmp/mydoge-server.log 2>&1 &
+
+# 等待后端启动
+sleep 3
+
+# 检查后端状态
+if curl -s http://localhost:8765/health_check > /dev/null; then
+    echo "✅ 后端API启动成功！访问：http://localhost:8765"
+else
+    echo "❌ 后端API启动失败，查看日志：/tmp/mydoge-server.log"
+    exit 1
+fi
+
+# 启动前端
+echo "启动前端桌面应用..."
+cd apps/desktop
+npm run tauri dev
+```
+
+### 验证启动成功
+
+#### 后端验证
+```bash
+# 健康检查
+curl http://localhost:8765/health_check
+# 应返回：{"status":"ok","timestamp":"...","version":"1.0.0"}
+
+# API文档
+打开浏览器访问：http://localhost:8765/docs
+```
+
+#### 前端验证
+- Tauri桌面应用窗口应该自动打开
+- 应用标题：MY-DOGE Quant System
+
+### 常见问题解决
+
+#### 1. 端口8765被占用
+```bash
+# 检查占用进程
+lsof -ti:8765
+
+# 停止进程
+kill -TERM <进程ID>
+
+# 或使用不同端口启动
+python -m server.server --host 0.0.0.0 --port 8766
+```
+
+#### 2. Python导入错误
+错误：`ModuleNotFoundError: No module named 'server.core'`
+解决方案：使用模块方式运行
+```bash
+# 正确方式
+python -m server.server
+
+# 错误方式（不要使用）
+cd server && python server.py
+```
+
+#### 3. Tauri构建失败 - 缺少GLIB库
+错误：`The system library 'glib-2.0' required by crate 'glib-sys' was not found`
+解决方案：
+```bash
+# 安装缺失的系统依赖
+sudo apt install -y libgtk-3-dev libwebkit2gtk-4.1-dev pkg-config
+
+# 验证glib安装
+pkg-config --modversion glib-2.0
+```
+
+#### 4. 缺少Rust/Cargo
+错误：`failed to run 'cargo metadata' command`
+解决方案：
+```bash
+# 安装Rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source "$HOME/.cargo/env"
+```
+
+### 项目结构说明
+
+```
+MY-DOGE-MACRO/
+├── server/           # 后端API服务（Python FastAPI）
+│   ├── server.py     # 主服务文件
+│   ├── core/         # 核心API路由
+│   └── requirements.txt
+├── apps/desktop/     # 前端桌面应用（Tauri + React）
+│   ├── src/          # React组件
+│   ├── src-tauri/    # Tauri Rust代码
+│   └── package.json
+└── libs/design-system/ # 设计系统
+```
+
+### 开发注意事项
+
+1. **后端API令牌**：默认使用 `mydoge-token-123456`
+2. **CORS配置**：允许所有来源（开发环境）
+3. **数据存储**：项目使用内存存储，重启后数据会丢失
+4. **日志查看**：后端日志输出到控制台，前端日志在Tauri窗口
+
+### 获取帮助
+
+1. 查看详细文档：本README文档
+2. 检查问题：运行内置诊断工具
+3. 提交问题：GitHub Issues
+
+---
+
+**启动状态检查清单：**
+- [ ] 系统依赖已安装（GTK+等）
+- [ ] Python依赖已安装（FastAPI等）
+- [ ] Node.js依赖已安装（npm install）
+- [ ] Rust工具链已安装（cargo --version）
+- [ ] 端口8765可用（未被占用）
+- [ ] 后端API响应正常（curl测试）
+- [ ] 前端Tauri应用正常启动
+
 ## 📖 CDD 工作流
 
 项目遵循 CDD v1.6.1 五状态工作流:
