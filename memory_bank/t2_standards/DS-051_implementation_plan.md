@@ -283,7 +283,7 @@ T-C2.3 (前端优化)
 4.1 Update `README.md` with new setup instructions  
 4.2 Update `.pre-commit-config.yaml` comments  
 4.3 Add `CONTRIBUTING.md` for infrastructure guidelines  
-4.4 Update `memory_bank/core/project_readme.md`
+4.4 Update `memory_bank/t0_core/project_readme.md`
 
 **Estimated Effort**: 2 hours
 

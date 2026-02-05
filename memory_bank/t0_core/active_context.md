@@ -25,7 +25,7 @@
 | **P0** | 图表可视化组件 | `apps/desktop/src/components/charts/` | ✅ Complete |
 | **P0** | Dashboard 页面组装 | `apps/desktop/src/components/organisms/` | ✅ Complete |
 | **P0** | 前后端联调准备 | Types + Exports | ✅ Complete |
-| **P1** | WebSocket 实时推送 | `apps/api/core/websocket.py` | ✅ Complete |
+| **P1** | WebSocket 实时推送 | `apps/api/t0_core/websocket.py` | ✅ Complete |
 | **P1** | 技术指标扩展 | `libs/quant-engine/analysis/` | ✅ Complete |
 | **P1** | 通达信数据库集成 | `libs/quant-engine/data/` | ✅ Complete |
 | **P2** | 文档完善 | `memory_bank/t3_documentation/` (扁平结构) | ✅ Complete |
@@ -54,7 +54,7 @@
 #### Backend (P1)
 | File | Purpose |
 |------|---------|
-| `apps/api/core/websocket.py` | WebSocket 连接管理 |
+| `apps/api/t0_core/websocket.py` | WebSocket 连接管理 |
 | `libs/quant-engine/analysis/technical_indicators.py` | 完整技术指标库 |
 | `libs/quant-engine/data/tdx_reader.py` | 通达信数据读取器 |
 

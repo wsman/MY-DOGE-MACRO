@@ -16,7 +16,7 @@ external_auditor:
     api_key: "${DEEPSEEK_API_KEY}"
   trigger_policy:
     on_state_change: ["State E"]
-    on_file_change: ["memory_bank/core/active_context.md"]
+    on_file_change: ["memory_bank/t0_core/active_context.md"]
   reporting:
     format: "markdown"
     output_dir: "research_report"
@@ -68,7 +68,7 @@ governance:
   amendment_protocol: "memory_bank/t2_protocols/WF-001_clarify_workflow.md"
   versioning_scheme: "semver"
   protected_paths:
-    - "memory_bank/core/*"
+    - "memory_bank/t0_core/*"
     - "memory_bank/axioms/*"
 
 # 上下文管理 (DS-007)
@@ -89,7 +89,7 @@ context_strategy:
 # 路径配置
 paths:
   templates:
-    core: "memory_bank/core"
+    core: "memory_bank/t0_core"
     axioms: "memory_bank/axioms"
     standards: "memory_bank/t2_standards"
     protocols: "memory_bank/t2_protocols"

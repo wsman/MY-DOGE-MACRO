@@ -164,9 +164,9 @@ tests/integration/
 - [Deployment Guide](../deployment/deployment-guide.md)
 
 ### CDD Internal Documents
-- **Technical Law Index**: `../../core/technical_law_index.md` - Overview of all standards
-- **Project Readme**: `../../core/project_readme.md` - T0 seed document
-- **Active Context**: `../../core/active_context.md` - Current system state
+- **Technical Law Index**: `../../t0_core/technical_law_index.md` - Overview of all standards
+- **Project Readme**: `../../t0_core/project_readme.md` - T0 seed document
+- **Active Context**: `../../t0_core/active_context.md` - Current system state
 
 ### External Documents
 - **Full Architecture Document**: [../../../memory_bank/t3_documentation/architecture/v1.6.0-modular-architecture.md](../../../memory_bank/t3_documentation/architecture/v1.6.0-modular-architecture.md)

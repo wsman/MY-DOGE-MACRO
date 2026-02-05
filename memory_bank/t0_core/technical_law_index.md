@@ -45,7 +45,7 @@
 
 | Module | Purpose | Status |
 |--------|---------|--------|
-| `core/websocket.py` | Real-time price push | ✅ |
+| `t0_core/websocket.py` | Real-time price push | ✅ |
 | `routes/` | REST API endpoints | ✅ |
 | `services/` | Business logic | ✅ |
 

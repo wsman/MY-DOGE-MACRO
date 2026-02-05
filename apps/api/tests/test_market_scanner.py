@@ -15,8 +15,8 @@ from typing import List
 import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from core.market_scanner import MarketScanner, MAX_CONCURRENCY
-from core.tdx_loader import TDXReader
+from server.core.market_scanner import MarketScanner, MAX_CONCURRENCY
+from server.core.tdx_loader import TDXReader
 
 
 class TestMarketScanner(unittest.TestCase):

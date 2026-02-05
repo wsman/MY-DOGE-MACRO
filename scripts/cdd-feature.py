@@ -141,7 +141,7 @@ class ContextBuilder:
         file_map = {
             "project": self.target_root / "README.md",
             "active_context": self._resolve_path(
-                "memory_bank/core/active_context.md", 
+                "memory_bank/t0_core/active_context.md", 
                 "templates/01_core/active_context.md"
             ),
             "system_patterns": self._resolve_path(

@@ -77,8 +77,8 @@ def check_references():
     
     # 检查关键文件中的引用
     files_to_check = [
-        "memory_bank/core/knowledge_graph.md",
-        "memory_bank/core/active_context.md",
+        "memory_bank/t0_core/knowledge_graph.md",
+        "memory_bank/t0_core/active_context.md",
         "memory_bank/t3_documentation/index.md",
         "memory_bank/t3_documentation/quickstart.md"
     ]

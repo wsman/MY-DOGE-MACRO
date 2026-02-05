@@ -104,11 +104,11 @@ graph TD
 
 | Document | Path | Purpose |
 |----------|------|---------|
-| Active Context | `core/active_context.md` | Current task state |
-| Knowledge Graph | `core/knowledge_graph.md` | Navigation (this file) |
-| Basic Law Index | `core/basic_law_index.md` | Core axioms |
-| Procedural Law Index | `core/procedural_law_index.md` | Workflow pointers |
-| Technical Law Index | `core/technical_law_index.md` | Standard pointers |
+| Active Context | `t0_core/active_context.md` | Current task state |
+| Knowledge Graph | `t0_core/knowledge_graph.md` | Navigation (this file) |
+| Basic Law Index | `t0_core/basic_law_index.md` | Core axioms |
+| Procedural Law Index | `t0_core/procedural_law_index.md` | Workflow pointers |
+| Technical Law Index | `t0_core/technical_law_index.md` | Standard pointers |
 
 ## T1 Document Index
 
@@ -168,7 +168,7 @@ graph TD
 
 ## Navigation
 
-- Start with `core/active_context.md`
+- Start with `t0_core/active_context.md`
 - Load T0 documents for any task
 - Load T1 documents when detailed constraints needed
 - Check `memory_bank/t3_documentation/` for API reference (扁平结构)

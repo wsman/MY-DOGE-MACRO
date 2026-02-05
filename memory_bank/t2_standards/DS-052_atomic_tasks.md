@@ -461,7 +461,7 @@ Phase 3 (Depends on Phase 2 complete)
 | **T-I4.1** | Update `README.md` setup instructions | ✅ Complete | 30min | @agent |
 | **T-I4.2** | Update `.pre-commit-config.yaml` comments | ✅ Complete | 15min | @agent |
 | **T-I4.3** | Create `CONTRIBUTING.md` | ⏳ Pending | 1h | @agent |
-| **T-I4.4** | Update `memory_bank/core/project_readme.md` | ✅ Complete | 15min | @agent |
+| **T-I4.4** | Update `memory_bank/t0_core/project_readme.md` | ✅ Complete | 15min | @agent |
 
 **Subtotal**: 2 hours
 

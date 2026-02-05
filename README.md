@@ -486,7 +486,7 @@ State A → State B → State C → State D → State E
 |------|------|------|
 | [快速入门](./memory_bank/t3_documentation/development/getting-started.md) | 环境设置、安装步骤、开发工作流 | 新开发者入门 |
 | [后端API文档](./memory_bank/t3_documentation/api/backend-api.md) | API端点、请求/响应格式、认证机制 | API集成和开发 |
-| [CDD文档体系](../../memory_bank/core/) | Constitution-Driven Development文档 | 项目管理和工作流 |
+| [CDD文档体系](../../memory_bank/t0_core/) | Constitution-Driven Development文档 | 项目管理和工作流 |
 
 #### 部署文档
 | 文档 | 描述 | 目标环境 |
@@ -498,7 +498,7 @@ State A → State B → State C → State D → State E
 
 | 级别 | 目录 | 说明 |
 |------|------|------|
-| **T0** | `memory_bank/core/` | 核心宪法文档 (每次会话加载) |
+| **T0** | `memory_bank/t0_core/` | 核心宪法文档 (每次会话加载) |
 | **T1** | `memory_bank/t1_axioms/` | 公理层 (技术上下文、行为模式) |
 | **T2** | `memory_bank/t2_protocols/` | 工作流协议 |
 | **T2** | `memory_bank/t2_standards/` | 实现标准 (架构标准、代码规范) |
@@ -610,7 +610,7 @@ import { Button } from '@design-system/components/Button';
 - **文档中心**: `memory_bank/t3_documentation/README.md`
 - **API文档**: `memory_bank/t3_documentation/api/backend-api.md`
 - **架构文档**: `memory_bank/t3_documentation/architecture/v1.6.0-modular-architecture.md`
-- **项目种子文档**: `memory_bank/core/project_readme.md` (CDD T0文档)
+- **项目种子文档**: `memory_bank/t0_core/project_readme.md` (CDD T0文档)
 
 ## 🤖 AI Agent 友好架构
 

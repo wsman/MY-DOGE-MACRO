@@ -15,7 +15,7 @@ from pathlib import Path
 
 # 核心模板映射 (Source in Skill -> Target in Memory Bank)
 CORE_TEMPLATES = {
-    "reference/06_project_readme_template.md": "core/project_readme_template.md",
+    "reference/06_project_readme_template.md": "t0_core/project_readme_template.md",
     "templates/01_core/active_context.md": "core/active_context.md",
     "templates/01_core/knowledge_graph.md": "core/knowledge_graph.md",
     "templates/01_core/basic_law_index.md": "core/basic_law_index.md",
@@ -182,7 +182,7 @@ def deploy(target_dir: Path, project_name: str, force: bool = False):
     print("")
     print("2. **ROOTING (下一步 - AI Agent 执行)**")
     print("   - Read project seed (code/text requirements)")
-    print("   - Fill `memory_bank/core/project_readme_template.md`")
+    print("   - Fill `memory_bank/t0_core/project_readme_template.md`")
     print("   - Rename to `project_readme.md` after completion")
     print("")
     print("3. **SPROUTING (自动派生)**")
@@ -196,7 +196,7 @@ def deploy(target_dir: Path, project_name: str, force: bool = False):
     print("📋 **Next Steps for AI Agent:**")
     print(f"   cd {target_dir}")
     print("   # 1. Analyze project context")
-    print("   # 2. Fill memory_bank/core/project_readme_template.md")
+    print("   # 2. Fill memory_bank/t0_core/project_readme_template.md")
     print("   # 3. Execute growth protocol")
     print("")
     print("🔧 **Available Commands:**")

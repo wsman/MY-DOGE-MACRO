@@ -41,9 +41,9 @@ Check dependency package existence, use parameterized queries for injection defe
 
 | Law Type | Document | Path |
 |----------|----------|------|
-| **Basic Law** | This file | `core/basic_law_index.md` |
-| **Procedural Law** | Procedural Law Index | `core/procedural_law_index.md` |
-| **Technical Law** | Technical Law Index | `core/technical_law_index.md` |
+| **Basic Law** | This file | `t0_core/basic_law_index.md` |
+| **Procedural Law** | Procedural Law Index | `t0_core/procedural_law_index.md` |
+| **Technical Law** | Technical Law Index | `t0_core/technical_law_index.md` |
 
 ## Version Info
 
