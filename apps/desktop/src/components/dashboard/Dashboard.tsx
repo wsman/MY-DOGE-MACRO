@@ -1,92 +1,80 @@
-// Dashboard - Migrated to Atomic Design (T-C5.18)
-// Uses: DataCard, Card, Badge, StatusDot
-// Last Updated: 2026-02-03
+// Dashboard - Complete Page Implementation (T-1.9.0-02)
+// Integrates: MarketOverview, AnalysisPanel, AIReportPanel Organisms
+// Last Updated: 2026-02-06
 
-import React, { useMemo } from 'react';
-import {
-  useAnalysisStore,
-  selectMarketData,
-  selectRiskSignals,
-  selectPortfolio,
-} from '../../stores/analysis.store';
-import { DataCardGrid } from '@components/molecules/DataCard';
-import { Card, CardTitle, CardContent } from '@components/atoms/Card';
-import { Badge } from '@components/atoms/Badge';
-import { StatusDot } from '@components/atoms/StatusDot';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useAnalysisStore } from '../../stores/analysis.store';
+import { useLayoutStore } from '../../stores/layout.store';
+import { Card, CardTitle, CardContent } from '../atoms/Card';
+import { StatusDot } from '../atoms/StatusDot';
+import { Button } from '../atoms/Button';
+import { Badge } from '../atoms/Badge';
+import { DataCardGrid } from '../molecules/DataCard';
+
+// Import Organisms
+import MarketOverview, { MarketItem } from '../organisms/MarketOverview';
+import AnalysisPanel from '../organisms/AnalysisPanel';
+import AIReportPanel, { AIReport } from '../organisms/AIReportPanel';
+
 import './Dashboard.css';
 
-// ============ 子组件：指标卡片 (使用 Card) ============
-const IndicatorCard: React.FC<{
-  ticker: string;
-  value: string;
-  signal: string;
-  type: 'rsrs' | 'volatility';
-}> = ({ ticker, value, signal, type }) => {
-  const signalVariant =
-    signal === 'long' || signal === 'low'
-      ? 'success'
-      : signal === 'short' || signal === 'high'
-        ? 'danger'
-        : 'warning';
-
-  return (
-    <Card padding="sm" elevation="none">
-      <div className="indicator--card">
-        <div className="indicator--card-header">
-          <span className="indicator--card-ticker">{ticker}</span>
-          <Badge variant={signalVariant} size="sm">
-            {signal.toUpperCase()}
-          </Badge>
-        </div>
-        <div className="indicator--card-value">{value}</div>
-        <div className="indicator--card-type">{type === 'rsrs' ? 'RSRS' : 'VOL'}</div>
-      </div>
-    </Card>
-  );
-};
-
-// ============ 子组件：风险警报卡片 ============
-const RiskAlertCard: React.FC<{
-  level: string;
-  message: string;
-  recommendation: string;
-  timestamp: string;
-}> = ({ level, message, recommendation, timestamp }) => {
-  const levelVariant = level === 'high' ? 'danger' : level === 'medium' ? 'warning' : 'success';
-
-  return (
-    <Card padding="sm" elevation="none">
-      <div className={`risk-alert-card risk-alert-${level}`}>
-        <div className="risk-alert-header">
-          <Badge variant={levelVariant} size="sm">
-            {level.toUpperCase()}
-          </Badge>
-          <span className="risk-alert-time">{timestamp}</span>
-        </div>
-        <p className="risk-alert-message">{message}</p>
-        <p className="risk-alert-recommendation">建议: {recommendation}</p>
-      </div>
-    </Card>
-  );
-};
-
-// ============ 主组件：Dashboard (迁移后) ============
+// ============ 主组件：Dashboard (完整页面) ============
 export const Dashboard: React.FC = () => {
-  // 使用优化后的 Selector
-  const marketData = useAnalysisStore(selectMarketData);
-  const riskSignals = useAnalysisStore(selectRiskSignals);
-  const portfolio = useAnalysisStore(selectPortfolio);
+  // Store hooks
+  const {
+    marketData,
+    isLoading,
+    error,
+    fetchMarketSnapshot,
+    rsrsIndicators,
+    volatilitySkews,
+    riskSignals,
+    portfolio,
+  } = useAnalysisStore();
 
-  // 获取指标数据
-  const rsrsIndicators = useAnalysisStore((state) => state.rsrsIndicators);
-  const volatilitySkews = useAnalysisStore((state) => state.volatilitySkews);
+  // Local state
+  const [selectedTicker, setSelectedTicker] = useState<string>('600000');
+  const [aiReport, setAiReport] = useState<AIReport | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
 
-  // 计算派生数据 (memoized)
+  // Load market data on mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        await fetchMarketSnapshot();
+      } catch (err) {
+        console.error('Failed to load market data:', err);
+      }
+    };
+    
+    loadData();
+  }, [fetchMarketSnapshot]);
+
+  // Format market data for MarketOverview
+  const marketItems: MarketItem[] = useMemo(() => {
+    return Object.values(marketData).map(item => ({
+      ticker: item.ticker,
+      name: item.name || item.ticker,
+      price: item.price,
+      change: item.change || 0,
+      changePercent: item.changePercent,
+      volume: item.volume,
+      high: item.high || item.price * 1.05,
+      low: item.low || item.price * 0.95,
+    }));
+  }, [marketData]);
+
+  // Get selected stock data
+  const selectedStock = marketData[selectedTicker];
+  const selectedRSRS = rsrsIndicators[selectedTicker];
+  const selectedVolatility = volatilitySkews[selectedTicker];
+
+  // Calculate summary stats
   const stats = useMemo(() => {
     const marketList = Object.values(marketData);
     const totalMarketValue = marketList.reduce((sum, m) => sum + m.price * m.volume, 0);
-    const avgChange =
-      marketList.reduce((sum, m) => sum + m.changePercent, 0) / (marketList.length || 1);
+    const avgChange = marketList.reduce((sum, m) => sum + m.changePercent, 0) / (marketList.length || 1);
     const highRiskCount = riskSignals.filter((s) => s.level === 'high').length;
 
     return {
@@ -99,31 +87,89 @@ export const Dashboard: React.FC = () => {
     };
   }, [marketData, riskSignals, portfolio]);
 
-  // 格式化时间
+  // Handle stock selection
+  const handleSelectTicker = (ticker: string) => {
+    setSelectedTicker(ticker);
+  };
+
+  // Handle AI report generation
+  const handleGenerateReport = async () => {
+    setAiLoading(true);
+    setAiError(null);
+    
+    try {
+      // Simulate API call - replace with actual API integration later
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const mockReport: AIReport = {
+        id: 'report_' + Date.now(),
+        title: `${selectedTicker} AI分析报告`,
+        summary: `基于当前市场数据，${selectedTicker}呈现${selectedStock?.changePercent >= 0 ? '上涨' : '下跌'}趋势。RSRS指标显示${selectedRSRS?.signal === 'long' ? '多头' : selectedRSRS?.signal === 'short' ? '空头' : '中性'}信号，波动率偏度${selectedVolatility?.signal === 'low' ? '较低' : selectedVolatility?.signal === 'high' ? '较高' : '适中'}。`,
+        content: `
+          <h3>技术分析</h3>
+          <p>当前价格：$${selectedStock?.price?.toFixed(2) || 'N/A'}</p>
+          <p>日涨跌幅：${selectedStock?.changePercent?.toFixed(2) || '0.00'}%</p>
+          <p>RSRS值：${selectedRSRS?.value?.toFixed(4) || 'N/A'}</p>
+          <p>波动率偏度：${selectedVolatility?.ratio?.toFixed(2) || 'N/A'}</p>
+          
+          <h3>市场情绪</h3>
+          <p>市场整体情绪${stats.avgChange >= 0 ? '积极' : '谨慎'}，平均涨跌幅${stats.avgChange.toFixed(2)}%。</p>
+          
+          <h3>风险提示</h3>
+          <p>当前高风险警报数量：${stats.highRiskCount}个</p>
+          <p>建议${stats.highRiskCount > 0 ? '密切关注风险控制' : '正常持仓'}</p>
+        `,
+        sentiment: selectedStock?.changePercent >= 0 ? 'bullish' : 
+                  selectedStock?.changePercent < 0 ? 'bearish' : 'neutral',
+        confidence: 0.85,
+        tickers: [selectedTicker],
+        generatedAt: new Date(),
+        model: 'DeepSeek-分析模型 v1.0',
+      };
+      
+      setAiReport(mockReport);
+    } catch (err) {
+      setAiError('生成研报失败，请稍后重试');
+      console.error('AI report generation failed:', err);
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  // Format time
   const formatTime = () => new Date().toLocaleString('zh-CN');
 
-  // 指标列表
-  const indicators = useMemo(() => {
-    const list = [
-      ...Object.values(rsrsIndicators)
-        .slice(0, 8)
-        .map((r) => ({
-          ticker: r.ticker,
-          value: r.value.toFixed(3),
-          signal: r.signal,
-          type: 'rsrs' as const,
-        })),
-      ...Object.values(volatilitySkews)
-        .slice(0, 8)
-        .map((s) => ({
-          ticker: s.ticker,
-          value: s.ratio.toFixed(2),
-          signal: s.signal,
-          type: 'volatility' as const,
-        })),
-    ];
-    return list;
-  }, [rsrsIndicators, volatilitySkews]);
+  // Loading skeleton
+  if (isLoading && marketItems.length === 0) {
+    return (
+      <div className="dashboard dashboard-loading">
+        <div className="dashboard-header skeleton"></div>
+        <div className="dashboard-cards skeleton"></div>
+        <div className="dashboard-main">
+          <div className="dashboard-section skeleton"></div>
+          <div className="dashboard-section skeleton"></div>
+          <div className="dashboard-section skeleton"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error && marketItems.length === 0) {
+    return (
+      <div className="dashboard dashboard-error">
+        <Card elevation="low" padding="md">
+          <CardTitle>数据加载失败</CardTitle>
+          <CardContent>
+            <p>无法加载市场数据：{error}</p>
+            <Button variant="primary" onClick={() => fetchMarketSnapshot()}>
+              重试
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard">
@@ -134,10 +180,18 @@ export const Dashboard: React.FC = () => {
             <span className="dashboard-icon">📊</span>
             <div>
               <h2>市场全景概览</h2>
-              <p>System Status: Online | Real-time Data</p>
+              <p>System Status: {isLoading ? 'Loading...' : 'Online | Real-time Data'}</p>
             </div>
           </div>
-          <div className="dashboard-timestamp">{formatTime()}</div>
+          <div className="dashboard-header-stats">
+            <Badge variant="success" size="sm">
+              活跃标的: {stats.count}
+            </Badge>
+            <Badge variant={stats.avgChange >= 0 ? 'success' : 'danger'} size="sm">
+              平均涨跌: {stats.avgChange >= 0 ? '+' : ''}{stats.avgChange.toFixed(2)}%
+            </Badge>
+            <div className="dashboard-timestamp">{formatTime()}</div>
+          </div>
         </div>
       </Card>
 
@@ -181,47 +235,41 @@ export const Dashboard: React.FC = () => {
         columns={3}
       />
 
-      {/* Main Content Grid */}
+      {/* Main Content Grid - Three Organisms */}
       <div className="dashboard-main">
-        {/* Left Column: Indicators */}
-        <Card elevation="low" padding="md" className="dashboard-section">
-          <CardTitle>关键技术指标监控</CardTitle>
-          <CardContent>
-            <div className="indicator--grid">
-              {indicators.length > 0 ? (
-                indicators.map((ind) => <IndicatorCard key={ind.ticker} {...ind} />)
-              ) : (
-                <div className="empty--state">
-                  <StatusDot status="loading" label="暂无指标数据" />
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+        {/* Left Column: Market Overview */}
+        <div className="dashboard-section">
+          <MarketOverview
+            markets={marketItems}
+            title="市场概览"
+            onSelectTicker={handleSelectTicker}
+          />
+        </div>
 
-        {/* Right Column: Risk Alerts */}
-        <Card elevation="low" padding="md" className="dashboard-section">
-          <CardTitle>实时风控日志</CardTitle>
-          <CardContent>
-            <div className="risk-alerts">
-              {riskSignals.length > 0 ? (
-                riskSignals.map((signal, idx) => (
-                  <RiskAlertCard
-                    key={idx}
-                    level={signal.level}
-                    message={signal.message}
-                    recommendation={signal.recommendation}
-                    timestamp={new Date().toLocaleTimeString()}
-                  />
-                ))
-              ) : (
-                <div className="empty--state">
-                  <StatusDot status="connected" label="系统运行正常" />
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+        {/* Middle Column: Analysis Panel */}
+        <div className="dashboard-section">
+          <AnalysisPanel
+            ticker={selectedTicker}
+            name={selectedStock?.name}
+            data={[]} // TODO: Add actual OHLC data
+            rsrsValue={selectedRSRS?.value}
+            rsrsSignal={selectedRSRS?.signal}
+            volatilityValue={selectedVolatility?.ratio}
+            volatilitySignal={selectedVolatility?.signal}
+            onRefresh={() => console.log('Refresh analysis')}
+            isLoading={isLoading}
+          />
+        </div>
+
+        {/* Right Column: AI Report Panel */}
+        <div className="dashboard-section">
+          <AIReportPanel
+            report={aiReport}
+            onGenerate={handleGenerateReport}
+            isLoading={aiLoading}
+            error={aiError}
+          />
+        </div>
       </div>
     </div>
   );

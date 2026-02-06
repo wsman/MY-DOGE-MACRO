@@ -10,6 +10,9 @@ interface LayoutStore {
   // 布局树
   layoutTree: LayoutTree | null;
 
+  // 选中的股票
+  selectedTicker: string | null;
+
   // 操作
   addPanel: (panel: Omit<PanelState, 'position'> & { position?: Partial<PanelPosition> }) => void;
   removePanel: (panelId: string) => void;
@@ -17,6 +20,7 @@ interface LayoutStore {
   setActivePanel: (panelId: string) => void;
   minimizePanel: (panelId: string) => void;
   restorePanel: (panelId: string) => void;
+  setSelectedTicker: (ticker: string | null) => void;
 
   // 布局操作
   setLayoutTree: (tree: LayoutTree) => void;
@@ -88,6 +92,7 @@ export const useLayoutStore = create<LayoutStore>()(
       panels: defaultPanels,
       activePanelId: 'editor',
       layoutTree: defaultLayoutTree,
+      selectedTicker: '600000',
 
       addPanel: (panelData) => {
         const position = panelData.position || { x: 100, y: 100, width: 400, height: 300 };
@@ -170,6 +175,12 @@ export const useLayoutStore = create<LayoutStore>()(
                 }
               : panel
           ),
+        }));
+      },
+
+      setSelectedTicker: (ticker) => {
+        set(() => ({
+          selectedTicker: ticker,
         }));
       },
 

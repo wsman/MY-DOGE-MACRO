@@ -1,6 +1,6 @@
-// MainLayout Template - Migrated to Atomic Design (T-C5.22)
+// MainLayout Template - Dynamic Implementation (T-1.9.0-02)
 // Uses: Button, Card, Input atoms
-// Last Updated: 2026-02-03
+// Last Updated: 2026-02-06
 
 import { useState } from 'react';
 import { useLayoutStore } from '../../stores/layout.store';
@@ -9,6 +9,7 @@ import { Input } from '../atoms/Input';
 import { Badge } from '../atoms/Badge';
 import { Card, CardTitle } from '../atoms/Card';
 import { Icon } from '../atoms/Icon';
+import { ThemeToggle } from '../atoms/ThemeToggle';
 import './MainLayout.css';
 
 interface MainLayoutProps {
@@ -25,7 +26,7 @@ interface SidebarItemProps {
 
 interface IndicatorCardProps {
   label: string;
-  value: string;
+  value: string | number;
   trend?: 'up' | 'down';
 }
 
@@ -64,10 +65,79 @@ const IndicatorCard: React.FC<IndicatorCardProps> = ({ label, value, trend }) =>
 
 // Main Layout Template
 const MainLayoutTemplate: React.FC<MainLayoutProps> = ({ children }) => {
-  const { activePanelId, setActivePanel } = useLayoutStore();
+  const { activePanelId, setActivePanel, selectedTicker, setSelectedTicker } = useLayoutStore();
   const [searchText, setSearchText] = useState('');
 
   const navItems = ['market', 'indicators', 'reports', 'settings'];
+
+  // Sample data for selected ticker - in real app, this would come from API
+  const getStockData = (ticker: string) => {
+    const stockData: Record<string, {
+      name: string;
+      exchange: string;
+      sector: string;
+      indicators: {
+        rsrs: number;
+        volatility: number;
+        trend: number;
+        heat: number;
+      };
+    }> = {
+      '600000': {
+        name: '浦发银行',
+        exchange: '上海证券交易所',
+        sector: '银行',
+        indicators: {
+          rsrs: 0.85,
+          volatility: 1.2,
+          trend: 0.72,
+          heat: 72,
+        },
+      },
+      '000001': {
+        name: '平安银行',
+        exchange: '深圳证券交易所',
+        sector: '银行',
+        indicators: {
+          rsrs: 0.92,
+          volatility: 0.98,
+          trend: 0.81,
+          heat: 68,
+        },
+      },
+      '002415': {
+        name: '海康威视',
+        exchange: '深圳证券交易所',
+        sector: '信息技术',
+        indicators: {
+          rsrs: 0.78,
+          volatility: 1.35,
+          trend: 0.65,
+          heat: 85,
+        },
+      },
+      '600519': {
+        name: '贵州茅台',
+        exchange: '上海证券交易所',
+        sector: '食品饮料',
+        indicators: {
+          rsrs: 0.95,
+          volatility: 0.88,
+          trend: 0.92,
+          heat: 91,
+        },
+      },
+    };
+
+    return stockData[ticker] || stockData['600000'];
+  };
+
+  const selectedStock = getStockData(selectedTicker || '600000');
+  const indicators = selectedStock.indicators;
+
+  const handleStockSelect = (ticker: string) => {
+    setSelectedTicker(ticker);
+  };
 
   return (
     <div className="main--layout">
@@ -124,10 +194,28 @@ const MainLayoutTemplate: React.FC<MainLayoutProps> = ({ children }) => {
           </div>
 
           <div className="sidebar--section">
-            <h3 className="sidebar--title">数据源</h3>
+            <h3 className="sidebar--title">快速选择</h3>
             <div className="sidebar--list">
-              <SidebarItem dot="success" label="A股 (3,842)" />
-              <SidebarItem dot="success" label="美股 (1,256)" />
+              <SidebarItem 
+                label="600000 浦发银行" 
+                active={selectedTicker === '600000'}
+                onClick={() => handleStockSelect('600000')}
+              />
+              <SidebarItem 
+                label="000001 平安银行" 
+                active={selectedTicker === '000001'}
+                onClick={() => handleStockSelect('000001')}
+              />
+              <SidebarItem 
+                label="002415 海康威视" 
+                active={selectedTicker === '002415'}
+                onClick={() => handleStockSelect('002415')}
+              />
+              <SidebarItem 
+                label="600519 贵州茅台" 
+                active={selectedTicker === '600519'}
+                onClick={() => handleStockSelect('600519')}
+              />
             </div>
           </div>
 
@@ -144,8 +232,8 @@ const MainLayoutTemplate: React.FC<MainLayoutProps> = ({ children }) => {
         {/* Right Panel */}
         <aside className="main--right-panel">
           <Card elevation="low" padding="md">
-            <CardTitle>600000 浦发银行</CardTitle>
-            <p className="panel--subtitle">上海证券交易所 · 银行</p>
+            <CardTitle>{selectedTicker} {selectedStock.name}</CardTitle>
+            <p className="panel--subtitle">{selectedStock.exchange} · {selectedStock.sector}</p>
 
             {/* Chart Placeholder */}
             <div className="chart--placeholder">
@@ -155,10 +243,10 @@ const MainLayoutTemplate: React.FC<MainLayoutProps> = ({ children }) => {
 
             {/* Indicators Grid */}
             <div className="indicators-grid">
-              <IndicatorCard label="RSRS 强度" value="0.85" trend="up" />
-              <IndicatorCard label="波动率偏度" value="1.2" />
-              <IndicatorCard label="中期趋势" value="0.72" trend="up" />
-              <IndicatorCard label="市场热度" value="72" />
+              <IndicatorCard label="RSRS 强度" value={indicators.rsrs.toFixed(2)} trend="up" />
+              <IndicatorCard label="波动率偏度" value={indicators.volatility.toFixed(2)} />
+              <IndicatorCard label="中期趋势" value={indicators.trend.toFixed(2)} trend="up" />
+              <IndicatorCard label="市场热度" value={indicators.heat} />
             </div>
 
             <Button variant="secondary" size="md" fullWidth>
@@ -178,6 +266,10 @@ const MainLayoutTemplate: React.FC<MainLayoutProps> = ({ children }) => {
           <span className="status--item">
             <span className="status--dot status-dot-success"></span>
             TDX: Connected
+          </span>
+          <span className="status--item">
+            <span className="status--dot status-dot-success"></span>
+            当前股票: {selectedTicker}
           </span>
         </div>
 

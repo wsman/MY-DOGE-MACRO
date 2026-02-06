@@ -16,7 +16,7 @@
 .dashboard-header-content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .dashboard-header-title {
@@ -42,6 +42,17 @@
   color: #757575;
 }
 
+.dashboard-header-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.dashboard-header-stats .dashboard-timestamp {
+  margin-top: 8px;
+}
+
 .dashboard-timestamp {
   font-family: monospace;
   font-size: 0.75rem;
@@ -54,12 +65,13 @@
 /* Main Content Grid */
 .dashboard-main {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1.5fr 1fr;
   gap: 24px;
+  margin-top: 24px;
 }
 
 .dashboard-section {
-  min-height: 300px;
+  min-height: 500px;
 }
 
 /* Indicator Grid */
@@ -158,6 +170,41 @@
   border-top: 1px solid #eeeeee;
 }
 
+/* Loading and Error States */
+.dashboard-loading .skeleton,
+.dashboard-error .skeleton {
+  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 8px;
+}
+
+.dashboard-loading .dashboard-header.skeleton {
+  height: 80px;
+  margin-bottom: 24px;
+}
+
+.dashboard-loading .dashboard-cards.skeleton {
+  height: 120px;
+  margin-bottom: 24px;
+}
+
+.dashboard-loading .dashboard-section.skeleton {
+  height: 500px;
+}
+
+.dashboard-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 /* Empty State */
 .empty--state {
   display: flex;
@@ -168,9 +215,23 @@
 }
 
 /* Responsive */
+@media (max-width: 1400px) {
+  .dashboard-main {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .dashboard-section:nth-child(3) {
+    grid-column: span 2;
+  }
+}
+
 @media (max-width: 1200px) {
   .dashboard-main {
     grid-template-columns: 1fr;
+  }
+  
+  .dashboard-section:nth-child(3) {
+    grid-column: span 1;
   }
 }
 
@@ -185,8 +246,35 @@
     gap: 12px;
   }
   
+  .dashboard-header-stats {
+    align-items: flex-start;
+    margin-top: 12px;
+  }
+  
   .indicator--grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .dashboard-main {
+    gap: 16px;
+  }
+  
+  .dashboard-section {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 12px;
+  }
+  
+  .dashboard-main {
+    gap: 12px;
+  }
+  
+  .dashboard-section {
+    min-height: 350px;
   }
 }
 
