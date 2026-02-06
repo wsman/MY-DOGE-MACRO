@@ -1,18 +1,19 @@
 # My Doge Macro 🐶📈
 
 > 基于 AI Agent 的全栈量化情报与研报生成系统。  
-> **版本**: v1.8.0 (核心功能完成)  
+> **版本**: v1.8.1 (宪法融合与精简完成)  
 > **类型**: AI驱动的量化分析系统  
-> **创建**: 2026-02-03 | **更新**: 2026-02-05
+> **创建**: 2026-02-03 | **更新**: 2026-02-07
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.12-blue)
 ![React](https://img.shields.io/badge/react-19-blue)
 ![Status](https://img.shields.io/badge/status-stable-green)
-![Architecture](https://img.shields.io/badge/architecture-Modular%20v1.8.0-blue)
+![Architecture](https://img.shields.io/badge/architecture-Modular%20v1.8.1-blue)
 ![CDD](https://img.shields.io/badge/CDD-v1.6.1-green)
+![Entropy](https://img.shields.io/badge/entropy-0.28-green)
 
-## 🚀 v1.8.0 核心功能完成
+## 🚀 v1.8.1 宪法融合与精简完成
 
 ### ✨ 新增功能 (2026-02-05)
 
@@ -31,9 +32,13 @@
 - **技术指标库**: Python 完整实现
 - **通达信集成**: 本地 A 股数据读取
 
-### 📊 模块化架构状态
+### 📊 宪法融合与模块化架构状态
 
-**迁移状态**: ✅ Phase 2 完成
+**宪法融合**: ✅ 已完成 (2026-02-07)
+**单一真理源**: 所有宪法文件集中存储到`memory_bank/t0_core/`目录
+**系统熵值**: 0.28 (Excellent)
+
+**模块化架构状态**: ✅ 100% 完成
 
 | 组件 | 目标路径 | 状态 | 详情 |
 |------|----------|------|------|
@@ -464,7 +469,7 @@ State A → State B → State C → State D → State E
 ```
 
 **CDD 版本**: v1.6.1
-**系统熵 ($H_{sys}$)**: 0.50 (健康)
+**系统熵 ($H_{sys}$)**: 0.28 (优秀，基于单一真理源架构优化)
 
 ## 📚 文档目录与体系
 

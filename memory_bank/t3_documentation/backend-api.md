@@ -1,15 +1,15 @@
 # Backend API Reference (T3 Reference)
 
 > **Source**: `../../../memory_bank/t3_documentation/api/backend-api.md`  
-> **Version**: v1.6.0  
-> **Last Updated**: 2026-02-05  
+> **Version**: v1.8.1  
+> **Last Updated**: 2026-02-07  
 > **Category**: API Reference  
 > **Audience**: Developers, API Consumers  
 > **Status**: ✅ Current
 
 ## Overview
 
-Reference document for the MY-DOGE Quant API v1.6.0 (FastAPI) backend services.
+Reference document for the MY-DOGE Quant API v1.8.1 (FastAPI) backend services.
 
 This document provides a structured reference to the complete API documentation, which covers quantitative market data, macro analysis, and system management endpoints.
 
@@ -194,8 +194,8 @@ const fetchMarketData = async () => {
 
 ---
 
-**Document Status**: ✅ Current (v1.6.0)  
+**Document Status**: ✅ Current (v1.8.1)  
 **Maintained by**: Negentropy Lab AI Agent System  
 **CDD Framework**: v1.6.1  
-**API Version**: v1.6.0  
-**Last Verified**: 2026-02-05
+**API Version**: v1.8.1  
+**Last Verified**: 2026-02-07

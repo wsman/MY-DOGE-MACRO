@@ -9,7 +9,7 @@
 | Metric | Value | Status |
 |--------|-------|--------|
 | $H_{sys}$ (System Entropy) | 0.28 | 🟢 Excellent |
-| $V_{current}$ (Version) | **v1.8.0** | ✅ Stable |
+| $V_{current}$ (Version) | **v1.8.1** | ✅ Stable |
 | **Next Version** | **v1.9.0** | 📋 Planning |
 
 ## ✅ 宪法融合完成 (2026-02-07)
