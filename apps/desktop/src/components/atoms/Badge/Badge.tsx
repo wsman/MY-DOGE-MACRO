@@ -9,7 +9,7 @@ export interface BadgeProps {
   /** Badge content */
   children: React.ReactNode;
   /** Visual variant */
-  variant?: 'success' | 'warning' | 'danger' | 'info' | 'neutral';
+  variant?: 'success' | 'warning' | 'danger' | 'info' | 'neutral' | 'secondary';
   /** Size */
   size?: 'sm' | 'md';
   /** Optional icon */
@@ -22,6 +22,7 @@ const variantClasses = {
   danger: 'badge--danger',
   info: 'badge--info',
   neutral: 'badge--neutral',
+  secondary: 'badge--secondary',
 };
 
 const sizeClasses = {

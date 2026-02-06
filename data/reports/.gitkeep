@@ -1,0 +1,11 @@
+# Reports Directory
+This directory stores AI-generated research reports in Markdown format.
+
+## Structure
+```
+reports/
+├── index.json          # Report index for quick lookup
+├── templates/          # Report templates
+└── YYYY/MM/            # Reports organized by date
+    └── YYYYMMDD_TICKER_title.md
+```

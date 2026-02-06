@@ -5,6 +5,7 @@ import { MarketPanel } from '../components/layout/panels/MarketPanel';
 import { MacroAnalysisPanel } from '../components/layout/panels/MacroAnalysisPanel';
 import { ResearchEditor } from '../components/layout/panels/ResearchEditor';
 import { SystemTerminal } from '../components/layout/panels/SystemTerminal';
+import { ReportsPage } from '../components/pages/ReportsPage';
 import ConnectionStatus from '../components/ConnectionStatus';
 import { CommandPalette } from '../components/commands/CommandPalette';
 import { ServerSettings } from '../components/ServerSettings';
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
         path: 'terminal',
         element: <SystemTerminal />,
       },
+      {
+        path: 'reports',
+        element: <ReportsPage />,
+      },
     ],
   },
 ]);
@@ -88,6 +93,7 @@ export const routes = {
   macro: '/macro',
   research: '/research',
   terminal: '/terminal',
+  reports: '/reports',
 };
 
 // 默认导出路由提供者

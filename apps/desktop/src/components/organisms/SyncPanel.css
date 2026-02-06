@@ -1,0 +1,186 @@
+/* SyncPanel Styles */
+/* Created: 2026-02-06 (v1.9.0) */
+
+.sync-panel {
+  max-width: 480px;
+}
+
+.sync-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sync-panel__title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sync-panel__loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  color: var(--color-text-secondary, #a1a1aa);
+}
+
+.sync-panel__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sync-panel__error {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 0.5rem;
+  color: #ef4444;
+  font-size: 0.875rem;
+}
+
+/* 配置表单 */
+.sync-panel__config {
+  padding: 1rem;
+  background: var(--color-surface-elevated, #1a1a1f);
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border, #27272a);
+}
+
+.sync-panel__config h4 {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #ffffff);
+}
+
+.sync-panel__config-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sync-panel__config-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #a1a1aa);
+}
+
+.sync-panel__config-form input[type="text"] {
+  padding: 0.5rem 0.75rem;
+  background: var(--color-surface, #0a0a0f);
+  border: 1px solid var(--color-border, #27272a);
+  border-radius: 0.375rem;
+  color: var(--color-text-primary, #ffffff);
+  font-size: 0.875rem;
+}
+
+.sync-panel__config-form input[type="text"]:focus {
+  outline: none;
+  border-color: var(--color-primary, #3b82f6);
+}
+
+.sync-panel__checkbox {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.5rem !important;
+  cursor: pointer;
+}
+
+.sync-panel__checkbox input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.sync-panel__config-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.sync-panel__config-hint {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary, #71717a);
+}
+
+.sync-panel__config-hint code {
+  padding: 0.125rem 0.375rem;
+  background: var(--color-surface, #0a0a0f);
+  border-radius: 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* 状态信息 */
+.sync-panel__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--color-surface-elevated, #1a1a1f);
+  border-radius: 0.5rem;
+}
+
+.sync-panel__info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.sync-panel__label {
+  color: var(--color-text-secondary, #a1a1aa);
+}
+
+.sync-panel__value {
+  color: var(--color-text-primary, #ffffff);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.sync-panel__value em {
+  color: var(--color-text-tertiary, #71717a);
+  font-style: italic;
+}
+
+.sync-panel__divider {
+  height: 1px;
+  background: var(--color-border, #27272a);
+  margin: 0.5rem 0;
+}
+
+/* 操作按钮 */
+.sync-panel__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.sync-panel__actions button {
+  flex: 1;
+  min-width: 100px;
+}
+
+/* 高级操作 */
+.sync-panel__advanced {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--color-border, #27272a);
+}
+
+.sync-panel__advanced button {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary, #71717a);
+}
+
+.sync-panel__advanced button:hover {
+  color: var(--color-text-secondary, #a1a1aa);
+}

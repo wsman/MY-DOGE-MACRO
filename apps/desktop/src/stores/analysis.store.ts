@@ -7,7 +7,7 @@ import {
   RiskSignal,
   PortfolioSummary,
 } from '../types/market';
-import { marketApi } from '../services/api';
+import { marketApi, analysisApi, reportApi, api } from '../services/api';
 
 interface AnalysisState {
   // 市场数据
@@ -35,6 +35,15 @@ interface AnalysisState {
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   clearAll: () => void;
+  
+  // API方法
+  fetchMarketSnapshot: () => Promise<void>;
+  fetchKlineData: (symbol: string, limit?: number) => Promise<any>;
+  calculateRSRS: (ticker: string, period?: number) => Promise<any>;
+  calculateVolatilitySkew: (ticker: string, shortPeriod?: number, longPeriod?: number) => Promise<any>;
+  analyzeBatch: (tickers: string[]) => Promise<any>;
+  generateAIReport: (ticker: string, context?: string) => Promise<any>;
+  testApiConnection: () => Promise<any>;
 }
 
 export const useAnalysisStore = create<AnalysisState>()(

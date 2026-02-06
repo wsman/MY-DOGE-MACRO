@@ -25,6 +25,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # 导入新的API路由
 from .core.api_routes import router as quant_router
 from .core.macro_api_routes import router as macro_router
+from .core.sync_routes import router as sync_router
 # 导入WebSocket模块
 from .core.websocket_new import websocket_endpoint, manager, price_push_loop
 
@@ -166,6 +167,7 @@ async def rate_limit_dependency(request: Request):
 # 注册新的量化API路由
 app.include_router(quant_router)
 app.include_router(macro_router)
+app.include_router(sync_router)
 
 # --- 3. 认证中间件 ---
 async def verify_token(x_auth_token: str = Header(...)):

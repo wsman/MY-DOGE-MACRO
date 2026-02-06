@@ -288,6 +288,7 @@ export const Dashboard: React.FC = () => {
             onGenerate={handleGenerateReport}
             isLoading={aiLoading}
             error={aiError}
+            showReportsLink={true}
           />
         </div>
       </div>

@@ -2,6 +2,7 @@
 // Created: 2026-02-05 (v1.8.0)
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardTitle, CardContent } from '../atoms/Card';
 import { Button } from '../atoms/Button';
 import { Badge } from '../atoms/Badge';
@@ -25,6 +26,7 @@ interface AIReportPanelProps {
   onGenerate?: () => void;
   isLoading?: boolean;
   error?: string;
+  showReportsLink?: boolean;
 }
 
 export const AIReportPanel: React.FC<AIReportPanelProps> = ({
@@ -32,6 +34,7 @@ export const AIReportPanel: React.FC<AIReportPanelProps> = ({
   onGenerate,
   isLoading = false,
   error,
+  showReportsLink = false,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -63,6 +66,13 @@ export const AIReportPanel: React.FC<AIReportPanelProps> = ({
           )}
         </div>
         <div className="ai-report-panel__actions">
+          {showReportsLink && (
+            <Link to="/reports">
+              <Button variant="secondary" size="sm">
+                查看全部研报
+              </Button>
+            </Link>
+          )}
           {onGenerate && (
             <Button
               variant="primary"

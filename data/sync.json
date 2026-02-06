@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "remote": {
+    "enabled": false,
+    "repository": "",
+    "branch": "main",
+    "token_env": "GITHUB_PAT",
+    "auto_sync": {
+      "enabled": false,
+      "interval_minutes": 60,
+      "on_startup": false
+    }
+  },
+  "permissions": {
+    "role": "admin",
+    "can_push": true,
+    "can_configure": true
+  },
+  "sync_rules": {
+    "reports": {
+      "pull": true,
+      "push": true,
+      "conflict_strategy": "keep_both"
+    },
+    "market": {
+      "pull": true,
+      "push": false,
+      "max_age_days": 365
+    },
+    "alerts": {
+      "pull": false,
+      "push": false
+    }
+  },
+  "last_sync": null
+}
