@@ -1,0 +1,383 @@
+/* CorrelationHeatmap.css - 相关性热力图样式 (T-05b) */
+
+.correlation-heatmap-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.correlation-heatmap-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  background-color: var(--card-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.correlation-heatmap-title > span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.correlation-heatmap-subtitle {
+  display: flex;
+  gap: 16px;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.correlation-heatmap-updated {
+  margin-left: auto;
+  color: var(--primary);
+}
+
+.correlation-heatmap-content {
+  flex: 1;
+  padding: 0;
+  position: relative;
+}
+
+/* 加载状态 */
+.correlation-heatmap-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  height: 100%;
+  padding: 40px;
+  color: var(--muted-foreground);
+}
+
+/* 错误状态 */
+.correlation-heatmap-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  height: 100%;
+  padding: 40px;
+  color: var(--destructive);
+}
+
+.correlation-heatmap-error-message {
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+/* 空状态 */
+.correlation-heatmap-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  height: 100%;
+  padding: 40px;
+  color: var(--muted-foreground);
+}
+
+/* 主要内容区域 */
+.correlation-heatmap-main {
+  display: flex;
+  height: 500px;
+  gap: 16px;
+  padding: 16px;
+}
+
+.correlation-heatmap-canvas-container {
+  position: relative;
+  flex: 3;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--card-background);
+}
+
+.correlation-heatmap-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: pointer;
+}
+
+/* 侧边栏 */
+.correlation-heatmap-sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 280px;
+}
+
+/* 市场状态分析 */
+.correlation-heatmap-regime {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.correlation-heatmap-regime-title {
+  margin: 0 0 12px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.correlation-heatmap-regime-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.correlation-heatmap-regime-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.correlation-heatmap-regime-label {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  min-width: 60px;
+}
+
+.correlation-heatmap-regime-value {
+  flex: 1;
+  font-size: 0.75rem;
+  color: var(--foreground);
+}
+
+/* 相关性统计 */
+.correlation-heatmap-stats {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.correlation-heatmap-stats-title {
+  margin: 0 0 12px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.correlation-heatmap-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.correlation-heatmap-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.correlation-heatmap-stat-label {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.correlation-heatmap-stat-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+/* 控制面板 */
+.correlation-heatmap-controls {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.correlation-heatmap-controls-title {
+  margin: 0 0 12px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.correlation-heatmap-controls-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.correlation-heatmap-controls-group:last-child {
+  margin-bottom: 0;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.correlation-heatmap-controls-label {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin-bottom: 4px;
+}
+
+.correlation-heatmap-controls-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* 悬停信息 */
+.correlation-heatmap-hover-info {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  z-index: 10;
+}
+
+.correlation-heatmap-hover-title {
+  margin: 0 0 8px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.correlation-heatmap-hover-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.correlation-heatmap-hover-row:last-child {
+  margin-bottom: 0;
+}
+
+.correlation-heatmap-hover-label {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  min-width: 60px;
+}
+
+.correlation-heatmap-hover-value {
+  flex: 1;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+/* 相关性强度颜色类 */
+.correlation-strong-positive {
+  color: var(--destructive) !important;
+}
+
+.correlation-moderate-positive {
+  color: var(--warning) !important;
+}
+
+.correlation-weak-positive {
+  color: var(--muted-foreground) !important;
+}
+
+.correlation-weak-negative {
+  color: var(--success) !important;
+}
+
+.correlation-moderate-negative {
+  color: var(--primary) !important;
+}
+
+.correlation-strong-negative {
+  color: var(--purple) !important;
+}
+
+/* 底部信息 */
+.correlation-heatmap-footer {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--card-background);
+}
+
+.correlation-heatmap-footer-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.correlation-heatmap-footer-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 响应式调整 */
+@media (max-width: 1200px) {
+  .correlation-heatmap-main {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .correlation-heatmap-sidebar {
+    max-width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .correlation-heatmap-regime,
+  .correlation-heatmap-stats,
+  .correlation-heatmap-controls {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .correlation-heatmap-subtitle {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .correlation-heatmap-updated {
+    margin-left: 0;
+  }
+
+  .correlation-heatmap-footer-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+/* 暗色主题适配 */
+.theme-dark .correlation-heatmap-canvas-container {
+  background-color: #1a1a2e;
+}
+
+.theme-dark .correlation-heatmap-regime,
+.theme-dark .correlation-heatmap-stats,
+.theme-dark .correlation-heatmap-controls {
+  background-color: #2a2a3e;
+  border-color: #3a3a4e;
+}
+
+.theme-dark .correlation-heatmap-hover-info {
+  background-color: #2a2a3e;
+  border-color: #3a3a4e;
+}

@@ -16,6 +16,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks
 from fastapi.responses import StreamingResponse, JSONResponse, Response
 import pandas as pd
+import numpy as np
 
 try:
     from macro.config import MacroConfig
@@ -160,6 +161,266 @@ async def generate_macro_analysis():
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"生成宏观分析报告失败: {str(e)}")
+
+# ==================== 相关性分析接口 ====================
+
+@router.get("/macro/correlation", dependencies=[Depends(verify_token)])
+async def get_correlation_matrix(
+    period: int = Query(30, ge=10, le=365, description="计算周期（天）"),
+    tickers: Optional[str] = Query(None, description="资产代码列表，用逗号分隔，如：QQQ,GLD,BTC-USD,000300.SS")
+):
+    """
+    计算资产间相关性矩阵
+    
+    返回：
+        - 相关性矩阵
+        - 热力图数据
+        - 显著性检验结果
+    """
+    try:
+        config = MacroConfig()
+        loader = GlobalMacroLoader(config)
+        
+        # 获取市场数据
+        data = loader.fetch_combined_data()
+        
+        if data is None or data.empty:
+            raise HTTPException(status_code=500, detail="获取市场数据失败")
+        
+        # 如果指定了tickers，过滤数据
+        if tickers:
+            ticker_list = [t.strip() for t in tickers.split(",")]
+            # 只保留数据中存在的tickers
+            available_tickers = [t for t in ticker_list if t in data.columns]
+            if len(available_tickers) < 2:
+                raise HTTPException(status_code=400, detail="至少需要两个有效资产代码")
+            data = data[available_tickers]
+        
+        # 导入相关性分析模块
+        from .correlation import CorrelationAnalyzer
+        
+        # 计算相关性矩阵
+        analyzer = CorrelationAnalyzer({"default_period": period})
+        correlation_result = analyzer.calculate_correlation_matrix(data, period=period)
+        
+        if "error" in correlation_result:
+            raise HTTPException(status_code=500, detail=correlation_result["error"])
+        
+        # 分析市场状态
+        regime_analysis = analyzer.analyze_market_regime(correlation_result)
+        
+        response_data = {
+            "correlation": correlation_result,
+            "regime_analysis": regime_analysis,
+            "summary": {
+                "asset_count": len(correlation_result.get("tickers", [])),
+                "period_days": period,
+                "calculated_at": datetime.now().isoformat()
+            }
+        }
+        
+        return FastJsonResponse(response_data)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"计算相关性矩阵失败: {str(e)}")
+
+
+@router.get("/macro/correlation/heatmap", dependencies=[Depends(verify_token)])
+async def get_correlation_heatmap(
+    period: int = Query(30, ge=10, le=365, description="计算周期（天）")
+):
+    """
+    获取相关性热力图数据
+    
+    返回格式化的热力图数据，适用于前端图表展示
+    """
+    try:
+        config = MacroConfig()
+        loader = GlobalMacroLoader(config)
+        
+        # 获取市场数据
+        data = loader.fetch_combined_data()
+        
+        if data is None or data.empty:
+            raise HTTPException(status_code=500, detail="获取市场数据失败")
+        
+        # 导入相关性分析模块
+        from .correlation import CorrelationAnalyzer
+        
+        # 计算相关性矩阵
+        analyzer = CorrelationAnalyzer({"default_period": period})
+        correlation_result = analyzer.calculate_correlation_matrix(data, period=period)
+        
+        if "error" in correlation_result:
+            raise HTTPException(status_code=500, detail=correlation_result["error"])
+        
+        # 提取热力图数据
+        heatmap_data = correlation_result.get("heatmap_data", [])
+        
+        # 格式化热力图数据用于前端展示
+        formatted_data = []
+        for item in heatmap_data:
+            value = item["value"]
+            # 根据相关性值确定颜色
+            if value >= 0.7:
+                color = "#ef4444"  # 红色，强正相关
+            elif value >= 0.3:
+                color = "#f97316"  # 橙色，中等正相关
+            elif value >= 0:
+                color = "#fbbf24"  # 黄色，弱正相关
+            elif value >= -0.3:
+                color = "#22c55e"  # 绿色，弱负相关
+            elif value >= -0.7:
+                color = "#3b82f6"  # 蓝色，中等负相关
+            else:
+                color = "#8b5cf6"  # 紫色，强负相关
+            
+            formatted_data.append({
+                "x": item["x"],
+                "y": item["y"],
+                "value": value,
+                "color": color,
+                "p_value": item["p_value"],
+                "spearman": item["spearman"],
+                "samples": item["samples"]
+            })
+        
+        response_data = {
+            "heatmap": formatted_data,
+            "tickers": correlation_result.get("tickers", []),
+            "matrix": correlation_result.get("correlation_matrix", []),
+            "period_days": period,
+            "calculated_at": datetime.now().isoformat()
+        }
+        
+        return FastJsonResponse(response_data)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"生成热力图数据失败: {str(e)}")
+
+
+@router.get("/macro/correlation/divergence", dependencies=[Depends(verify_token)])
+async def get_correlation_divergence(
+    period: int = Query(30, ge=10, le=365, description="计算周期（天）"),
+    threshold: float = Query(2.0, ge=1.0, le=5.0, description="异动检测阈值（Z-score）")
+):
+    """
+    检测相关性异动
+    
+    返回相关性发生显著变化的资产对
+    """
+    try:
+        config = MacroConfig()
+        loader = GlobalMacroLoader(config)
+        
+        # 获取市场数据
+        data = loader.fetch_combined_data()
+        
+        if data is None or data.empty:
+            raise HTTPException(status_code=500, detail="获取市场数据失败")
+        
+        # 导入相关性分析模块
+        from .correlation import CorrelationAnalyzer
+        
+        # 计算相关性矩阵
+        analyzer = CorrelationAnalyzer({
+            "default_period": period,
+            "divergence_threshold": threshold
+        })
+        correlation_result = analyzer.calculate_correlation_matrix(data, period=period)
+        
+        if "error" in correlation_result:
+            raise HTTPException(status_code=500, detail=correlation_result["error"])
+        
+        # 从结果中提取当前指标（需要转换为CorrelationMetrics对象）
+        metrics_dict = correlation_result.get("metrics", {})
+        
+        # 检测异动
+        divergences = analyzer.detect_divergences(metrics_dict, threshold=threshold)
+        
+        # 生成异动报告
+        divergence_list = [d.to_dict() for d in divergences]
+        
+        # 生成相关性报告
+        correlation_report = analyzer.generate_correlation_report(
+            correlation_result, 
+            divergences
+        )
+        
+        response_data = {
+            "divergences": divergence_list,
+            "divergence_count": len(divergence_list),
+            "critical_count": sum(1 for d in divergence_list if d["significance"] == "critical"),
+            "correlation_report": correlation_report,
+            "period_days": period,
+            "threshold": threshold,
+            "calculated_at": datetime.now().isoformat()
+        }
+        
+        return FastJsonResponse(response_data)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"检测相关性异动失败: {str(e)}")
+
+
+@router.get("/macro/correlation/clusters", dependencies=[Depends(verify_token)])
+async def get_asset_clusters(
+    period: int = Query(30, ge=10, le=365, description="计算周期（天）"),
+    threshold: float = Query(0.7, ge=0.1, le=0.9, description="聚类阈值（相关性）")
+):
+    """
+    基于相关性进行资产聚类
+    
+    返回相关性较高的资产分组
+    """
+    try:
+        config = MacroConfig()
+        loader = GlobalMacroLoader(config)
+        
+        # 获取市场数据
+        data = loader.fetch_combined_data()
+        
+        if data is None or data.empty:
+            raise HTTPException(status_code=500, detail="获取市场数据失败")
+        
+        # 导入相关性分析模块
+        from .correlation import CorrelationAnalyzer
+        
+        # 计算相关性矩阵
+        analyzer = CorrelationAnalyzer({"default_period": period})
+        correlation_result = analyzer.calculate_correlation_matrix(data, period=period)
+        
+        if "error" in correlation_result:
+            raise HTTPException(status_code=500, detail=correlation_result["error"])
+        
+        # 获取资产聚类
+        corr_matrix = np.array(correlation_result["correlation_matrix"])
+        tickers = correlation_result["tickers"]
+        
+        clusters = analyzer.get_asset_clusters(corr_matrix, tickers, threshold=threshold)
+        
+        response_data = {
+            "clusters": clusters,
+            "cluster_count": len(clusters),
+            "threshold": threshold,
+            "period_days": period,
+            "tickers": tickers,
+            "calculated_at": datetime.now().isoformat()
+        }
+        
+        return FastJsonResponse(response_data)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"资产聚类失败: {str(e)}")
+
 
 # ==================== 动量分析接口 ====================
 

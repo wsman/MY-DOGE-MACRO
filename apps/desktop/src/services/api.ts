@@ -231,6 +231,40 @@ export const analysisApi = {
   },
 };
 
+// 相关性分析 API (T-05 多资产联动)
+export const correlationApi = {
+  // 获取相关性矩阵
+  async getCorrelationMatrix(period: number = 30, tickers?: string[]) {
+    const params = new URLSearchParams();
+    params.append('period', period.toString());
+    if (tickers && tickers.length > 0) {
+      params.append('tickers', tickers.join(','));
+    }
+    return apiClient.get<any>(`/api/v1/macro/correlation?${params.toString()}`);
+  },
+
+  // 获取热力图数据
+  async getHeatmapData(period: number = 30) {
+    return apiClient.get<any>(`/api/v1/macro/correlation/heatmap?period=${period}`);
+  },
+
+  // 检测相关性异动
+  async getDivergences(period: number = 30, threshold: number = 2.0) {
+    return apiClient.get<any>(`/api/v1/macro/correlation/divergence?period=${period}&threshold=${threshold}`);
+  },
+
+  // 获取资产聚类
+  async getAssetClusters(period: number = 30, threshold: number = 0.7) {
+    return apiClient.get<any>(`/api/v1/macro/correlation/clusters?period=${period}&threshold=${threshold}`);
+  },
+
+  // 获取市场状态分析
+  async getMarketRegime(period: number = 30) {
+    const result = await this.getCorrelationMatrix(period);
+    return result?.regime_analysis || {};
+  },
+};
+
 // 报告 API
 export const reportApi = {
   async generateReport(ticker: string, context: any) {

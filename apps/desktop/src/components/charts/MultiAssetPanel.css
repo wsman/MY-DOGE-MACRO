@@ -1,0 +1,609 @@
+/* MultiAssetPanel.css - 多资产联动面板样式 (T-05c) */
+
+.multi-asset-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.multi-asset-panel-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  background-color: var(--card-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.multi-asset-panel-title > span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.multi-asset-panel-subtitle {
+  display: flex;
+  gap: 16px;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.multi-asset-panel-updated {
+  margin-left: auto;
+  color: var(--primary);
+}
+
+.multi-asset-panel-content {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 资产选择器 */
+.multi-asset-panel-assets {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.multi-asset-panel-assets-title {
+  margin: 0 0 12px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.multi-asset-panel-assets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.multi-asset-panel-asset-name {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin-top: 2px;
+}
+
+/* 控制面板 */
+.multi-asset-panel-controls {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.multi-asset-panel-controls-group {
+  margin-bottom: 16px;
+}
+
+.multi-asset-panel-controls-group:last-child {
+  margin-bottom: 0;
+  display: flex;
+  gap: 8px;
+}
+
+.multi-asset-panel-controls-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.multi-asset-panel-controls-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.multi-asset-panel-controls-slider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.multi-asset-panel-controls-slider-input {
+  flex: 1;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--muted);
+  border-radius: 3px;
+  outline: none;
+}
+
+.multi-asset-panel-controls-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+}
+
+.multi-asset-panel-controls-slider-input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: none;
+}
+
+.multi-asset-panel-controls-slider-value {
+  min-width: 40px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-align: center;
+}
+
+/* 主内容区域 */
+.multi-asset-panel-main {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+
+.multi-asset-panel-heatmap {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.multi-asset-panel-section-title {
+  margin: 0 0 12px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.multi-asset-panel-sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+/* 自定义选项卡系统 */
+.multi-asset-panel-tabs {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.multi-asset-panel-tabs-list {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--muted-background);
+}
+
+.multi-asset-panel-tabs-trigger {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.multi-asset-panel-tabs-trigger:hover {
+  color: var(--foreground);
+  background-color: var(--hover);
+}
+
+.multi-asset-panel-tabs-trigger.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background-color: var(--card-background);
+}
+
+.multi-asset-panel-tabs-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.multi-asset-panel-tabs-panel {
+  height: 100%;
+}
+
+/* 异动检测面板 */
+.multi-asset-panel-divergences {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.multi-asset-panel-divergences-section {
+  background-color: var(--muted-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.multi-asset-panel-divergences-section-title {
+  margin: 0 0 12px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.multi-asset-panel-divergence {
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.multi-asset-panel-divergence.critical {
+  border-left: 4px solid var(--destructive);
+}
+
+.multi-asset-panel-divergence.high {
+  border-left: 4px solid var(--warning);
+}
+
+.multi-asset-panel-divergence-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.multi-asset-panel-divergence-pair {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.multi-asset-panel-divergence-body {
+  display: flex;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.multi-asset-panel-divergence-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.multi-asset-panel-divergences-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.multi-asset-panel-divergence-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+}
+
+.multi-asset-panel-divergence-item-pair {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.multi-asset-panel-divergences-empty {
+  text-align: center;
+  padding: 24px;
+  color: var(--muted-foreground);
+}
+
+.multi-asset-panel-divergences-empty-note {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* 资产聚类面板 */
+.multi-asset-panel-clusters {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.multi-asset-panel-clusters-summary {
+  background-color: var(--muted-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.multi-asset-panel-clusters-summary-title {
+  margin: 0 0 8px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.multi-asset-panel-clusters-summary-note {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.multi-asset-panel-clusters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.multi-asset-panel-cluster {
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.multi-asset-panel-cluster-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.multi-asset-panel-cluster-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.multi-asset-panel-cluster-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.multi-asset-panel-cluster-assets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.multi-asset-panel-cluster-asset {
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  background-color: var(--muted);
+  border-radius: var(--radius-sm);
+  color: white;
+}
+
+.multi-asset-panel-cluster-description {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.multi-asset-panel-clusters-empty {
+  text-align: center;
+  padding: 24px;
+  color: var(--muted-foreground);
+}
+
+.multi-asset-panel-clusters-empty-note {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* 市场状态面板 */
+.multi-asset-panel-regime {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.multi-asset-panel-regime-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.multi-asset-panel-regime-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.multi-asset-panel-regime-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.multi-asset-panel-regime-description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+.multi-asset-panel-regime-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.multi-asset-panel-regime-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.multi-asset-panel-regime-stat-label {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.multi-asset-panel-regime-stat-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.multi-asset-panel-regime-assessment {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.multi-asset-panel-regime-assessment-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.multi-asset-panel-regime-assessment-label {
+  flex: 0 0 80px;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.multi-asset-panel-regime-assessment-value {
+  flex: 1;
+  font-size: 0.75rem;
+  color: var(--foreground);
+}
+
+.multi-asset-panel-regime-empty {
+  text-align: center;
+  padding: 24px;
+  color: var(--muted-foreground);
+}
+
+/* 状态提示 */
+.multi-asset-panel-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  background-color: var(--destructive-background);
+  border: 1px solid var(--destructive);
+  border-radius: var(--radius-md);
+}
+
+.multi-asset-panel-error-message {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--destructive);
+}
+
+.multi-asset-panel-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  color: var(--muted-foreground);
+}
+
+/* 响应式调整 */
+@media (max-width: 1200px) {
+  .multi-asset-panel-main {
+    flex-direction: column;
+  }
+  
+  .multi-asset-panel-sidebar {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .multi-asset-panel-subtitle {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .multi-asset-panel-updated {
+    margin-left: 0;
+  }
+  
+  .multi-asset-panel-assets-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .multi-asset-panel-clusters-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .multi-asset-panel-divergences-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 暗色主题适配 */
+.theme-dark .multi-asset-panel-assets,
+.theme-dark .multi-asset-panel-controls,
+.theme-dark .multi-asset-panel-divergences-section,
+.theme-dark .multi-asset-panel-clusters-summary,
+.theme-dark .multi-asset-panel-regime {
+  background-color: #2a2a3e;
+  border-color: #3a3a4e;
+}
+
+.theme-dark .multi-asset-panel-divergence,
+.theme-dark .multi-asset-panel-cluster {
+  background-color: #1a1a2e;
+  border-color: #2a2a3e;
+}
+
+.theme-dark .multi-asset-panel-tabs {
+  background-color: #2a2a3e;
+  border-color: #3a3a4e;
+}
+
+.theme-dark .multi-asset-panel-tabs-list {
+  background-color: #1a1a2e;
+  border-color: #2a2a3e;
+}
+
+.theme-dark .multi-asset-panel-tabs-trigger {
+  color: #a1a1aa;
+}
+
+.theme-dark .multi-asset-panel-tabs-trigger:hover {
+  color: #ffffff;
+  background-color: #3a3a4e;
+}
+
+.theme-dark .multi-asset-panel-tabs-trigger.active {
+  color: #3b82f6;
+  background-color: #2a2a3e;
+  border-color: #3b82f6;
+}
