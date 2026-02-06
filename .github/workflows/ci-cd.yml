@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./server
+        working-directory: ./apps/api
     
     steps:
       - name: Checkout code
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./engine
+        working-directory: ./libs/quant-engine
     
     steps:
       - name: Checkout code
@@ -141,7 +141,7 @@ jobs:
       
       - name: Install Server Dependencies
         run: |
-          pip install -r server/requirements.txt --quiet
+          pip install -r apps/api/requirements.txt --quiet
       
       - name: Run CDD Version Check
         id: version-check
