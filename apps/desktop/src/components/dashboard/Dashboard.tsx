@@ -5,6 +5,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useAnalysisStore } from '../../stores/analysis.store';
 import { useLayoutStore } from '../../stores/layout.store';
+import { reportApi } from '../../services/api';
 import { Card, CardTitle, CardContent } from '../atoms/Card';
 import { StatusDot } from '../atoms/StatusDot';
 import { Button } from '../atoms/Button';
@@ -34,9 +35,9 @@ export const Dashboard: React.FC = () => {
 
   // Local state
   const [selectedTicker, setSelectedTicker] = useState<string>('600000');
-  const [aiReport, setAiReport] = useState<AIReport | null>(null);
+  const [aiReport, setAiReport] = useState<AIReport | undefined>(undefined);
   const [aiLoading, setAiLoading] = useState(false);
-  const [aiError, setAiError] = useState<string | null>(null);
+  const [aiError, setAiError] = useState<string | undefined>(undefined);
 
   // Load market data on mount
   useEffect(() => {
@@ -70,6 +71,20 @@ export const Dashboard: React.FC = () => {
   const selectedRSRS = rsrsIndicators[selectedTicker];
   const selectedVolatility = volatilitySkews[selectedTicker];
 
+  // Map RSRS signal to AnalysisPanel expected type
+  const mapRSRSSignal = (signal?: string) => {
+    if (!signal) return 'neutral';
+    if (signal === 'hold') return 'neutral';
+    return signal as 'long' | 'short' | 'neutral';
+  };
+
+  // Map Volatility signal to AnalysisPanel expected type
+  const mapVolatilitySignal = (signal?: string) => {
+    if (!signal) return 'medium';
+    if (signal === 'normal') return 'medium';
+    return signal as 'low' | 'medium' | 'high';
+  };
+
   // Calculate summary stats
   const stats = useMemo(() => {
     const marketList = Object.values(marketData);
@@ -95,42 +110,47 @@ export const Dashboard: React.FC = () => {
   // Handle AI report generation
   const handleGenerateReport = async () => {
     setAiLoading(true);
-    setAiError(null);
+    setAiError(undefined);
     
     try {
-      // Simulate API call - replace with actual API integration later
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const mockReport: AIReport = {
+      // 调用真实的API
+      const result = await reportApi.generateReport(selectedTicker, {
+        marketData: selectedStock,
+        rsrsData: selectedRSRS,
+        volatilityData: selectedVolatility,
+        timestamp: new Date().toISOString()
+      });
+
+      // 检测情感
+      const detectSentiment = (content: string) => {
+        const bullishKeywords = ['上涨', '看涨', '多头', '买入', 'positive', 'bullish'];
+        const bearishKeywords = ['下跌', '看跌', '空头', '卖出', 'negative', 'bearish'];
+        
+        const contentLower = content.toLowerCase();
+        const bullishCount = bullishKeywords.filter(kw => contentLower.includes(kw)).length;
+        const bearishCount = bearishKeywords.filter(kw => contentLower.includes(kw)).length;
+        
+        if (bullishCount > bearishCount) return 'bullish';
+        if (bearishCount > bullishCount) return 'bearish';
+        return 'neutral';
+      };
+
+      const newReport: AIReport = {
         id: 'report_' + Date.now(),
         title: `${selectedTicker} AI分析报告`,
-        summary: `基于当前市场数据，${selectedTicker}呈现${selectedStock?.changePercent >= 0 ? '上涨' : '下跌'}趋势。RSRS指标显示${selectedRSRS?.signal === 'long' ? '多头' : selectedRSRS?.signal === 'short' ? '空头' : '中性'}信号，波动率偏度${selectedVolatility?.signal === 'low' ? '较低' : selectedVolatility?.signal === 'high' ? '较高' : '适中'}。`,
-        content: `
-          <h3>技术分析</h3>
-          <p>当前价格：$${selectedStock?.price?.toFixed(2) || 'N/A'}</p>
-          <p>日涨跌幅：${selectedStock?.changePercent?.toFixed(2) || '0.00'}%</p>
-          <p>RSRS值：${selectedRSRS?.value?.toFixed(4) || 'N/A'}</p>
-          <p>波动率偏度：${selectedVolatility?.ratio?.toFixed(2) || 'N/A'}</p>
-          
-          <h3>市场情绪</h3>
-          <p>市场整体情绪${stats.avgChange >= 0 ? '积极' : '谨慎'}，平均涨跌幅${stats.avgChange.toFixed(2)}%。</p>
-          
-          <h3>风险提示</h3>
-          <p>当前高风险警报数量：${stats.highRiskCount}个</p>
-          <p>建议${stats.highRiskCount > 0 ? '密切关注风险控制' : '正常持仓'}</p>
-        `,
-        sentiment: selectedStock?.changePercent >= 0 ? 'bullish' : 
-                  selectedStock?.changePercent < 0 ? 'bearish' : 'neutral',
-        confidence: 0.85,
+        summary: result.report?.slice(0, 200) + '...' || `基于当前市场数据生成的专业分析报告`,
+        content: result.report || '# 报告生成中...\n请稍后再试',
+        sentiment: detectSentiment(result.report || ''),
+        confidence: result.metrics ? 0.85 : 0.75,
         tickers: [selectedTicker],
-        generatedAt: new Date(),
-        model: 'DeepSeek-分析模型 v1.0',
+        generatedAt: new Date(result.generated_at || new Date()),
+        model: result.model || 'DeepSeek-分析模型',
       };
       
-      setAiReport(mockReport);
-    } catch (err) {
-      setAiError('生成研报失败，请稍后重试');
+      setAiReport(newReport);
+    } catch (err: any) {
       console.error('AI report generation failed:', err);
+      setAiError(err.message || '生成研报失败，请检查API连接');
     } finally {
       setAiLoading(false);
     }
@@ -253,9 +273,9 @@ export const Dashboard: React.FC = () => {
             name={selectedStock?.name}
             data={[]} // TODO: Add actual OHLC data
             rsrsValue={selectedRSRS?.value}
-            rsrsSignal={selectedRSRS?.signal}
+            rsrsSignal={mapRSRSSignal(selectedRSRS?.signal)}
             volatilityValue={selectedVolatility?.ratio}
-            volatilitySignal={selectedVolatility?.signal}
+            volatilitySignal={mapVolatilitySignal(selectedVolatility?.signal)}
             onRefresh={() => console.log('Refresh analysis')}
             isLoading={isLoading}
           />

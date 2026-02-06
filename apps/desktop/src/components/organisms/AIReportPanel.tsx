@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { Card, CardTitle, CardContent } from '../atoms/Card';
 import { Button } from '../atoms/Button';
 import { Badge } from '../atoms/Badge';
+import { MarkdownRenderer } from '../atoms/MarkdownRenderer';
 import './AIReportPanel.css';
 
 export interface AIReport {
@@ -114,7 +115,7 @@ export const AIReportPanel: React.FC<AIReportPanelProps> = ({
 
             <div className="ai-report-panel__report-tickers">
               {report.tickers.map((ticker) => (
-                <Badge key={ticker} variant="secondary" size="sm">
+                <Badge key={ticker} variant="info" size="sm">
                   {ticker}
                 </Badge>
               ))}
@@ -128,18 +129,19 @@ export const AIReportPanel: React.FC<AIReportPanelProps> = ({
             {isExpanded && (
               <div className="ai-report-panel__report-content">
                 <strong>详细分析：</strong>
-                <div dangerouslySetInnerHTML={{ __html: report.content.replace(/\n/g, '<br/>') }} />
+                <MarkdownRenderer content={report.content} />
               </div>
             )}
 
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="ai-report-panel__expand-btn"
-            >
-              {isExpanded ? '收起详情' : '展开详情'}
-            </Button>
+            <div className="ai-report-panel__expand-btn">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsExpanded(!isExpanded)}
+              >
+                {isExpanded ? '收起详情' : '展开详情'}
+              </Button>
+            </div>
           </div>
         )}
       </CardContent>

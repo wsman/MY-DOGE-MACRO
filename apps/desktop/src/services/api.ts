@@ -233,8 +233,9 @@ export const analysisApi = {
 
 // 报告 API
 export const reportApi = {
-  async generateReport(ticker: string, context: string) {
-    return apiClient.post<any>('/api/v1/report/generate', { ticker, context });
+  async generateReport(ticker: string, context: any) {
+    // 调用宏观分析API - 后端不需要参数
+    return apiClient.post<any>('/api/v1/macro/analysis/generate');
   },
   async getReports(limit: number = 10) {
     return apiClient.get<any[]>(`/api/v1/reports?limit=${limit}`);
