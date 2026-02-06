@@ -7,8 +7,8 @@ import { Command } from 'cmdk';
 import { useUIStore } from '../../stores/ui.store';
 import { useLayoutStore } from '../../stores/layout.store';
 import { showSuccess, showInfo } from '../../stores/ui.store';
-import { Icon, IconName } from '@components/atoms/Icon';
-import { Badge } from '@components/atoms/Badge';
+import { Icon, IconName } from '@design-system/components/Icon';
+import { Badge } from '@design-system/components/Badge';
 import './CommandPalette.css';
 
 interface CommandItem {

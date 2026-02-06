@@ -3,8 +3,8 @@
 // Last Updated: 2026-02-03
 
 import React, { useState, useCallback } from 'react';
-import { Input } from '@design-system/components/Input';
-import { Icon } from '@design-system/components/Icon';
+import { Input } from '@components/atoms/Input';
+import { Icon } from '@components/atoms/Icon';
 import './SearchBar.css';
 
 export interface SearchBarProps {

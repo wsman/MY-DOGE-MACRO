@@ -10,6 +10,7 @@ export default defineConfig({
       // 设计系统路径映射
       '@design-system': path.resolve(__dirname, '../../libs/design-system'),
       '@design-system/tokens': path.resolve(__dirname, '../../libs/design-system/tokens'),
+      '@design-system/components': path.resolve(__dirname, '../../libs/design-system/components'),
       // 组件路径映射
       '@components': path.resolve(__dirname, 'src/components'),
       '@': path.resolve(__dirname, 'src'),
