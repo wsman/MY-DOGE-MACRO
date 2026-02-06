@@ -1,15 +1,20 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import MainLayout from '../components/layout/MainLayout';
-import Dashboard from '../components/dashboard/Dashboard';
-import { MarketPanel } from '../components/layout/panels/MarketPanel';
-import { MacroAnalysisPanel } from '../components/layout/panels/MacroAnalysisPanel';
-import { ResearchEditor } from '../components/layout/panels/ResearchEditor';
-import { SystemTerminal } from '../components/layout/panels/SystemTerminal';
-import { ReportsPage } from '../components/pages/ReportsPage';
 import ConnectionStatus from '../components/ConnectionStatus';
 import { CommandPalette } from '../components/commands/CommandPalette';
 import { ServerSettings } from '../components/ServerSettings';
 import ServiceStatus from '../components/ServiceStatus';
+import { PageSkeleton } from '../components/skeletons/PageSkeleton';
+import { RouteTransition } from '../components/transitions/RouteTransition';
+
+// 懒加载页面组件
+const Dashboard = lazy(() => import('../components/dashboard/Dashboard'));
+const MarketPanel = lazy(() => import('../components/layout/panels/MarketPanel').then(module => ({ default: module.MarketPanel })));
+const MacroAnalysisPanel = lazy(() => import('../components/layout/panels/MacroAnalysisPanel').then(module => ({ default: module.MacroAnalysisPanel })));
+const ResearchEditor = lazy(() => import('../components/layout/panels/ResearchEditor').then(module => ({ default: module.ResearchEditor })));
+const SystemTerminal = lazy(() => import('../components/layout/panels/SystemTerminal').then(module => ({ default: module.SystemTerminal })));
+const ReportsPage = lazy(() => import('../components/pages/ReportsPage').then(module => ({ default: module.ReportsPage })));
 
 // 错误页面组件
 const ErrorPage = ({ error }: { error?: any }) => (
@@ -67,7 +72,13 @@ function RootLayout() {
   return (
     <div className="relative h-screen w-screen bg-black">
       {/* 核心布局层 */}
-      <MainLayout />
+      <MainLayout>
+        <Suspense fallback={<PageSkeleton />}>
+          <RouteTransition animationType="slide-up" duration={300}>
+            <Outlet />
+          </RouteTransition>
+        </Suspense>
+      </MainLayout>
 
       {/* 命令面板 */}
       <CommandPalette />

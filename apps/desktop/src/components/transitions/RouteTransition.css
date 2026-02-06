@@ -1,0 +1,194 @@
+/* RouteTransition.css - 路由过渡动画样式 */
+/* 依据: FE-205路由过渡动画实施方案 */
+/* 创建: 2026-02-07 (P2阶段优化) */
+
+@import '@design-system/tokens/variables.css';
+
+/* 基础过渡容器 */
+.route-transition {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.route-transition__container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* 动画状态 */
+.route-transition--idle .route-transition__container {
+  transition: none;
+}
+
+.route-transition--animating .route-transition__container {
+  transition: all var(--transition-duration, 300ms) var(--ease-default);
+}
+
+/* 淡入淡出动画 */
+.route-transition--fade.route-transition--forward.route-transition--animating .route-transition__container {
+  animation: fade-in var(--transition-duration, 300ms) var(--ease-default) forwards;
+}
+
+.route-transition--fade.route-transition--backward.route-transition--animating .route-transition__container {
+  animation: fade-out var(--transition-duration, 300ms) var(--ease-default) forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* 滑动动画 - 左进右出 */
+.route-transition--slide-left.route-transition--forward.route-transition--animating .route-transition__container {
+  animation: slide-left-in var(--transition-duration, 300ms) var(--ease-default) forwards;
+}
+
+.route-transition--slide-right.route-transition--backward.route-transition--animating .route-transition__container {
+  animation: slide-right-out var(--transition-duration, 300ms) var(--ease-default) forwards;
+}
+
+@keyframes slide-left-in {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-right-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}
+
+/* 滑动动画 - 上进下出 */
+.route-transition--slide-up.route-transition--forward.route-transition--animating .route-transition__container {
+  animation: slide-up-in var(--transition-duration, 300ms) var(--ease-default) forwards;
+}
+
+.route-transition--slide-down.route-transition--backward.route-transition--animating .route-transition__container {
+  animation: slide-down-out var(--transition-duration, 300ms) var(--ease-default) forwards;
+}
+
+@keyframes slide-up-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* 缩放动画 */
+.route-transition--scale.route-transition--forward.route-transition--animating .route-transition__container {
+  animation: scale-in var(--transition-duration, 300ms) var(--ease-default) forwards;
+}
+
+.route-transition--scale.route-transition--backward.route-transition--animating .route-transition__container {
+  animation: scale-out var(--transition-duration, 300ms) var(--ease-default) forwards;
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scale-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* 性能优化 */
+.route-transition__container {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* 减少动画卡顿 */
+@media (prefers-reduced-motion: reduce) {
+  .route-transition--animating .route-transition__container {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 悬停效果增强 */
+.route-transition:hover .route-transition__container {
+  transition: all var(--transition-fast, 150ms) var(--ease-default);
+}
+
+/* 黑暗模式优化 */
+[data-theme="dark"] .route-transition__container {
+  background: var(--bg-default, #0f1419);
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .route-transition--animating .route-transition__container {
+    --transition-duration: 200ms;
+  }
+  
+  .route-transition--slide-up.route-transition--animating .route-transition__container,
+  .route-transition--slide-down.route-transition--animating .route-transition__container {
+    transform: translateY(0);
+  }
+}
+
+/* 性能监控指示器 */
+.route-transition--performance-warning {
+  outline: 2px solid var(--color-warning, #ff9800);
+}
+
+.route-transition--performance-critical {
+  outline: 2px solid var(--color-danger, #f44336);
+}

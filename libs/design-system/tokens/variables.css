@@ -121,13 +121,29 @@
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   --shadow-focus: 0 0 0 3px rgba(0, 212, 170, 0.4);
   
-  /* ========== Transitions ========== */
+  /* ========== Transitions & Animations ========== */
   
+  /* Transition Durations - 与 animations.ts 保持一致 */
   --transition-fast: 150ms;
-  --transition-normal: 200ms;
+  --transition-normal: 300ms;
   --transition-slow: 500ms;
+  --transition-slower: 700ms;
+  --transition-slowest: 1000ms;
   
+  /* Transition Easings - 与 animations.ts 保持一致 */
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce-in: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* 动画时长变量别名 (向后兼容) */
+  --duration-fast: var(--transition-fast);
+  --duration-normal: var(--transition-normal);
+  --duration-slow: var(--transition-slow);
+  --duration-slower: var(--transition-slower);
+  --duration-slowest: var(--transition-slowest);
 }
 
 /* Dark mode overrides (default) */

@@ -1,10 +1,10 @@
 .price-display {
   font-family: 'JetBrains Mono', 'Menlo', 'Monaco', 'Cascadia Code', 'Consolas', monospace;
   font-variant-numeric: tabular-nums;
-  transition: color 0.2s ease;
+  transition: color var(--transition-fast, 150ms) var(--ease-default);
   display: inline-flex;
   align-items: baseline;
-  gap: 0.25rem;
+  gap: var(--space-1, 0.25rem);
 }
 
 .price--up { color: var(--color-success, #22c55e); }
