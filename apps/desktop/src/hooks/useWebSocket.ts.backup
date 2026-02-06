@@ -52,7 +52,6 @@ export interface UseWebSocketReturn {
     messagesSent: number;
     lastMessageTime: Date | null;
     reconnectAttempts: number;
-    latencyMs: number | null;  // RTT延迟（毫秒）
   };
   /** 订阅指定 ticker */
   subscribe: (ticker: string) => void;
@@ -77,7 +76,6 @@ export interface UseWebSocketReturn {
  * 3. 订阅管理，自动重新订阅
  * 4. 与 Zustand store 深度集成，实时更新市场数据
  * 5. 连接状态监控和错误处理
- * 6. RTT延迟测量
  */
 export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketReturn => {
   const {
@@ -91,22 +89,19 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
 
   // Refs 用于存储可变状态，避免闭包问题
   const wsRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const heartbeatIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const heartbeatIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const reconnectAttemptsRef = useRef(0);
   const clientIdRef = useRef(`client-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
   const subscriptionsRef = useRef<Set<string>>(new Set());
   const messagesReceivedRef = useRef(0);
   const messagesSentRef = useRef(0);
-  const lastPingTimeRef = useRef<number>(0);
-  const latencyRef = useRef<number | null>(null);
 
   // State
   const [status, setStatus] = useState<WebSocketStatus>('disconnected');
   const [error, setError] = useState<string | null>(null);
   const [subscriptions, setSubscriptions] = useState<string[]>([]);
   const [lastMessageTime, setLastMessageTime] = useState<Date | null>(null);
-  const [latencyMs, setLatencyMs] = useState<number | null>(null);
 
   // 获取 Zustand store
   const setMarketData = useAnalysisStore((state) => state.setMarketData);
@@ -213,18 +208,18 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
         case 'price_update':
           if (message.ticker && message.data) {
             // 更新 Zustand store 中的市场数据
-            const { price, change, volume, high, low, open, previousClose } = message.data;
+            const { price, change, volume } = message.data;
             setMarketData(message.ticker, {
               ticker: message.ticker,
               name: message.ticker, // 实际应用中应从其他地方获取名称
               price,
               change,
-              changePercent: message.data.changePercent || (change / price) * 100,
+              changePercent: (change / price) * 100,
               volume,
-              high: high || price * 1.01,
-              low: low || price * 0.99,
-              open: open || price * 1.005,
-              previousClose: previousClose || price * 0.995,
+              high: price * 1.01, // 模拟值
+              low: price * 0.99,  // 模拟值
+              open: price * 1.005, // 模拟值
+              previousClose: price * 0.995, // 模拟值
               timestamp: new Date(),
             });
           }
@@ -244,12 +239,7 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
           break;
           
         case 'pong':
-          if (lastPingTimeRef.current > 0) {
-            const rtt = Date.now() - lastPingTimeRef.current;
-            latencyRef.current = rtt;
-            setLatencyMs(rtt);
-            log(`Received pong, RTT: ${rtt}ms`);
-          }
+          log('Received pong response');
           break;
           
         case 'stats':
@@ -286,7 +276,6 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
     
     heartbeatIntervalRef.current = setInterval(() => {
       if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        lastPingTimeRef.current = Date.now();
         sendMessage({
           action: 'ping',
           timestamp: new Date().toISOString(),
@@ -296,7 +285,29 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
     }, heartbeatInterval);
   }, [sendMessage, heartbeatInterval, cleanupHeartbeat, log]);
 
-  // 连接 WebSocket (先声明)
+  // 重新连接逻辑
+  const reconnect = useCallback(async () => {
+    if (reconnectAttemptsRef.current >= maxReconnectAttempts) {
+      setStatus('error');
+      setError(`Max reconnection attempts (${maxReconnectAttempts}) exceeded`);
+      log('Max reconnection attempts exceeded');
+      return;
+    }
+
+    cleanupReconnect();
+    
+    // 指数退避策略
+    const delay = Math.min(reconnectInterval * Math.pow(1.5, reconnectAttemptsRef.current), 30000);
+    
+    log(`Reconnecting in ${delay}ms (attempt ${reconnectAttemptsRef.current + 1})`);
+    
+    reconnectTimeoutRef.current = setTimeout(() => {
+      reconnectAttemptsRef.current += 1;
+      connect();
+    }, delay);
+  }, [reconnectInterval, maxReconnectAttempts, cleanupReconnect, connect, log]);
+
+  // 连接 WebSocket
   const connect = useCallback(async () => {
     // 清理现有连接
     if (wsRef.current) {
@@ -311,7 +322,6 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
       const wsUrl = await getWebSocketUrl();
       setStatus('connecting');
       setError(null);
-      setLatencyMs(null);
       
       log(`Connecting to ${wsUrl}`);
       
@@ -351,8 +361,7 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
           setStatus('disconnected');
         } else {
           setStatus('reconnecting');
-          // 使用 setTimeout 避免循环调用
-          setTimeout(() => reconnect(), 0);
+          reconnect();
         }
         
         cleanupHeartbeat();
@@ -363,32 +372,9 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
       console.error('Error creating WebSocket:', err);
       setError(`Failed to create WebSocket: ${err}`);
       setStatus('error');
-      // 使用 setTimeout 避免循环调用
-      setTimeout(() => reconnect(), 0);
+      reconnect();
     }
-  }, [getWebSocketUrl, getAuthToken, handleMessage, startHeartbeat, cleanupReconnect, cleanupHeartbeat, log]);
-
-  // 重新连接逻辑 (在 connect 之后声明)
-  const reconnect = useCallback(async () => {
-    if (reconnectAttemptsRef.current >= maxReconnectAttempts) {
-      setStatus('error');
-      setError(`Max reconnection attempts (${maxReconnectAttempts}) exceeded`);
-      log('Max reconnection attempts exceeded');
-      return;
-    }
-
-    cleanupReconnect();
-    
-    // 指数退避策略
-    const delay = Math.min(reconnectInterval * Math.pow(1.5, reconnectAttemptsRef.current), 30000);
-    
-    log(`Reconnecting in ${delay}ms (attempt ${reconnectAttemptsRef.current + 1})`);
-    
-    reconnectTimeoutRef.current = setTimeout(() => {
-      reconnectAttemptsRef.current += 1;
-      connect();
-    }, delay);
-  }, [reconnectInterval, maxReconnectAttempts, cleanupReconnect, connect, log]);
+  }, [getWebSocketUrl, getAuthToken, handleMessage, reconnect, startHeartbeat, cleanupReconnect, cleanupHeartbeat, log]);
 
   // 断开连接
   const disconnect = useCallback(() => {
@@ -404,12 +390,10 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
     
     setStatus('disconnected');
     reconnectAttemptsRef.current = 0;
-    setLatencyMs(null);
   }, [cleanupReconnect, cleanupHeartbeat, log]);
 
   // 发送 ping
   const sendPing = useCallback(() => {
-    lastPingTimeRef.current = Date.now();
     sendMessage({
       action: 'ping',
       timestamp: new Date().toISOString(),
@@ -445,7 +429,6 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
       messagesSent: messagesSentRef.current,
       lastMessageTime,
       reconnectAttempts: reconnectAttemptsRef.current,
-      latencyMs,
     },
     subscribe,
     unsubscribe,

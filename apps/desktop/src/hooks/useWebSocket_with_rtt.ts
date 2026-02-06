@@ -91,8 +91,8 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
 
   // Refs 用于存储可变状态，避免闭包问题
   const wsRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const heartbeatIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const heartbeatIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const reconnectAttemptsRef = useRef(0);
   const clientIdRef = useRef(`client-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
   const subscriptionsRef = useRef<Set<string>>(new Set());
@@ -296,7 +296,29 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
     }, heartbeatInterval);
   }, [sendMessage, heartbeatInterval, cleanupHeartbeat, log]);
 
-  // 连接 WebSocket (先声明)
+  // 重新连接逻辑
+  const reconnect = useCallback(async () => {
+    if (reconnectAttemptsRef.current >= maxReconnectAttempts) {
+      setStatus('error');
+      setError(`Max reconnection attempts (${maxReconnectAttempts}) exceeded`);
+      log('Max reconnection attempts exceeded');
+      return;
+    }
+
+    cleanupReconnect();
+    
+    // 指数退避策略
+    const delay = Math.min(reconnectInterval * Math.pow(1.5, reconnectAttemptsRef.current), 30000);
+    
+    log(`Reconnecting in ${delay}ms (attempt ${reconnectAttemptsRef.current + 1})`);
+    
+    reconnectTimeoutRef.current = setTimeout(() => {
+      reconnectAttemptsRef.current += 1;
+      connect();
+    }, delay);
+  }, [reconnectInterval, maxReconnectAttempts, cleanupReconnect, connect, log]);
+
+  // 连接 WebSocket
   const connect = useCallback(async () => {
     // 清理现有连接
     if (wsRef.current) {
@@ -351,8 +373,7 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
           setStatus('disconnected');
         } else {
           setStatus('reconnecting');
-          // 使用 setTimeout 避免循环调用
-          setTimeout(() => reconnect(), 0);
+          reconnect();
         }
         
         cleanupHeartbeat();
@@ -363,32 +384,9 @@ export const useWebSocket = (options: UseWebSocketOptions = {}): UseWebSocketRet
       console.error('Error creating WebSocket:', err);
       setError(`Failed to create WebSocket: ${err}`);
       setStatus('error');
-      // 使用 setTimeout 避免循环调用
-      setTimeout(() => reconnect(), 0);
+      reconnect();
     }
-  }, [getWebSocketUrl, getAuthToken, handleMessage, startHeartbeat, cleanupReconnect, cleanupHeartbeat, log]);
-
-  // 重新连接逻辑 (在 connect 之后声明)
-  const reconnect = useCallback(async () => {
-    if (reconnectAttemptsRef.current >= maxReconnectAttempts) {
-      setStatus('error');
-      setError(`Max reconnection attempts (${maxReconnectAttempts}) exceeded`);
-      log('Max reconnection attempts exceeded');
-      return;
-    }
-
-    cleanupReconnect();
-    
-    // 指数退避策略
-    const delay = Math.min(reconnectInterval * Math.pow(1.5, reconnectAttemptsRef.current), 30000);
-    
-    log(`Reconnecting in ${delay}ms (attempt ${reconnectAttemptsRef.current + 1})`);
-    
-    reconnectTimeoutRef.current = setTimeout(() => {
-      reconnectAttemptsRef.current += 1;
-      connect();
-    }, delay);
-  }, [reconnectInterval, maxReconnectAttempts, cleanupReconnect, connect, log]);
+  }, [getWebSocketUrl, getAuthToken, handleMessage, reconnect, startHeartbeat, cleanupReconnect, cleanupHeartbeat, log]);
 
   // 断开连接
   const disconnect = useCallback(() => {

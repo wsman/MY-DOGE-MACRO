@@ -3,7 +3,7 @@ import Router from './routes';
 
 function App() {
   // 开发环境下启用WebSocket调试
-  const isDev = import.meta.env.MODE === 'development';
+  const isDev = process.env.NODE_ENV === 'development';
   
   return (
     <WebSocketProvider debug={isDev}>

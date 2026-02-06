@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from .core.api_routes import router as quant_router
 from .core.macro_api_routes import router as macro_router
 # 导入WebSocket模块
-from .core.websocket_new import websocket_endpoint, manager, price_push_loop
+from .core.websocket import websocket_endpoint, manager, price_push_loop
 
 # --- 1. 数据模型严谨性 ---
 class StockPrice(BaseModel):
