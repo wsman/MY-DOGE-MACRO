@@ -1,18 +1,32 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useWebSocket, UseWebSocketReturn, UseWebSocketOptions } from '../hooks/useWebSocket';
+import { 
+  useWebSocketWithThrottle, 
+  UseWebSocketWithThrottleReturn, 
+  UseWebSocketWithThrottleOptions 
+} from '../hooks/useWebSocketWithThrottle';
 
-const WebSocketContext = createContext<UseWebSocketReturn | null>(null);
+// 兼容类型：使用节流版hook但保持相同的类型接口
+const WebSocketContext = createContext<UseWebSocketWithThrottleReturn | null>(null);
 
 interface WebSocketProviderProps {
   children: ReactNode;
   debug?: boolean;
+  batchSize?: number;
+  batchTimeout?: number;
 }
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ 
   children, 
-  debug = false 
+  debug = false,
+  batchSize = 30,
+  batchTimeout = 16
 }) => {
-  const ws = useWebSocket({ debug });
+  const ws = useWebSocketWithThrottle({ 
+    debug, 
+    batchSize,
+    batchTimeout,
+    enablePerformanceMonitoring: debug
+  });
   
   return (
     <WebSocketContext.Provider value={ws}>
@@ -21,7 +35,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
   );
 };
 
-export const useWebSocketContext = (): UseWebSocketReturn => {
+export const useWebSocketContext = (): UseWebSocketWithThrottleReturn => {
   const context = useContext(WebSocketContext);
   if (!context) {
     throw new Error('useWebSocketContext must be used within WebSocketProvider');

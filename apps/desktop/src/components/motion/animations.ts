@@ -19,7 +19,7 @@ export const slideUpVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.3,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
   exit: {
@@ -27,7 +27,7 @@ export const slideUpVariants: Variants = {
     y: -20,
     transition: {
       duration: 0.2,
-      ease: 'easeIn',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };
@@ -43,14 +43,14 @@ export const fadeInVariants: Variants = {
     opacity: 1,
     transition: {
       duration: 0.25,
-      ease: 'easeInOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
   exit: {
     opacity: 0,
     transition: {
       duration: 0.2,
-      ease: 'easeIn',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };
@@ -68,7 +68,7 @@ export const scaleInVariants: Variants = {
     scale: 1,
     transition: {
       duration: 0.3,
-      ease: [0.34, 1.56, 0.64, 1], // 自定义弹跳效果
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };
@@ -86,7 +86,7 @@ export const cardHoverVariants: Variants = {
     boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
     transition: {
       duration: 0.2,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
   tap: {
@@ -107,7 +107,7 @@ export const buttonRippleVariants: Variants = {
     opacity: 0,
     transition: {
       duration: 0.6,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };
@@ -181,7 +181,7 @@ export const chartLoadingVariants: Variants = {
     x: 0,
     transition: {
       duration: 0.4,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
       delayChildren: 0.1,
       staggerChildren: 0.05,
     },
@@ -219,7 +219,7 @@ export const listItemVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.3,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };
@@ -237,14 +237,14 @@ export const gridItemVariants: Variants = {
     scale: 1,
     transition: {
       duration: 0.3,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
   hover: {
     scale: 1.05,
     transition: {
       duration: 0.2,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };
@@ -264,7 +264,7 @@ export const pageForwardVariants: Variants = {
     x: 0,
     transition: {
       duration: 0.3,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
   exit: {
@@ -272,7 +272,7 @@ export const pageForwardVariants: Variants = {
     x: -30,
     transition: {
       duration: 0.25,
-      ease: 'easeIn',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };
@@ -290,7 +290,7 @@ export const pageBackwardVariants: Variants = {
     x: 0,
     transition: {
       duration: 0.3,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
   exit: {
@@ -298,7 +298,7 @@ export const pageBackwardVariants: Variants = {
     x: 30,
     transition: {
       duration: 0.25,
-      ease: 'easeIn',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };
@@ -315,7 +315,7 @@ export const drawerVariants: Variants = {
   visible: {
     x: 0,
     transition: {
-      type: 'spring',
+      type: 'spring' as const,
       stiffness: 300,
       damping: 30,
     },
@@ -324,7 +324,7 @@ export const drawerVariants: Variants = {
     x: '100%',
     transition: {
       duration: 0.3,
-      ease: 'easeIn',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };
@@ -342,7 +342,7 @@ export const modalVariants: Variants = {
     scale: 1,
     transition: {
       duration: 0.3,
-      ease: [0.34, 1.56, 0.64, 1], // 轻微弹跳
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
   exit: {
@@ -350,7 +350,7 @@ export const modalVariants: Variants = {
     scale: 0.9,
     transition: {
       duration: 0.2,
-      ease: 'easeIn',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };
@@ -368,7 +368,7 @@ export const tooltipVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.15,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
   exit: {
@@ -376,7 +376,7 @@ export const tooltipVariants: Variants = {
     y: 5,
     transition: {
       duration: 0.1,
-      ease: 'easeIn',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };
@@ -394,7 +394,7 @@ export const progressBarVariants: Variants = {
     width,
     transition: {
       duration: 0.6,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   }),
 };
@@ -412,7 +412,7 @@ export const numberCountVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.3,
-      ease: 'easeOut',
+      ease: [0.34, 1.56, 0.64, 1] as const,
     },
   },
 };

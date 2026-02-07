@@ -7,6 +7,7 @@ import { Card, CardTitle, CardContent } from '../atoms/Card';
 import { Button } from '../atoms/Button';
 import { Badge } from '../atoms/Badge';
 import { ChartPanel, OHLCData } from '../charts';
+import { EnhancedPriceDisplay } from '../atoms/PriceDisplay/EnhancedPriceDisplay';
 import './AnalysisPanel.css';
 
 interface AnalysisPanelProps {
@@ -61,13 +62,13 @@ export const AnalysisPanelOptimized: React.FC<AnalysisPanelProps> = memo(({
   }, []);
 
   // 使用useMemo计算派生数据
-  const { latestPrice, priceChange, priceChangePercent } = React.useMemo(() => {
+  const { latestPrice, previousPrice, priceChange, priceChangePercent } = React.useMemo(() => {
     const latestPrice = data.length > 0 ? data[data.length - 1].close : 0;
-    const prevPrice = data.length > 1 ? data[data.length - 2].close : latestPrice;
-    const priceChange = latestPrice - prevPrice;
-    const priceChangePercent = prevPrice ? (priceChange / prevPrice) * 100 : 0;
+    const previousPrice = data.length > 1 ? data[data.length - 2].close : latestPrice;
+    const priceChange = latestPrice - previousPrice;
+    const priceChangePercent = previousPrice ? (priceChange / previousPrice) * 100 : 0;
     
-    return { latestPrice, priceChange, priceChangePercent };
+    return { latestPrice, previousPrice, priceChange, priceChangePercent };
   }, [data]);
 
   return (
@@ -111,10 +112,16 @@ export const AnalysisPanelOptimized: React.FC<AnalysisPanelProps> = memo(({
         {/* Price Summary */}
         <div className="analysis-panel__summary">
           <div className="analysis-panel__price">
-            <span className="analysis-panel__price-value">${latestPrice.toFixed(2)}</span>
-            <span className={`analysis-panel__price-change ${priceChange >= 0 ? 'positive' : 'negative'}`}>
-              {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)} ({priceChangePercent.toFixed(2)}%)
-            </span>
+            <EnhancedPriceDisplay
+              value={latestPrice}
+              previousValue={previousPrice}
+              currency="$"
+              decimals={2}
+              showChange={true}
+              showFlash={true}
+              enableNumberScroll={true}
+              scrollDuration={500}
+            />
           </div>
 
           <div className="analysis-panel__indicators">
