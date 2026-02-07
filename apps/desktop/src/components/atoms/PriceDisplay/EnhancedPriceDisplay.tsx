@@ -1,8 +1,10 @@
-// EnhancedPriceDisplay Component - 数字滚动动画增强版
+// EnhancedPriceDisplay Component - 数字滚动动画增强版 (升级版)
 // Created: 2026-02-07
-// Purpose: 在原有PriceDisplay基础上增加平滑数字滚动动画
+// Updated: 2026-02-07 - 集成RollingNumber组件
+// Purpose: 在原有PriceDisplay基础上使用专业的RollingNumber组件
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React from 'react';
+import RollingNumber, { MemoizedRollingNumber } from '../../../utils/RollingNumber';
 import './EnhancedPriceDisplay.css';
 
 interface EnhancedPriceDisplayProps {
@@ -24,6 +26,10 @@ interface EnhancedPriceDisplayProps {
   scrollDuration?: number;
   /** 数字格式化选项 */
   formatOptions?: Intl.NumberFormatOptions;
+  /** 使用性能优化版本 */
+  useMemoized?: boolean;
+  /** 动画类型 */
+  animationType?: 'slide' | 'fade' | 'scale';
 }
 
 export const EnhancedPriceDisplay: React.FC<EnhancedPriceDisplayProps> = (props) => {
@@ -37,14 +43,9 @@ export const EnhancedPriceDisplay: React.FC<EnhancedPriceDisplayProps> = (props)
     enableNumberScroll = true,
     scrollDuration = 500,
     formatOptions = {},
+    useMemoized = true,
+    animationType = 'slide',
   } = props;
-  
-  const [flash, setFlash] = useState<'up' | 'down' | null>(null);
-  const [displayValue, setDisplayValue] = useState(value);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const prevValueRef = useRef(value);
-  const animationFrameRef = useRef<number>();
-  const animationStartTimeRef = useRef<number>();
   
   // 计算变化百分比
   const changePercent = previousValue 
@@ -52,137 +53,111 @@ export const EnhancedPriceDisplay: React.FC<EnhancedPriceDisplayProps> = (props)
     : 0;
   
   const colorClass = changePercent >= 0 ? 'price--up' : 'price--down';
-  const flashClass = flash ? `price--flash-${flash}` : '';
   
-  // 格式化数字
-  const formatNumber = useCallback((num: number) => {
+  // 格式化函数
+  const formatNumber = (num: number): string => {
     const options: Intl.NumberFormatOptions = {
       minimumFractionDigits: decimals,
       maximumFractionDigits: decimals,
       ...formatOptions,
     };
     
-    return new Intl.NumberFormat('zh-CN', options).format(num);
-  }, [decimals, formatOptions]);
+    const formatted = new Intl.NumberFormat('zh-CN', options).format(num);
+    return `${currency}${formatted}`;
+  };
   
-  // 数字滚动动画
-  const animateNumber = useCallback((start: number, end: number) => {
-    if (!enableNumberScroll || start === end) {
-      setDisplayValue(end);
-      return;
-    }
-    
-    setIsAnimating(true);
-    animationStartTimeRef.current = Date.now();
-    
-    const animate = () => {
-      const currentTime = Date.now();
-      const elapsed = currentTime - animationStartTimeRef.current!;
-      const progress = Math.min(elapsed / scrollDuration, 1);
-      
-      // 使用缓动函数 (easeOutQuad)
-      const easedProgress = 1 - Math.pow(1 - progress, 3);
-      const currentValue = start + (end - start) * easedProgress;
-      
-      setDisplayValue(currentValue);
-      
-      if (progress < 1) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-      } else {
-        setIsAnimating(false);
-        setDisplayValue(end); // 确保最终值是精确的
-      }
-    };
-    
-    // 取消任何正在进行的动画
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-    }
-    
-    animationFrameRef.current = requestAnimationFrame(animate);
-  }, [enableNumberScroll, scrollDuration]);
+  // 选择 RollingNumber 组件版本
+  const RollingNumberComponent = useMemoized ? MemoizedRollingNumber : RollingNumber;
   
-  // 闪烁动画效果
-  useEffect(() => {
-    if (showFlash && value !== prevValueRef.current) {
-      const direction = value > prevValueRef.current ? 'up' : 'down';
-      setFlash(direction);
-      prevValueRef.current = value;
-      
-      // 启动数字滚动动画
-      if (enableNumberScroll) {
-        animateNumber(displayValue, value);
-      } else {
-        setDisplayValue(value);
-      }
-      
-      // 300ms 后移除闪烁
-      const timer = setTimeout(() => setFlash(null), 300);
-      return () => {
-        clearTimeout(timer);
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
-        }
-      };
-    } else if (!showFlash) {
-      setDisplayValue(value);
-    }
-  }, [value, showFlash, enableNumberScroll, animateNumber, displayValue]);
-  
-  // 清理动画帧
-  useEffect(() => {
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, []);
-  
-  // 渲染数字部分（带滚动动画）
+  // 渲染数字部分
   const renderNumber = () => {
-    const formattedValue = formatNumber(displayValue);
-    const fullValue = `${currency}${formattedValue}`;
-    
-    if (!enableNumberScroll || !isAnimating) {
-      return <span className="price-number">{fullValue}</span>;
+    if (!enableNumberScroll) {
+      return <span className="price-number">{formatNumber(value)}</span>;
     }
     
-    // 当数字滚动时，添加动画类
     return (
-      <span className={`price-number price-number--rolling ${flashClass}`}>
-        {fullValue}
+      <RollingNumberComponent
+        value={value}
+        format={formatNumber}
+        duration={scrollDuration}
+        showDirection={showFlash}
+        showSign={showChange && changePercent !== 0}
+        prefix={currency}
+        decimalPlaces={decimals}
+        useSeparator={true}
+        animationType={animationType}
+        springConfig={{
+          stiffness: 350,
+          damping: 35,
+          mass: 1,
+        }}
+        className="price-number"
+      />
+    );
+  };
+  
+  // 渲染变化百分比
+  const renderChange = () => {
+    if (!showChange || !previousValue) return null;
+    
+    const changeClass = changePercent >= 0 ? 'price-change--up' : 'price-change--down';
+    const sign = changePercent >= 0 ? '+' : '';
+    
+    return (
+      <span className={`price-change ${changeClass}`}>
+        {sign}{changePercent.toFixed(2)}%
       </span>
     );
   };
   
   return (
-    <span className={`enhanced-price-display ${colorClass} ${flashClass}`}>
+    <span className={`enhanced-price-display ${colorClass}`}>
       {renderNumber()}
-      {showChange && previousValue && (
-        <span className="price-change">
-          {changePercent >= 0 ? '+' : ''}{changePercent.toFixed(2)}%
-        </span>
-      )}
+      {renderChange()}
     </span>
   );
 };
 
-// 分位数字组件（可选，用于高级数字显示）
-export const DigitRoller: React.FC<{
-  value: string;
-  previousValue: string;
-}> = ({ value, previousValue }) => {
-  const [digitClass, setDigitClass] = useState('');
-  
-  useEffect(() => {
-    if (value !== previousValue) {
-      setDigitClass('digit--changing');
-      const timer = setTimeout(() => setDigitClass(''), 300);
-      return () => clearTimeout(timer);
-    }
-  }, [value, previousValue]);
-  
-  return <span className={`digit-roller ${digitClass}`}>{value}</span>;
+// 简化版：仅显示价格（无百分比）
+export const SimplePriceDisplay: React.FC<{
+  value: number;
+  currency?: string;
+  decimals?: number;
+}> = ({ value, currency = '', decimals = 2 }) => {
+  return (
+    <RollingNumber
+      value={value}
+      prefix={currency}
+      decimalPlaces={decimals}
+      useSeparator={true}
+      animationType="fade"
+      duration={300}
+      showDirection={false}
+    />
+  );
 };
+
+// 百分比显示组件
+export const PercentChangeDisplay: React.FC<{
+  value: number;
+  showDirection?: boolean;
+  showSign?: boolean;
+}> = ({ value, showDirection = true, showSign = true }) => {
+  return (
+    <RollingNumber
+      value={value}
+      suffix="%"
+      decimalPlaces={2}
+      showDirection={showDirection}
+      showSign={showSign}
+      animationType="scale"
+      duration={400}
+      className={value >= 0 ? 'text-green-600' : 'text-red-600'}
+    />
+  );
+};
+
+// 高性能版本：使用memo包装
+export const EnhancedPriceDisplayMemo = React.memo(EnhancedPriceDisplay);
 
 export default EnhancedPriceDisplay;

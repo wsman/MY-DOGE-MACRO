@@ -1,7 +1,7 @@
 // PerformanceMonitor - Frontend Performance Monitoring System
 // Based on DS-065 Frontend Performance Optimization Standard
 // Created: 2026-02-07
-// Fixed: 2026-02-07 (TypeScript compilation errors resolved)
+// Fixed: 2026-02-07 (TypeScript compilation errors)
 
 import React from 'react';
 import { useEffect, useRef } from 'react';
@@ -73,15 +73,15 @@ export class PerformanceMonitor {
       ...options,
     };
 
-    // Check if we're in development mode without process.env dependency
+    // Check if we're in development mode
     try {
-      // Try global variable or environment detection
-      const isDevelopment = 
-        (globalThis as any).__DEV__ === true ||
-        (typeof location !== 'undefined' && location.hostname === 'localhost') ||
-        (typeof document !== 'undefined' && document.location?.hostname === 'localhost');
-      
-      if (isDevelopment) {
+      // Try Vite's import.meta.env first
+      const viteEnv = (globalThis as any).import?.meta?.env;
+      if (viteEnv && viteEnv.MODE === 'development') {
+        this.options.logToConsole = true;
+      }
+      // Fallback to Node.js process.env
+      else if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
         this.options.logToConsole = true;
       }
     } catch {
@@ -163,15 +163,13 @@ export class PerformanceMonitor {
   }
 
   private setupVisibilityChangeHandler(): void {
-    if (typeof document !== 'undefined') {
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          this.pause();
-        } else {
-          this.resume();
-        }
-      });
-    }
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.pause();
+      } else {
+        this.resume();
+      }
+    });
   }
 
   private sampleMetrics(): void {
@@ -424,7 +422,6 @@ export function withPerformanceMonitoring<P extends object>(
       startTime.current = performance.now();
     });
     
-    // Use React.createElement to avoid JSX syntax issues in .ts files
     return React.createElement(Component, props);
   };
   

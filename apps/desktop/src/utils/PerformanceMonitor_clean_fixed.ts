@@ -1,38 +1,80 @@
 // PerformanceMonitor - Frontend Performance Monitoring System
-// Based on DS-065 Frontend Performance Optimization Standard
-// Created: 2026-02-07
-// Fixed: 2026-02-07 (TypeScript compilation errors resolved)
+// Based on: DS-065 Frontend Performance Optimization Standard §4.1
+// Created: 2026-02-07 (P1 Phase Optimization)
+// Fixed: 2026-02-07 (Fixed TypeScript compilation errors - Clean Version)
 
 import React from 'react';
 import { useEffect, useRef } from 'react';
 
+/**
+ * Performance metrics data structure
+ */
 export interface PerformanceMetrics {
+  // Rendering performance
   fps: number;
   componentRenderTime: Record<string, number>;
+  
+  // Memory usage
   memoryUsedJSHeap: number;
   memoryTotalJSHeap: number;
+  
+  // Network performance
   websocketLatency: number;
   messageProcessingTime: number;
+  
+  // User interaction
   interactionResponseTime: number;
   animationSmoothness: number;
+  
+  // System metrics
   cpuUsage: number;
   timestamp: number;
 }
 
+/**
+ * Performance threshold configuration
+ */
 export interface PerformanceThresholds {
-  fps: { warning: number; error: number };
-  memory: { warning: number; error: number };
-  responseTime: { warning: number; error: number };
-  latency: { warning: number; error: number };
+  fps: {
+    warning: number;
+    error: number;
+  };
+  memory: {
+    warning: number;
+    error: number;
+  };
+  responseTime: {
+    warning: number;
+    error: number;
+  };
+  latency: {
+    warning: number;
+    error: number;
+  };
 }
 
 const DEFAULT_THRESHOLDS: PerformanceThresholds = {
-  fps: { warning: 55, error: 30 },
-  memory: { warning: 200 * 1024 * 1024, error: 300 * 1024 * 1024 },
-  responseTime: { warning: 150, error: 300 },
-  latency: { warning: 150, error: 300 },
+  fps: {
+    warning: 55,
+    error: 30,
+  },
+  memory: {
+    warning: 200 * 1024 * 1024, // 200MB
+    error: 300 * 1024 * 1024,   // 300MB
+  },
+  responseTime: {
+    warning: 150,
+    error: 300,
+  },
+  latency: {
+    warning: 150,
+    error: 300,
+  },
 };
 
+/**
+ * Performance monitoring event type
+ */
 export type PerformanceEvent = {
   type: 'metric' | 'warning' | 'error';
   metric: keyof PerformanceMetrics;
@@ -42,6 +84,9 @@ export type PerformanceEvent = {
   component?: string;
 };
 
+/**
+ * Performance monitor configuration options
+ */
 export interface PerformanceMonitorOptions {
   enabled?: boolean;
   samplingInterval?: number;
@@ -51,6 +96,9 @@ export interface PerformanceMonitorOptions {
   serverEndpoint?: string;
 }
 
+/**
+ * High-performance frontend performance monitor
+ */
 export class PerformanceMonitor {
   private metrics: PerformanceMetrics;
   private thresholds: PerformanceThresholds;
@@ -73,19 +121,11 @@ export class PerformanceMonitor {
       ...options,
     };
 
-    // Check if we're in development mode without process.env dependency
-    try {
-      // Try global variable or environment detection
-      const isDevelopment = 
-        (globalThis as any).__DEV__ === true ||
-        (typeof location !== 'undefined' && location.hostname === 'localhost') ||
-        (typeof document !== 'undefined' && document.location?.hostname === 'localhost');
-      
-      if (isDevelopment) {
-        this.options.logToConsole = true;
-      }
-    } catch {
-      // Ignore errors in environment detection
+    // Determine if in development mode
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
+      this.options.logToConsole = true;
+    } else if (typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'development') {
+      this.options.logToConsole = true;
     }
 
     this.thresholds = { ...DEFAULT_THRESHOLDS, ...this.options.thresholds };
@@ -106,14 +146,21 @@ export class PerformanceMonitor {
     this.initialize();
   }
 
+  /**
+   * Initialize performance monitoring
+   */
   private initialize(): void {
     if (!this.options.enabled) return;
+
     this.startFPSMonitoring();
     this.startSampling();
     this.startMemoryMonitoring();
     this.setupVisibilityChangeHandler();
   }
 
+  /**
+   * Start FPS monitoring
+   */
   private startFPSMonitoring(): void {
     this.lastFrameTime = performance.now();
     
@@ -135,6 +182,9 @@ export class PerformanceMonitor {
     this.fpsTimer = requestAnimationFrame(measureFPS);
   }
 
+  /**
+   * Start periodic sampling
+   */
   private startSampling(): void {
     if (this.samplingTimer) {
       clearInterval(this.samplingTimer);
@@ -145,6 +195,9 @@ export class PerformanceMonitor {
     }, this.options.samplingInterval) as unknown as number;
   }
 
+  /**
+   * Start memory monitoring
+   */
   private startMemoryMonitoring(): void {
     if ('memory' in performance) {
       const memoryPerformance = performance as any;
@@ -162,18 +215,22 @@ export class PerformanceMonitor {
     }
   }
 
+  /**
+   * Setup page visibility change handler
+   */
   private setupVisibilityChangeHandler(): void {
-    if (typeof document !== 'undefined') {
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          this.pause();
-        } else {
-          this.resume();
-        }
-      });
-    }
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.pause();
+      } else {
+        this.resume();
+      }
+    });
   }
 
+  /**
+   * Sample all metrics
+   */
   private sampleMetrics(): void {
     this.estimateCPUUsage();
     this.updateAnimationSmoothness();
@@ -181,6 +238,9 @@ export class PerformanceMonitor {
     this.reportMetrics();
   }
 
+  /**
+   * Estimate CPU usage
+   */
   private estimateCPUUsage(): void {
     const targetFPS = 60;
     const currentFPS = this.metrics.fps;
@@ -188,6 +248,9 @@ export class PerformanceMonitor {
     this.updateMetric('cpuUsage', cpuEstimate * 100);
   }
 
+  /**
+   * Update animation smoothness metric
+   */
   private updateAnimationSmoothness(): void {
     const targetFPS = 60;
     const currentFPS = this.metrics.fps;
@@ -195,6 +258,9 @@ export class PerformanceMonitor {
     this.updateMetric('animationSmoothness', smoothness);
   }
 
+  /**
+   * Update a metric
+   */
   updateMetric<K extends keyof PerformanceMetrics>(metric: K, value: PerformanceMetrics[K]): void {
     const oldValue = this.metrics[metric];
     this.metrics[metric] = value;
@@ -210,6 +276,9 @@ export class PerformanceMonitor {
     this.checkMetricThreshold(metric, value as number, oldValue as number);
   }
 
+  /**
+   * Report component render time
+   */
   reportComponentRenderTime(componentName: string, renderTime: number): void {
     this.metrics.componentRenderTime[componentName] = renderTime;
     
@@ -233,20 +302,33 @@ export class PerformanceMonitor {
     }
   }
 
+  /**
+   * Report WebSocket latency
+   */
   reportWebSocketLatency(latency: number): void {
     this.updateMetric('websocketLatency', latency);
   }
 
+  /**
+   * Report message processing time
+   */
   reportMessageProcessingTime(processingTime: number): void {
     this.updateMetric('messageProcessingTime', processingTime);
   }
 
+  /**
+   * Report interaction response time
+   */
   reportInteractionResponseTime(responseTime: number): void {
     this.updateMetric('interactionResponseTime', responseTime);
   }
 
+  /**
+   * Check metric threshold
+   */
   private checkMetricThreshold(metric: keyof PerformanceMetrics, value: number, oldValue: number): void {
     const thresholds = this.thresholds[metric as keyof PerformanceThresholds];
+    
     if (!thresholds) return;
 
     if (value <= thresholds.error) {
@@ -268,15 +350,21 @@ export class PerformanceMonitor {
     }
   }
 
+  /**
+   * Check all thresholds
+   */
   private checkThresholds(): void {
-    for (const [metric, threshold] of Object.entries(this.thresholds)) {
+    Object.entries(this.thresholds).forEach(([metric, threshold]) => {
       const value = this.metrics[metric as keyof PerformanceMetrics] as number;
       if (value !== undefined) {
         this.checkMetricThreshold(metric as keyof PerformanceMetrics, value, value);
       }
-    }
+    });
   }
 
+  /**
+   * Report metrics
+   */
   private reportMetrics(): void {
     if (this.options.logToConsole) {
       console.log('[Perf Metrics]', {
@@ -298,14 +386,23 @@ export class PerformanceMonitor {
     }
   }
 
+  /**
+   * Emit an event
+   */
   private emitEvent(event: PerformanceEvent): void {
     this.listeners.forEach(listener => listener(event));
   }
 
+  /**
+   * Add event listener
+   */
   addEventListener(listener: (event: PerformanceEvent) => void): void {
     this.listeners.push(listener);
   }
 
+  /**
+   * Remove event listener
+   */
   removeEventListener(listener: (event: PerformanceEvent) => void): void {
     const index = this.listeners.indexOf(listener);
     if (index > -1) {
@@ -313,10 +410,16 @@ export class PerformanceMonitor {
     }
   }
 
+  /**
+   * Get current metrics
+   */
   getMetrics(): PerformanceMetrics {
     return { ...this.metrics };
   }
 
+  /**
+   * Get performance report
+   */
   getPerformanceReport(): {
     metrics: PerformanceMetrics;
     status: 'healthy' | 'warning' | 'error';
@@ -325,7 +428,7 @@ export class PerformanceMonitor {
     const issues: PerformanceEvent[] = [];
     let status: 'healthy' | 'warning' | 'error' = 'healthy';
 
-    for (const [metric, threshold] of Object.entries(this.thresholds)) {
+    Object.entries(this.thresholds).forEach(([metric, threshold]) => {
       const value = this.metrics[metric as keyof PerformanceMetrics] as number;
       if (value !== undefined) {
         if (value <= threshold.error) {
@@ -348,7 +451,7 @@ export class PerformanceMonitor {
           });
         }
       }
-    }
+    });
 
     return {
       metrics: { ...this.metrics },
@@ -357,6 +460,9 @@ export class PerformanceMonitor {
     };
   }
 
+  /**
+   * Pause monitoring
+   */
   pause(): void {
     if (this.fpsTimer) {
       cancelAnimationFrame(this.fpsTimer);
@@ -371,6 +477,9 @@ export class PerformanceMonitor {
     this.isEnabled = false;
   }
 
+  /**
+   * Resume monitoring
+   */
   resume(): void {
     if (this.isEnabled) return;
     
@@ -379,12 +488,18 @@ export class PerformanceMonitor {
     this.isEnabled = true;
   }
 
+  /**
+   * Destroy monitor
+   */
   destroy(): void {
     this.pause();
     this.listeners = [];
   }
 }
 
+/**
+ * React Hook: Use performance monitor
+ */
 export function usePerformanceMonitor(
   options: PerformanceMonitorOptions = {}
 ): PerformanceMonitor {
@@ -404,19 +519,22 @@ export function usePerformanceMonitor(
   return monitorRef.current;
 }
 
-export function withPerformanceMonitoring<P extends object>(
-  Component: React.ComponentType<P>,
+/**
+ * Performance monitoring decorator - Fixed version to avoid TypeScript JSX generic parsing issues
+ */
+export function withPerformanceMonitoring<P extends Record<string, any>>(
+  WrappedComponent: React.ComponentType<P>,
   componentName: string = 'Component'
 ): React.ComponentType<P> {
-  const displayName = `WithPerformanceMonitoring(${Component.displayName || componentName})`;
+  const displayName = `WithPerformanceMonitoring(${WrappedComponent.displayName || componentName})`;
   
-  const WrappedComponent: React.ComponentType<P> = (props: P) => {
+  const MonitoredComponent: React.ComponentType<P> = (props: P) => {
     const startTime = useRef(performance.now());
     
     useEffect(() => {
       const renderTime = performance.now() - startTime.current;
       
-      const globalMonitor = (globalThis as any).__performanceMonitor as PerformanceMonitor;
+      const globalMonitor = (window as any).__performanceMonitor as PerformanceMonitor;
       if (globalMonitor) {
         globalMonitor.reportComponentRenderTime(componentName, renderTime);
       }
@@ -424,26 +542,33 @@ export function withPerformanceMonitoring<P extends object>(
       startTime.current = performance.now();
     });
     
-    // Use React.createElement to avoid JSX syntax issues in .ts files
-    return React.createElement(Component, props);
+    // Use React.createElement to avoid JSX generic parsing issues
+    return React.createElement(WrappedComponent, props);
   };
   
-  WrappedComponent.displayName = displayName;
-  return WrappedComponent;
+  MonitoredComponent.displayName = displayName;
+  return MonitoredComponent;
 }
 
+// Global performance monitor instance
 let globalMonitor: PerformanceMonitor | null = null;
 
+/**
+ * Initialize global performance monitor
+ */
 export function initGlobalPerformanceMonitor(options: PerformanceMonitorOptions = {}): PerformanceMonitor {
   if (!globalMonitor) {
     globalMonitor = new PerformanceMonitor(options);
-    (globalThis as any).__performanceMonitor = globalMonitor;
+    (window as any).__performanceMonitor = globalMonitor;
   }
   return globalMonitor;
 }
 
+/**
+ * Get global performance monitor
+ */
 export function getGlobalPerformanceMonitor(): PerformanceMonitor | null {
-  return globalMonitor || (globalThis as any).__performanceMonitor || null;
+  return globalMonitor || (window as any).__performanceMonitor || null;
 }
 
 export default PerformanceMonitor;

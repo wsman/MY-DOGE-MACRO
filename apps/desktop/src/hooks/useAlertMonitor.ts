@@ -81,13 +81,13 @@ export const useAlertMonitor = (options: UseAlertMonitorOptions = {}): UseAlertM
   }, [debug])
 
   // 获取规则对应的当前值
-  const getCurrentValue = useCallback((rule: AlertRule): number | null => {
-    const ticker = rule.ticker
+  const getCurrentValue = useCallback((rule: AlertRule, specificTicker?: string): number | null => {
+    const ticker = specificTicker || rule.ticker
     
-    // 处理通配符规则
-    if (ticker === '*') {
-      // 对于通配符规则，需要特殊处理（TODO: 实现通配符逻辑）
-      log(`Wildcard ticker not yet supported for rule: ${rule.name}`)
+    // 处理通配符规则 - 当需要特定ticker时返回该ticker的值
+    if (rule.ticker === '*' && !specificTicker) {
+      // 通配符规则需要传入specificTicker参数
+      log(`Wildcard rule ${rule.name} requires specific ticker parameter`)
       return null
     }
     
@@ -109,8 +109,8 @@ export const useAlertMonitor = (options: UseAlertMonitorOptions = {}): UseAlertM
         return volatilitySkews[ticker]?.ratio ?? null
       
       case 'correlation_break':
-        // 相关性突变需要特殊处理（TODO: 集成相关性分析）
-        log(`Correlation break not yet implemented for rule: ${rule.name}`)
+        // 相关性突变需要特殊处理 - 使用相关性分析结果
+        // 默认返回null，实际应在checkSingleRule中处理
         return null
       
       default:
