@@ -4,7 +4,7 @@
 import React, { useState, useRef, useEffect, memo } from 'react';
 import { Card, CardContent } from '../atoms/Card';
 import PriceChart from './PriceChart';
-import { TechnicalIndicators, IndicatorConfig, OHLCData } from './TechnicalIndicators';
+import { TechnicalIndicatorsOptimized as TechnicalIndicators, IndicatorConfig, OHLCData } from './TechnicalIndicatorsOptimized';
 import { SubChart, SubChartType } from './SubChart';
 import './ChartPanel.css';
 
@@ -29,9 +29,9 @@ export const ChartPanel: React.FC<ChartPanelProps> = memo(({
   showRSI = false,
   showKDJ = false,
   indicators = [
-    { type: 'ma', period: 5, color: '#ffa726' },
-    { type: 'ma', period: 10, color: '#42a5f5' },
-    { type: 'ma', period: 20, color: '#66bb6a' },
+    { type: 'ma' as const, period: 5, color: '#ffa726' },
+    { type: 'ma' as const, period: 10, color: '#42a5f5' },
+    { type: 'ma' as const, period: 20, color: '#66bb6a' },
   ],
   height = 400,
 }) => {

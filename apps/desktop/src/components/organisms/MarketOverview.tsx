@@ -2,6 +2,7 @@
 // Created: 2026-02-05 (v1.8.0)
 
 import React, { useMemo } from 'react';
+import { VirtuosoGrid } from 'react-virtuoso';
 import { Card, CardTitle, CardContent } from '../atoms/Card';
 import { Badge } from '../atoms/Badge';
 import { StatusDot } from '../atoms/StatusDot';
@@ -58,32 +59,38 @@ export const MarketOverview: React.FC<MarketOverviewProps> = ({
       </CardTitle>
       
       <CardContent className="market-overview__content">
-        <div className="market-overview__grid">
-          {markets.map((market) => (
-            <div
-              key={market.ticker}
-              className="market-overview__item"
-              onClick={() => onSelectTicker?.(market.ticker)}
-            >
-              <div className="market-overview__item-header">
-                <span className="market-overview__ticker">{market.ticker}</span>
-                <StatusDot 
-                  status={market.changePercent > 0 ? 'online' : market.changePercent < 0 ? 'error' : 'idle'}
-                />
+        <VirtuosoGrid
+          data={markets}
+          totalCount={markets.length}
+          listClassName="market-overview__grid"
+          itemContent={(index) => {
+            const market = markets[index];
+            return (
+              <div
+                key={market.ticker}
+                className="market-overview__item"
+                onClick={() => onSelectTicker?.(market.ticker)}
+              >
+                <div className="market-overview__item-header">
+                  <span className="market-overview__ticker">{market.ticker}</span>
+                  <StatusDot 
+                    status={market.changePercent > 0 ? 'online' : market.changePercent < 0 ? 'error' : 'idle'}
+                  />
+                </div>
+                <div className="market-overview__item-name">{market.name}</div>
+                <div className="market-overview__item-price">
+                  ${formatNumber(market.price)}
+                </div>
+                <div className={`market-overview__item-change ${market.changePercent >= 0 ? 'positive' : 'negative'}`}>
+                  {market.changePercent >= 0 ? '+' : ''}{market.changePercent.toFixed(2)}%
+                </div>
+                <div className="market-overview__item-volume">
+                  Vol: {formatNumber(market.volume, 0)}
+                </div>
               </div>
-              <div className="market-overview__item-name">{market.name}</div>
-              <div className="market-overview__item-price">
-                ${formatNumber(market.price)}
-              </div>
-              <div className={`market-overview__item-change ${market.changePercent >= 0 ? 'positive' : 'negative'}`}>
-                {market.changePercent >= 0 ? '+' : ''}{market.changePercent.toFixed(2)}%
-              </div>
-              <div className="market-overview__item-volume">
-                Vol: {formatNumber(market.volume, 0)}
-              </div>
-            </div>
-          ))}
-        </div>
+            );
+          }}
+        />
       </CardContent>
     </Card>
   );

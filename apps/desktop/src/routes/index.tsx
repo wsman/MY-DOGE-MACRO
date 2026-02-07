@@ -73,11 +73,11 @@ function RootLayout() {
     <div className="relative h-screen w-screen bg-black">
       {/* 核心布局层 */}
       <MainLayout>
-        <Suspense fallback={<PageSkeleton />}>
-          <RouteTransition animationType="slide-up" duration={300}>
+        <RouteTransition animationType="slide-up" duration={300}>
+          <Suspense fallback={<PageSkeleton />}>
             <Outlet />
-          </RouteTransition>
-        </Suspense>
+          </Suspense>
+        </RouteTransition>
       </MainLayout>
 
       {/* 命令面板 */}
