@@ -125,6 +125,7 @@
   
   /* Transition Durations - 与 animations.ts 保持一致 */
   --transition-fast: 150ms;
+  --transition-default: 200ms;
   --transition-normal: 300ms;
   --transition-slow: 500ms;
   --transition-slower: 700ms;

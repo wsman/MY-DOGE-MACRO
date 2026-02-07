@@ -16,7 +16,7 @@
   flex-shrink: 0;
   background: var(--color-surface, #f5f5f5);
   color: var(--color-text-secondary, #757575);
-  transition: all 0.2s ease;
+  transition: all var(--transition-default) var(--ease-default);
 }
 
 /* Shapes */

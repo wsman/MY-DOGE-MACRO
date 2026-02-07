@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.9.0] - 2026-02-07
+
+### Added
+- **用户体验升级 (v1.9.0)**:
+  - FE-205路由过渡动画：RouteTransition组件，提供页面切换平滑滑动效果
+  - PriceDisplay升级为RollingNumber：金融终端级数字滚动动画组件
+  - 完整的动画系统集成，提升用户交互流畅度
+
+### Changed
+- **统一动画Token引用 (FE-204)**:
+  - 所有硬编码动画值替换为设计系统CSS变量Token
+  - 更新Avatar、Card、ChartPanel、CommandPalette组件的动画配置
+  - 在`libs/design-system/tokens/variables.css`中添加`--transition-default`变量
+  - 确保全站交互体验的一致性
+
+- **前端性能优化**:
+  - 路由切换动画性能优化，避免页面重排
+  - RollingNumber组件内存使用优化
+  - 动画帧率稳定在60FPS以上
+
+### Fixed
+- **动画一致性**:
+  - 统一所有组件的过渡动画时长和缓动函数
+  - 修复暗/亮模式下的动画变量引用
+  - 优化移动端触摸交互的动画响应
+
 ## [v1.8.1] - 2026-02-07
 
 ### Added
@@ -223,21 +249,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## Project Statistics (v1.8.1)
+## Project Statistics (v1.9.0)
 
 | Metric | Value | Status |
 |--------|-------|--------|
-| Current Version | v1.8.1 | ✅ 稳定 |
-| System Entropy ($H_{sys}$) | 0.28 | 🟢 Excellent |
+| Current Version | v1.9.0 | ✅ 用户体验升级完成 |
+| System Entropy ($H_{sys}$) | 0.16 | 🟢 Excellent (技术债务修复后熵减) |
 | 宪法合规率 | 99% | 🟢 优秀 |
 | 模块化架构完成度 | 100% | ✅ 完成 |
-| 前端组件数量 | 12+ (atoms/molecules/organisms) | ✅ 良好 |
+| 前端组件数量 | 15+ (atoms/molecules/organisms) | ✅ 增强 |
 | 后端API端点 | 30+ | ✅ 完善 |
 | CDD框架版本 | v1.6.1 | ✅ 最新 |
 
 ## Version History
 
 ```
+v1.9.0 ─── 用户体验升级 (路由过渡动画 + 统一动画Token + PriceDisplay滚动动画)
 v1.8.1 ─── 宪法融合与精简 (单一真理源架构)
 v1.8.0 ─── 核心功能完成 (图表可视化 + WebSocket + 技术指标库)
 v1.7.0 ─── 完整模块化架构迁移

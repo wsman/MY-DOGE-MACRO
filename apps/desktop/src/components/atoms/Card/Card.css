@@ -5,7 +5,7 @@
   border-radius: 8px;
   border: 1px solid #e0e0e0;
   overflow: hidden;
-  transition: all 0.2s ease;
+  transition: all var(--transition-default) var(--ease-default);
 }
 
 /* Elevation */
