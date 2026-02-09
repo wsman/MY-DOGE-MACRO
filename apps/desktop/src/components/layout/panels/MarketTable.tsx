@@ -16,6 +16,7 @@ import { TableVirtuoso } from 'react-virtuoso';
 import { Card, CardTitle, CardContent } from '../../atoms/Card';
 import { Badge } from '../../atoms/Badge';
 import { StockData } from '../../../hooks/useMarketScanner';
+import { usePredictivePrefetch } from '../../../hooks/usePredictivePrefetch';
 import './MarketTable.css';
 
 const columnHelper = createColumnHelper<StockData>();
@@ -88,6 +89,7 @@ export const MarketTable: React.FC<MarketTableProps> = ({
   compact = false,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const { onHoverStart, onHoverEnd } = usePredictivePrefetch();
 
   const table = useReactTable({
     data,
@@ -116,6 +118,20 @@ export const MarketTable: React.FC<MarketTableProps> = ({
           <TableVirtuoso
             totalCount={rows.length}
             style={{ height: '100%', width: '100%' }}
+            components={{
+              TableRow: ({ item, ...props }) => {
+                const index = props['data-index'];
+                const row = rows[index];
+                const ticker = row?.original?.code;
+                return (
+                  <tr
+                    {...props}
+                    onMouseEnter={() => ticker && onHoverStart(ticker)}
+                    onMouseLeave={() => ticker && onHoverEnd(ticker)}
+                  />
+                );
+              },
+            }}
             fixedHeaderContent={() => (
               <tr className="market-table-header-row">
                 {table.getFlatHeaders().map((header) => (

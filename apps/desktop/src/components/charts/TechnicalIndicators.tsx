@@ -2,8 +2,9 @@
 // Supports: MA, MACD, RSI, Bollinger Bands, KDJ
 // Created: 2026-02-05 (v1.8.0)
 
-import React, { useRef, useEffect, memo } from 'react';
+import React, { useRef, useEffect, memo, useState } from 'react';
 import { useUIStore } from '../../stores/ui.store';
+import ChartWorkerManager from '../../services/ChartWorkerManager';
 import './TechnicalIndicators.css';
 
 // ============ Types ============
@@ -30,7 +31,7 @@ interface TechnicalIndicatorsProps {
   height?: number;
 }
 
-// ============ Calculation Functions ============
+// ============ Calculation Functions (Fallbacks) ============
 
 // Simple Moving Average
 export function calculateMA(data: number[], period: number): (number | null)[] {
@@ -65,80 +66,6 @@ export function calculateEMA(data: number[], period: number): (number | null)[] 
   return result;
 }
 
-// MACD
-export function calculateMACD(data: number[], fastPeriod = 12, slowPeriod = 26, signalPeriod = 9): {
-  macd: (number | null)[];
-  signal: (number | null)[];
-  histogram: (number | null)[];
-} {
-  const emaFast = calculateEMA(data, fastPeriod);
-  const emaSlow = calculateEMA(data, slowPeriod);
-  
-  const macd: (number | null)[] = [];
-  for (let i = 0; i < data.length; i++) {
-    if (emaFast[i] === null || emaSlow[i] === null) {
-      macd.push(null);
-    } else {
-      macd.push((emaFast[i] as number) - (emaSlow[i] as number));
-    }
-  }
-  
-  const validMacd = macd.filter(v => v !== null) as number[];
-  const signalEma = calculateEMA(validMacd, signalPeriod);
-  
-  const signal: (number | null)[] = [];
-  const histogram: (number | null)[] = [];
-  let signalIdx = 0;
-  
-  for (let i = 0; i < data.length; i++) {
-    if (macd[i] === null) {
-      signal.push(null);
-      histogram.push(null);
-    } else {
-      const sig = signalEma[signalIdx] ?? null;
-      signal.push(sig);
-      histogram.push(sig !== null ? (macd[i] as number) - sig : null);
-      signalIdx++;
-    }
-  }
-  
-  return { macd, signal, histogram };
-}
-
-// RSI
-export function calculateRSI(data: number[], period = 14): (number | null)[] {
-  const result: (number | null)[] = [];
-  const gains: number[] = [];
-  const losses: number[] = [];
-  
-  for (let i = 0; i < data.length; i++) {
-    if (i === 0) {
-      result.push(null);
-      continue;
-    }
-    
-    const change = data[i] - data[i - 1];
-    gains.push(change > 0 ? change : 0);
-    losses.push(change < 0 ? -change : 0);
-    
-    if (i < period) {
-      result.push(null);
-    } else {
-      const avgGain = gains.slice(-period).reduce((a, b) => a + b, 0) / period;
-      const avgLoss = losses.slice(-period).reduce((a, b) => a + b, 0) / period;
-      
-      if (avgLoss === 0) {
-        result.push(100);
-      } else {
-        const rs = avgGain / avgLoss;
-        result.push(100 - (100 / (1 + rs)));
-      }
-    }
-  }
-  
-  return result;
-}
-
 // Bollinger Bands
 export function calculateBollinger(data: number[], period = 20, stdDev = 2): {
   upper: (number | null)[];
@@ -166,45 +93,6 @@ export function calculateBollinger(data: number[], period = 20, stdDev = 2): {
   return { upper, middle, lower };
 }
 
-// KDJ
-export function calculateKDJ(data: OHLCData[], period = 9): {
-  k: (number | null)[];
-  d: (number | null)[];
-  j: (number | null)[];
-} {
-  const k: (number | null)[] = [];
-  const d: (number | null)[] = [];
-  const j: (number | null)[] = [];
-  
-  for (let i = 0; i < data.length; i++) {
-    if (i < period - 1) {
-      k.push(null);
-      d.push(null);
-      j.push(null);
-    } else {
-      const slice = data.slice(i - period + 1, i + 1);
-      const highestHigh = Math.max(...slice.map(d => d.high));
-      const lowestLow = Math.min(...slice.map(d => d.low));
-      const close = data[i].close;
-      
-      const rsv = highestHigh === lowestLow ? 50 : ((close - lowestLow) / (highestHigh - lowestLow)) * 100;
-      
-      const prevK = k[i - 1] ?? 50;
-      const prevD = d[i - 1] ?? 50;
-      
-      const currentK = (2 / 3) * (prevK as number) + (1 / 3) * rsv;
-      const currentD = (2 / 3) * (prevD as number) + (1 / 3) * currentK;
-      const currentJ = 3 * currentK - 2 * currentD;
-      
-      k.push(currentK);
-      d.push(currentD);
-      j.push(currentJ);
-    }
-  }
-  
-  return { k, d, j };
-}
-
 // ============ Indicator Canvas Component ============
 interface IndicatorCanvasProps {
   data: OHLCData[];
@@ -212,10 +100,11 @@ interface IndicatorCanvasProps {
   width: number;
   height: number;
   isDark: boolean;
+  calculatedResults?: Record<string, any>;
 }
 
 const IndicatorCanvas: React.FC<IndicatorCanvasProps> = memo(
-  ({ data, indicators, width, height, isDark }) => {
+  ({ data, indicators, width, height, isDark, calculatedResults }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -255,16 +144,30 @@ const IndicatorCanvas: React.FC<IndicatorCanvasProps> = memo(
         ctx.strokeStyle = color;
         ctx.lineWidth = 1.5;
 
+        // Use calculated results if available, otherwise fall back to sync calculation (minimal set)
+        const getResult = (type: string, period?: number) => {
+          if (calculatedResults) {
+            if (type === 'ma' || type === 'ema') return calculatedResults[`${type}_${period || 20}`];
+            return calculatedResults[type];
+          }
+          // Fallback to sync calculation if results not yet ready
+          if (type === 'ma') return calculateMA(closes, period || 20);
+          if (type === 'ema') return calculateEMA(closes, period || 20);
+          if (type === 'bollinger') return calculateBollinger(closes, period || 20);
+          return null;
+        };
+
         switch (indicator.type) {
           case 'ma': {
-            const ma = calculateMA(closes, indicator.period || 20);
+            const ma = getResult('ma', indicator.period);
+            if (!ma) return;
             const minPrice = Math.min(...closes) * 0.98;
             const maxPrice = Math.max(...closes) * 1.02;
             const priceRange = maxPrice - minPrice;
 
             ctx.beginPath();
             let started = false;
-            ma.forEach((val, i) => {
+            ma.forEach((val: number | null, i: number) => {
               if (val === null) return;
               const x = leftPadding + i * barWidth + barWidth / 2;
               const y = topPadding + chartHeight - ((val - minPrice) / priceRange) * chartHeight;
@@ -280,14 +183,15 @@ const IndicatorCanvas: React.FC<IndicatorCanvasProps> = memo(
           }
 
           case 'ema': {
-            const ema = calculateEMA(closes, indicator.period || 20);
+            const ema = getResult('ema', indicator.period);
+            if (!ema) return;
             const minPrice = Math.min(...closes) * 0.98;
             const maxPrice = Math.max(...closes) * 1.02;
             const priceRange = maxPrice - minPrice;
 
             ctx.beginPath();
             let started = false;
-            ema.forEach((val, i) => {
+            ema.forEach((val: number | null, i: number) => {
               if (val === null) return;
               const x = leftPadding + i * barWidth + barWidth / 2;
               const y = topPadding + chartHeight - ((val - minPrice) / priceRange) * chartHeight;
@@ -303,7 +207,8 @@ const IndicatorCanvas: React.FC<IndicatorCanvasProps> = memo(
           }
 
           case 'bollinger': {
-            const bb = calculateBollinger(closes, indicator.period || 20);
+            const bb = getResult('bollinger', indicator.period);
+            if (!bb) return;
             const minPrice = Math.min(...closes) * 0.95;
             const maxPrice = Math.max(...closes) * 1.05;
             const priceRange = maxPrice - minPrice;
@@ -313,7 +218,7 @@ const IndicatorCanvas: React.FC<IndicatorCanvasProps> = memo(
             ctx.setLineDash([5, 3]);
             ctx.beginPath();
             let started = false;
-            bb.upper.forEach((val, i) => {
+            bb.upper.forEach((val: number | null, i: number) => {
               if (val === null) return;
               const x = leftPadding + i * barWidth + barWidth / 2;
               const y = topPadding + chartHeight - ((val - minPrice) / priceRange) * chartHeight;
@@ -324,7 +229,7 @@ const IndicatorCanvas: React.FC<IndicatorCanvasProps> = memo(
             // Lower band
             ctx.beginPath();
             started = false;
-            bb.lower.forEach((val, i) => {
+            bb.lower.forEach((val: number | null, i: number) => {
               if (val === null) return;
               const x = leftPadding + i * barWidth + barWidth / 2;
               const y = topPadding + chartHeight - ((val - minPrice) / priceRange) * chartHeight;
@@ -336,7 +241,7 @@ const IndicatorCanvas: React.FC<IndicatorCanvasProps> = memo(
             ctx.setLineDash([]);
             ctx.beginPath();
             started = false;
-            bb.middle.forEach((val, i) => {
+            bb.middle.forEach((val: number | null, i: number) => {
               if (val === null) return;
               const x = leftPadding + i * barWidth + barWidth / 2;
               const y = topPadding + chartHeight - ((val - minPrice) / priceRange) * chartHeight;
@@ -366,7 +271,7 @@ const IndicatorCanvas: React.FC<IndicatorCanvasProps> = memo(
         legendX += ctx.measureText(label).width + 30;
       });
 
-    }, [data, indicators, width, height, isDark]);
+    }, [data, indicators, width, height, isDark, calculatedResults]);
 
     return <canvas ref={canvasRef} width={width} height={height} className="indicator-canvas" />;
   }
@@ -377,6 +282,31 @@ export const TechnicalIndicators: React.FC<TechnicalIndicatorsProps> = memo(
   ({ data, indicators, width = 600, height = 150 }) => {
     const { theme } = useUIStore();
     const isDark = theme === 'dark';
+    const [results, setResults] = useState<Record<string, any> | undefined>(undefined);
+    const [isCalculating, setIsCalculating] = useState(false);
+
+    useEffect(() => {
+      if (!data.length || !indicators.length) return;
+
+      const performCalculation = async () => {
+        setIsCalculating(true);
+        try {
+          // Initialize worker
+          await ChartWorkerManager.initialize();
+          
+          if (ChartWorkerManager.isWorkerAvailable()) {
+            const calculatedResults = await ChartWorkerManager.calculateIndicators(data, indicators);
+            setResults(calculatedResults);
+          }
+        } catch (error) {
+          console.warn('[TechnicalIndicators] Worker calculation failed', error);
+        } finally {
+          setIsCalculating(false);
+        }
+      };
+
+      performCalculation();
+    }, [data, indicators]);
 
     if (!data.length || !indicators.length) {
       return null;
@@ -390,7 +320,9 @@ export const TechnicalIndicators: React.FC<TechnicalIndicatorsProps> = memo(
           width={width}
           height={height}
           isDark={isDark}
+          calculatedResults={results}
         />
+        {isCalculating && <div className="indicator-loading-overlay" />}
       </div>
     );
   }

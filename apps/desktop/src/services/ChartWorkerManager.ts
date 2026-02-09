@@ -81,7 +81,7 @@ export class ChartWorkerManager {
 
     try {
       // 创建Web Worker
-      this.worker = new Worker(new URL('../workers/chart.worker.ts', import.meta.url), {
+      this.worker = new Worker(new URL('../workers/indicator.worker.ts', import.meta.url), {
         type: 'module'
       });
 
