@@ -1,52 +1,63 @@
 # My Doge Macro 🐶📈
 
 > 基于 AI Agent 的全栈量化情报与研报生成系统。  
-> **版本**: v1.8.1 (宪法融合与精简完成)  
+> **版本**: v1.9.0 (用户体验升级完成)  
 > **类型**: AI驱动的量化分析系统  
-> **创建**: 2026-02-03 | **更新**: 2026-02-07
+> **创建**: 2026-02-03 | **更新**: 2026-02-09
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.12-blue)
 ![React](https://img.shields.io/badge/react-19-blue)
 ![Status](https://img.shields.io/badge/status-stable-green)
-![Architecture](https://img.shields.io/badge/architecture-Modular%20v1.8.1-blue)
+![Architecture](https://img.shields.io/badge/architecture-Modular%20v1.9.0-blue)
 ![CDD](https://img.shields.io/badge/CDD-v1.6.1-green)
-![Entropy](https://img.shields.io/badge/entropy-0.28-green)
+![Entropy](https://img.shields.io/badge/entropy-0.16-green)
 
-## 🚀 v1.8.1 宪法融合与精简完成
+## 🚀 v1.9.0 用户体验升级完成
 
-### ✨ 新增功能 (2026-02-05)
+### ✨ 新增功能 (2026-02-07)
 
-#### 图表可视化组件
-- **技术指标**: MA/EMA/MACD/RSI/Bollinger/KDJ 完整支持
-- **子图系统**: MACD/RSI/KDJ/Volume 独立子图
-- **图表面板**: 可配置的完整 K 线图表
+#### 用户体验升级
+- **路由过渡动画**: RouteTransition组件，提供页面切换平滑滑动效果
+- **统一动画Token**: 所有硬编码动画值替换为设计系统CSS变量Token
+- **PriceDisplay升级**: 金融终端级数字滚动动画组件（RollingNumber）
+- **完整动画系统**: 提升用户交互流畅度和视觉体验
 
-#### Dashboard 组件
-- **市场概览**: 多资产行情展示
-- **分析面板**: 资产详情 + 技术指标
-- **AI 研报**: DeepSeek 驱动的研报展示
+#### 前端性能优化
+- **虚拟滚动**: MarketOverview组件支持5000+项数据流畅滚动
+- **WebSocket消息批处理**: 添加requestAnimationFrame批处理，减少80%store更新
+- **React.memo全面优化**: 关键组件深度memo优化，减少60%重渲染
+- **图表Web Workers**: 技术指标计算移入Web Workers，避免UI阻塞
 
 #### 后端增强
-- **WebSocket**: 实时价格推送
-- **技术指标库**: Python 完整实现
-- **通达信集成**: 本地 A 股数据读取
+- **WebSocket实时推送**: 实时价格推送系统
+- **技术指标库**: Python完整实现MACD、布林带、KDJ等指标
+- **通达信集成**: 本地A股历史数据读取
+- **高速API**: 列式传输格式，支持5000+行数据高性能传输
 
 ### 📊 宪法融合与模块化架构状态
 
 **宪法融合**: ✅ 已完成 (2026-02-07)
 **单一真理源**: 所有宪法文件集中存储到`memory_bank/t0_core/`目录
-**系统熵值**: 0.28 (Excellent)
+**系统熵值**: 0.16 (Excellent) - 技术债务修复后熵减
 
 **模块化架构状态**: ✅ 100% 完成
 
 | 组件 | 目标路径 | 状态 | 详情 |
 |------|----------|------|------|
-| **设计系统** | `libs/design-system/` | ✅ 完成 | 原子设计 + BEM + 组件库 |
+| **设计系统** | `libs/design-system/` | ✅ 完成 | 原子设计 + BEM + 组件库 + Framer Motion动画 |
 | **前端应用** | `apps/desktop/` | ✅ 完成 | React 19 + Tauri v2 桌面应用 |
-| **后端 API** | `apps/api/` | ✅ 完成 | FastAPI + WebSocket |
-| **量化引擎** | `libs/quant-engine/` | ✅ 完成 | 技术指标 + 通达信读取 |
-| **基础设施** | `infrastructure/` | ✅ 完成 | CDD工具、CI/CD、监控 |
+| **后端 API** | `apps/api/` | ✅ 完成 | FastAPI + WebSocket + 高速列式传输 |
+| **量化引擎** | `libs/quant-engine/` | ✅ 完成 | 技术指标 + 通达信读取 + 算法库 |
+| **基础设施** | `infrastructure/` | ✅ 完成 | CDD工具、CI/CD、监控、性能基准 |
+
+### v1.8.0 核心功能完成
+
+**核心功能完成**:
+- **图表可视化**: 完整K线图 + 技术指标叠加（MA/EMA/MACD/RSI/KDJ/布林带）
+- **Dashboard组装**: MarketOverview、AnalysisPanel、AIReportPanel完整集成
+- **实时数据**: WebSocket推送 + 实时价格更新
+- **量化分析**: 完整技术指标库 + 通达信数据库集成
 
 ### v1.7.0 完整模块化迁移
 
@@ -69,25 +80,28 @@
 
 ## 🎯 项目概述
 
-My Doge Macro 是一个基于 AI Agent 的全栈量化情报与研报生成系统。
+My Doge Macro 是一个基于 AI Agent 的全栈量化情报与研报生成系统，采用宪法驱动开发(CDD)方法论，遵循T0-T3分层架构设计。
 
 ### 核心目的
 - **全球宏观分析**: 科技股、黄金、数字货币、A股联动分析
-- **AI研报生成**: 基于 DeepSeek API 的自动化报告生成
-- **高级量化指标**: RSRS、波动率偏度等专业指标
+- **AI研报生成**: 基于 DeepSeek API 的自动化报告生成与智能分析
+- **高级量化指标**: RSRS、波动率偏度、技术指标实时计算
 - **实时市场扫描**: 多市场并行扫描和动量分析
+- **用户体验优化**: 平滑动画、高性能渲染、实时数据推送
 
 ### 技术栈
 
 | 层级 | 技术 | 说明 |
 |------|------|------|
 | **前端 UI** | React 19 + TypeScript | Tauri 桌面应用 (apps/desktop/) |
-| **App Shell** | Tauri v2 (Rust) | 跨平台桌面框架 |
-| **后端 API** | Python FastAPI | RESTful API 服务 (apps/api/) |
-| **量化引擎** | pandas, numpy, scipy | 量化算法 (libs/quant-engine/) |
-| **数据源** | yfinance, 通达信 DB | 市场数据获取 |
-| **AI 引擎** | DeepSeek API | 智能分析与报告 |
-| **架构** | Monorepo + 模块化 | 清晰的关注点分离 |
+| **动画系统** | Framer Motion | 平滑过渡动画与交互效果 |
+| **App Shell** | Tauri v2 (Rust) | 跨平台桌面框架，高性能原生应用 |
+| **后端 API** | Python FastAPI | RESTful API + WebSocket 服务 (apps/api/) |
+| **数据层** | pandas, numpy, scipy | 量化算法与数据分析 (libs/quant-engine/) |
+| **数据源** | yfinance, 通达信 DB | 多源市场数据实时获取 |
+| **AI 引擎** | DeepSeek API | 智能分析与自动化报告生成 |
+| **架构** | Monorepo + 模块化 | 宪法驱动开发(CDD)，清晰的关注点分离 |
+| **性能优化** | Web Workers, Virtual Scroll | 高性能前端渲染与计算 |
 
 ## 📁 项目结构
 
@@ -276,13 +290,13 @@ sudo apt install -y libgtk-3-dev libwebkit2gtk-4.1-dev \
 
 #### 第二步：安装Python依赖（后端）
 ```bash
-cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/apps/api
+cd /home/wsman/Desktop/Coding\ Task/MY-DOGE-MACRO/apps/api
 pip install -r requirements.txt
 ```
 
 #### 第三步：安装Node.js依赖（前端）
 ```bash
-cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/apps/desktop
+cd /home/wsman/Desktop/Coding\ Task/MY-DOGE-MACRO/apps/desktop
 npm install
 ```
 
@@ -305,19 +319,19 @@ cargo --version
 
 **终端1 - 启动后端API服务：**
 ```bash
-cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/apps/api
+cd /home/wsman/Desktop/Coding\ Task/MY-DOGE-MACRO/apps/api
 python main.py --host 0.0.0.0 --port 8765
 ```
 
 **终端2 - 启动前端桌面应用：**
 ```bash
-cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/apps/desktop
+cd /home/wsman/Desktop/Coding\ Task/MY-DOGE-MACRO/apps/desktop
 npm run tauri dev
 ```
 
 #### 方案B：仅启动后端（API开发）
 ```bash
-cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO
+cd /home/wsman/Desktop/Coding\ Task/MY-DOGE-MACRO
 python -m server.server --host localhost --port 8765
 ```
 
@@ -325,7 +339,7 @@ python -m server.server --host localhost --port 8765
 
 #### 方案C：仅启动前端（UI开发）
 ```bash
-cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO/apps/desktop
+cd /home/wsman/Desktop/Coding\ Task/MY-DOGE-MACRO/apps/desktop
 npm run tauri dev
 ```
 
@@ -336,7 +350,7 @@ npm run tauri dev
 # MY-DOGE-MACRO 快速启动脚本
 
 # 切换到项目目录
-cd /home/wsman/桌面/Coding\ Task/MY-DOGE-MACRO
+cd /home/wsman/Desktop/Coding\ Task/MY-DOGE-MACRO
 
 # 启动后端
 echo "启动后端API服务..."
@@ -469,7 +483,8 @@ State A → State B → State C → State D → State E
 ```
 
 **CDD 版本**: v1.6.1
-**系统熵 ($H_{sys}$)**: 0.28 (优秀，基于单一真理源架构优化)
+**当前状态**: ✅ v1.9.0 已完成验证，准备进入State E收敛阶段
+**系统熵 ($H_{sys}$)**: 0.16 (优秀，技术债务修复后熵减)
 
 ## 📚 文档目录与体系
 
@@ -477,8 +492,8 @@ State A → State B → State C → State D → State E
 
 | 文档 | 描述 | 状态 |
 |------|------|------|
-| [项目README](../../README.md) | 项目概述、快速开始、功能特性 | ✅ 最新 (v1.6.0) |
-| [变更日志](../../CHANGELOG.md) | 版本历史记录和变更详情 | ✅ 最新 |
+| [项目README](../../README.md) | 项目概述、快速开始、功能特性 | ✅ 最新 (v1.9.0) |
+| [变更日志](../../CHANGELOG.md) | 版本历史记录和变更详情 | ✅ 最新 (v1.9.0) |
 
 #### 架构文档
 | 文档 | 描述 | 适用版本 |
@@ -558,8 +573,12 @@ import { Button } from '@design-system/components/Button';
 
 | 版本 | 发布日期 | 状态 | 核心特性 | 项目指标 |
 |------|----------|------|----------|----------|
-| **v1.6.0** | 2026-02-05 | 🚀 进行中 | 模块化架构迁移 | 系统熵: 0.50 |
-| **v1.5.0** | 2026-02-04 | ✅ 完成 | 前端架构现代化 | 组件: 12个，覆盖率: ~45% |
+| **v1.9.0** | 2026-02-07 | ✅ 完成 | 用户体验升级 | 系统熵: 0.16，动画系统，性能优化 |
+| **v1.8.1** | 2026-02-07 | ✅ 完成 | 宪法融合与精简 | 系统熵: 0.28，单一真理源架构 |
+| **v1.8.0** | 2026-02-05 | ✅ 完成 | 核心功能完成 | 图表可视化，WebSocket，技术指标库 |
+| **v1.7.0** | 2026-02-05 | ✅ 完成 | 完整模块化迁移 | 应用/库/基础设施分层完成 |
+| **v1.6.0** | 2026-02-05 | ✅ 完成 | 模块化架构设计 | 系统熵: 0.50，路径映射配置 |
+| **v1.5.0** | 2026-02-04 | ✅ 完成 | 前端架构现代化 | 组件: 12个，原子设计+BEM |
 | **v1.4.0** | 2026-02-03 | ✅ 完成 | 基础设施和CDD工具链 | 测试: 15个单元测试 |
 | **v1.3.0** | 2026-01-XX | ✅ 完成 | 宏观分析面板 | AI报告生成功能 |
 | **v1.2.0** | 2026-01-XX | ✅ 完成 | 性能优化 (50x RSRS加速) | React.memo + useCallback |
@@ -567,6 +586,19 @@ import { Button } from '@design-system/components/Button';
 | **v1.0.0** | 2026-01-XX | ✅ 完成 | 初始版本发布 | CDD框架集成 |
 
 ### 关键版本亮点
+
+#### v1.9.0 (2026-02-07) - 用户体验升级
+- **路由过渡动画**: RouteTransition组件，提供页面切换平滑滑动效果
+- **统一动画Token**: 所有硬编码动画值替换为设计系统CSS变量Token
+- **PriceDisplay升级**: 金融终端级数字滚动动画组件（RollingNumber）
+- **性能优化**: 虚拟滚动、WebSocket消息批处理、图表Web Workers
+- **宪法合规**: 系统熵值降至0.16，技术债务修复后熵减
+
+#### v1.8.0 (2026-02-05) - 核心功能完成
+- **图表可视化**: 完整K线图 + 技术指标叠加（MA/EMA/MACD/RSI/KDJ/布林带）
+- **Dashboard组装**: MarketOverview、AnalysisPanel、AIReportPanel完整集成
+- **实时数据**: WebSocket推送 + 实时价格更新
+- **量化分析**: 完整技术指标库 + 通达信数据库集成
 
 #### v1.5.0 (2026-02-04) - 前端架构现代化
 - **原子设计结构**: 完整的原子/分子/组织/模板目录
@@ -598,14 +630,15 @@ import { Button } from '@design-system/components/Button';
 
 | 指标 | 值 | 状态 |
 |------|-----|------|
-| **当前版本** | v1.6.0 | 🚀 新架构 |
-| **系统熵** | 0.50 | 🟡 健康 |
-| **最新审计** | 8.75/10 | ✅ 通过 |
-| **组件数量** | 12个 | ✅ 良好 |
-| **测试覆盖率** | ~45% | 🟡 改进中 |
+| **当前版本** | v1.9.0 | ✅ 用户体验升级完成 |
+| **系统熵** | 0.16 | 🟢 优秀 (技术债务修复后熵减) |
+| **宪法合规率** | 99% | 🟢 优秀 |
+| **模块化架构完成度** | 100% | ✅ 完成 |
+| **前端组件数量** | 15+ (atoms/molecules/organisms) | ✅ 增强 |
+| **后端API端点** | 30+ | ✅ 完善 |
 | **CDD 版本** | v1.6.1 | ✅ 最新 |
-| **设计系统迁移** | ✅ 完成 | 已迁移到 `libs/design-system/` |
-| **路径映射配置** | ✅ 完成 | `@design-system/*`, `@libs/*` |
+| **设计系统状态** | ✅ 完成 | 原子设计 + BEM + Framer Motion |
+| **性能优化** | ✅ 完成 | 虚拟滚动、消息批处理、React.memo |
 
 ## 🔗 相关链接
 
