@@ -154,9 +154,9 @@ export const RollingNumber: React.FC<RollingNumberProps> = React.memo(({
 
   // 颜色类
   const getColorClass = (): string => {
-    if (value > 0) return 'text-green-600 dark:text-green-400';
-    if (value < 0) return 'text-red-600 dark:text-red-400';
-    return 'text-gray-700 dark:text-gray-300';
+    if (value > 0) return 'text-[var(--status-success)]';
+    if (value < 0) return 'text-[var(--status-error)]';
+    return 'text-[var(--text-primary)]';
   };
 
   // 值变化时更新动画
@@ -210,7 +210,7 @@ export const RollingNumber: React.FC<RollingNumberProps> = React.memo(({
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-          className={`ml-1 ${isIncreasing ? 'text-green-600' : 'text-red-600'}`}
+          className={`ml-1 ${isIncreasing ? 'text-[var(--status-success)]' : 'text-[var(--status-error)]'}`}
         >
           {directionSymbol}
         </motion.span>

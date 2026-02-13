@@ -66,23 +66,23 @@ export const ReportCard: React.FC<ReportCardProps> = ({
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="text-lg">{config.icon}</span>
-            <span className="font-bold text-gray-900 dark:text-white">{report.ticker}</span>
+            <span className="font-bold text-[var(--text-primary)]">{report.ticker}</span>
             <Badge variant={config.variant} size="sm">
               {config.label}
             </Badge>
           </div>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-xs text-[var(--text-secondary)]">
             {formatDate(report.created_at)}
           </span>
         </div>
 
         {/* Title */}
-        <h3 className="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+        <h3 className="font-semibold text-[var(--text-primary)] mb-2 line-clamp-2">
           {report.title}
         </h3>
 
         {/* Summary */}
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-3">
+        <p className="text-sm text-[var(--text-secondary)] mb-3 line-clamp-3">
           {report.summary?.slice(0, 120)}
           {report.summary?.length > 120 ? '...' : ''}
         </p>
@@ -90,10 +90,10 @@ export const ReportCard: React.FC<ReportCardProps> = ({
         {/* Meta */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-[var(--text-secondary)]">
               置信度: <span className="font-bold">{confidencePercent}%</span>
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-[var(--text-secondary)]">
               模型: <span className="font-medium">{report.model}</span>
             </div>
           </div>

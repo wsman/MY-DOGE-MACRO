@@ -1,0 +1,114 @@
+# MY-DOGE-MACRO Development Docker Compose
+# Hot-reload enabled, single port (3000) entry point
+
+services:
+  # ==================== PostgreSQL Database ====================
+  db:
+    image: postgres:16-alpine
+    container_name: mydoge-db-dev
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-mydoge}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-mydoge_dev_password}
+      - POSTGRES_DB=${POSTGRES_DB:-mydoge_macro}
+    volumes:
+      - postgres-dev-data:/var/lib/postgresql/data
+      - ./apps/api/migrations:/docker-entrypoint-initdb.d:ro
+    networks:
+      - mydoge-dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-mydoge} -d ${POSTGRES_DB:-mydoge_macro}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ==================== Backend API (Hot Reload) ====================
+  api:
+    build:
+      context: ./apps/api
+      target: development
+    container_name: mydoge-api-dev
+    environment:
+      - MYDOGE_API_TOKEN=${API_TOKEN:-mydoge-token-123456}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - PYTHONUNBUFFERED=1
+      # Database connection
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-mydoge}:${POSTGRES_PASSWORD:-mydoge_dev_password}@db:5432/${POSTGRES_DB:-mydoge_macro}
+      # JWT configuration
+      - JWT_SECRET=${JWT_SECRET:-mydoge_jwt_secret_dev_key}
+      - JWT_EXPIRE_MINUTES=${JWT_EXPIRE_MINUTES:-60}
+      # GitHub OAuth
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-}
+      - OAUTH_REDIRECT_URI=${OAUTH_REDIRECT_URI:-http://localhost:3000/auth/callback}
+    volumes:
+      # Mount source code for hot reload
+      - ./apps/api:/app
+      # Persist data
+      - api-dev-data:/app/data
+    networks:
+      - mydoge-dev-network
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8765/health_check"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ==================== Frontend Vite Dev Server (Hot Reload) ====================
+  web:
+    build:
+      context: ./apps/desktop
+      dockerfile: Dockerfile.dev
+    container_name: mydoge-web-dev
+    environment:
+      - VITE_API_URL=http://localhost:3000/api
+      - VITE_WS_URL=ws://localhost:3000/ws
+    volumes:
+      # Mount source code for hot reload
+      - ./apps/desktop/src:/app/src
+      - ./apps/desktop/public:/app/public
+      - ./apps/desktop/index.html:/app/index.html
+      - ./apps/desktop/vite.config.ts:/app/vite.config.ts
+      - ./apps/desktop/tailwind.config.js:/app/tailwind.config.js
+      - ./apps/desktop/tsconfig.json:/app/tsconfig.json
+      # Persist node_modules to avoid reinstalling
+      - web-dev-node-modules:/app/node_modules
+    networks:
+      - mydoge-dev-network
+    depends_on:
+      - api
+
+  # ==================== Nginx Reverse Proxy ====================
+  nginx:
+    image: nginx:alpine
+    container_name: mydoge-nginx-dev
+    ports:
+      - "3000:80"
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - mydoge-dev-network
+    depends_on:
+      - api
+      - web
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  mydoge-dev-network:
+    driver: bridge
+
+volumes:
+  postgres-dev-data:
+    driver: local
+  api-dev-data:
+    driver: local
+  web-dev-node-modules:
+    driver: local

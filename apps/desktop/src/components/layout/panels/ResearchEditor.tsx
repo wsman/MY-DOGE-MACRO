@@ -167,19 +167,19 @@ export const ResearchEditor: React.FC<IDockviewPanelProps> = () => {
   );
 
   return (
-    <div className="flex flex-col h-full bg-[#1e1e1e] text-gray-300">
+    <div className="flex flex-col h-full bg-[#1e1e1e] text-[var(--text-primary)]">
       {/* Toolbar */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-gray-700 bg-[#252526]">
-        <div className="flex items-center gap-3 text-xs font-bold text-gray-400">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-[var(--border-primary)] bg-[#252526]">
+        <div className="flex items-center gap-3 text-xs font-bold text-[var(--text-secondary)]">
           <div className="flex items-center gap-1.5">
-            <FileText size={14} className="text-blue-400" />
+            <FileText size={14} className="text-[var(--status-info)]" />
             <span>STRATEGY.md</span>
           </div>
 
           {/* 状态指示器 */}
           {dataStatus === 'linked' && (
             <span
-              className="text-[10px] bg-blue-900/30 px-1.5 py-0.5 rounded text-blue-300 flex items-center gap-1 border border-blue-800/50 transition-all duration-500"
+              className="text-[10px] bg-[var(--status-info)]/20 px-1.5 py-0.5 rounded text-[var(--status-info)] flex items-center gap-1 border border-[var(--status-info)]/30 transition-all duration-500"
               title={`Connected to ${stockList.length} symbols`}
             >
               <Database size={10} /> Data Linked
@@ -187,7 +187,7 @@ export const ResearchEditor: React.FC<IDockviewPanelProps> = () => {
           )}
           {dataStatus === 'error' && (
             <span
-              className="text-[10px] text-yellow-500 flex items-center gap-1"
+              className="text-[10px] text-[var(--status-warning)] flex items-center gap-1"
               title="Market data offline"
             >
               <AlertCircle size={10} /> Offline Mode
@@ -195,7 +195,7 @@ export const ResearchEditor: React.FC<IDockviewPanelProps> = () => {
           )}
 
           {isSaved && (
-            <span className="text-xs text-green-500 flex items-center gap-1 animate-fade-in">
+            <span className="text-xs text-[var(--status-success)] flex items-center gap-1 animate-fade-in">
               <CheckCircle size={10} /> Saved
             </span>
           )}
@@ -203,7 +203,7 @@ export const ResearchEditor: React.FC<IDockviewPanelProps> = () => {
 
         <button
           onClick={handleSave}
-          className="p-1.5 hover:bg-gray-700 rounded text-gray-400 hover:text-green-400 transition-colors"
+          className="p-1.5 hover:bg-[var(--bg-tertiary)] rounded text-[var(--text-secondary)] hover:text-[var(--status-success)] transition-colors"
           title="Save (Ctrl+S)"
         >
           <Save size={14} />

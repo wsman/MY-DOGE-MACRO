@@ -136,13 +136,13 @@ export const ReportsPage: React.FC = () => {
   }, [loadReports]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-6">
+    <div className="min-h-screen bg-[var(--bg-primary)] p-4 md:p-6">
       {/* Header */}
       <div className="mb-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">📋 研报中心</h1>
-            <p className="text-gray-600 dark:text-gray-400">查看和管理所有 AI 生成的研报</p>
+            <h1 className="text-2xl font-bold text-[var(--text-primary)]">📋 研报中心</h1>
+            <p className="text-[var(--text-secondary)]">查看和管理所有 AI 生成的研报</p>
           </div>
           <div className="flex items-center gap-2 w-full md:w-auto">
             <Input
@@ -157,9 +157,9 @@ export const ReportsPage: React.FC = () => {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+        <div className="flex flex-col md:flex-row gap-4 mb-6 p-4 bg-[var(--bg-secondary)] rounded-lg shadow-sm">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-gray-700 dark:text-gray-300">情感:</span>
+            <span className="text-[var(--text-primary)]">情感:</span>
             {['all', 'bullish', 'bearish', 'neutral'].map(s => (
               <Button
                 key={s}
@@ -176,14 +176,14 @@ export const ReportsPage: React.FC = () => {
           </div>
           
           <div className="flex items-center gap-2">
-            <span className="text-gray-700 dark:text-gray-300">排序:</span>
+            <span className="text-[var(--text-primary)]">排序:</span>
             <select 
               value={`${filters.sortBy}-${filters.sortOrder}`}
               onChange={(e) => {
                 const [sortBy, sortOrder] = e.target.value.split('-');
                 setFilters(f => ({ ...f, sortBy: sortBy as any, sortOrder: sortOrder as any }));
               }}
-              className="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-1.5 bg-[var(--bg-tertiary)] text-[var(--text-primary)] rounded-md border border-[var(--border-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]"
             >
               <option value="created_at-desc">最新优先</option>
               <option value="created_at-asc">最早优先</option>
@@ -198,8 +198,8 @@ export const ReportsPage: React.FC = () => {
 
       {/* Error */}
       {error && (
-        <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-          <div className="flex items-center gap-2 text-red-700 dark:text-red-400">
+        <div className="mb-6 p-4 bg-[var(--status-error)]/10 border border-[var(--status-error)]/50 rounded-lg">
+          <div className="flex items-center gap-2 text-[var(--status-error)]">
             <span>❌</span>
             <span>{error}</span>
           </div>
@@ -210,15 +210,15 @@ export const ReportsPage: React.FC = () => {
       {loading ? (
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <p className="mt-2 text-gray-600 dark:text-gray-400">加载中...</p>
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--accent-primary)]"></div>
+            <p className="mt-2 text-[var(--text-secondary)]">加载中...</p>
           </div>
         </div>
       ) : reports.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-64 text-center">
           <div className="text-4xl mb-4">📊</div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">暂无研报</h3>
-          <p className="text-gray-600 dark:text-gray-400">在 Dashboard 中生成第一份 AI 研报吧！</p>
+          <h3 className="text-lg font-medium text-[var(--text-primary)] mb-2">暂无研报</h3>
+          <p className="text-[var(--text-secondary)]">在 Dashboard 中生成第一份 AI 研报吧！</p>
           <Button 
             variant="primary" 
             className="mt-4"
@@ -238,8 +238,8 @@ export const ReportsPage: React.FC = () => {
           />
           
           {/* Pagination */}
-          <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center justify-between mt-8 pt-6 border-t border-[var(--border-primary)]">
+            <div className="text-sm text-[var(--text-secondary)]">
               显示第 {(pagination.page - 1) * pagination.limit + 1} 到 {Math.min(pagination.page * pagination.limit, pagination.total)} 条，共 {pagination.total} 份研报
             </div>
             <div className="flex items-center gap-2">
@@ -250,7 +250,7 @@ export const ReportsPage: React.FC = () => {
               >
                 上一页
               </Button>
-              <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-md text-gray-700 dark:text-gray-300">
+              <span className="px-3 py-1 bg-[var(--bg-tertiary)] rounded-md text-[var(--text-primary)]">
                 第 {pagination.page} 页
               </span>
               <Button

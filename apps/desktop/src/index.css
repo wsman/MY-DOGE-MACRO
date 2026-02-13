@@ -3,27 +3,56 @@
 @tailwind utilities;
 
 @theme {
+  /* App Colors - Nordic Dark Theme */
   --color-app-primary: #0f1419;
-  --color-app-secondary: #1a1f26;
-  --color-app-tertiary: #242b33;
+  --color-app-secondary: #1a1d20;
+  --color-app-tertiary: #242830;
   --color-app-border: #38444d;
-  --color-app-success: #00c853;
-  --color-app-warning: #ff9800;
-  --color-app-danger: #f44336;
+  --color-app-success: #10b981;
+  --color-app-warning: #f59e0b;
+  --color-app-danger: #ef4444;
 
-  --color-text-primary: #e7e9ea;
-  --color-text-secondary: #8b98a5;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
 
-  --color-accent: #00d4aa;
-  --color-accent-hover: rgba(0, 212, 170, 0.1);
+  --color-accent: #3b82f6;
+  --color-accent-hover: rgba(59, 130, 246, 0.1);
+  --color-emerald: #10b981;
 
   /* Grid Layout */
   --grid-rows-layout: 48px 1fr 32px;
   --grid-cols-layout: 220px 1fr 320px;
 }
 
+/* CSS Variables - Light Theme (default for system preference) */
 :root {
-  color-scheme: dark;
+  --background: 255 255 255;
+  --foreground: 15 23 42;
+  --card: 255 255 255;
+  --card-foreground: 15 23 42;
+  --primary: 59 130 246;
+  --primary-foreground: 255 255 255;
+  
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark Theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: 26 29 32;
+    --foreground: 241 245 249;
+    --card: 36 40 48;
+    --card-foreground: 241 245 249;
+    --primary: 96 165 250;
+    --primary-foreground: 15 23 42;
+  }
 }
 
 * {

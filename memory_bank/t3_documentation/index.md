@@ -1,7 +1,7 @@
 # MY-DOGE-MACRO T3 Documentation
 
-> **Version**: v1.8.0  
-> **Last Updated**: 2026-02-05  
+> **Version**: v2.0.0-alpha  
+> **Last Updated**: 2026-02-13  
 > **Location**: `memory_bank/t3_documentation/`  
 > **Level**: T3 (User Documentation)
 
@@ -47,6 +47,7 @@ MY-DOGE-MACRO 采用 **CDD (Constitution-Driven Development)** 文档体系，�
 | 文档 | 描述 | 状态 |
 |------|------|------|
 | [部署指南](./deployment.md) | 开发、生产环境部署指南 | ✅ v1.8.0 |
+| [Docker部署](./docker-deployment.md) | Docker容器化部署指南 (v2.0.0) | ✅ v2.0.0-alpha |
 
 ### 模板
 
@@ -78,6 +79,8 @@ MY-DOGE-MACRO/
 
 | 版本 | 日期 | 主要变更 |
 |------|------|----------|
+| **v2.0.0-alpha** | 2026-02-13 | Docker容器化 + Nginx反向代理 |
+| **v1.9.0** | 2026-02-07 | 用户体验升级 + 动画系统 |
 | **v1.8.0** | 2026-02-05 | 核心功能完成 + 文档合并至 memory_bank |
 | v1.7.0 | 2026-02-05 | 完整模块化迁移 |
 | v1.6.0 | 2026-02-04 | 模块化架构启动 |
@@ -148,10 +151,10 @@ MY-DOGE-MACRO/
 
 ---
 
-**T3 文档状态**: ✅ 活跃 (v1.8.0)  
+**T3 文档状态**: ✅ 活跃 (v2.0.0-alpha)  
 **维护者**: Negentropy Lab AI Agent System  
 **CDD 框架**: v1.6.1  
 **最后系统审计**: 8.75/10 (通过)  
-**文档数量**: 10 个核心文档
+**文档数量**: 11 个核心文档
 
-*文档版本: v1.8.0 | 更新日期: 2026-02-05*
+*文档版本: v2.0.0-alpha | 更新日期: 2026-02-13*

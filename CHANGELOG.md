@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.0.0-alpha] - 2026-02-13
+
+### Added
+- **Docker容器化支持**:
+  - `docker-compose.yml` 生产配置 (单端口80)
+  - `docker-compose.dev.yml` 开发配置 (单端口3000，热重载)
+  - `apps/api/Dockerfile` 多阶段构建 (生产/开发)
+  - `apps/desktop/Dockerfile` 前端生产镜像
+  - `apps/desktop/Dockerfile.dev` 前端开发镜像 (Vite热重载)
+  - `apps/desktop/nginx.conf` Nginx反向代理配置
+  - `nginx/nginx.dev.conf` 开发环境代理配置
+  - `.dockerignore` 构建排除文件
+  - `memory_bank/t3_documentation/docker-deployment.md` 部署文档
+
+### Changed
+- **Nginx统一入口**: 所有服务通过单一端口访问
+  - 前端: `/`
+  - API: `/api/`
+  - WebSocket: `/ws/`
+- **热重载优化**: 前后端代码修改自动生效
+  - 前端: Vite HMR
+  - 后端: Uvicorn --reload
+
+### Technical
+- 移除docker-compose过时的`version`属性
+- 统一Vite端口配置 (1420)
+- 添加curl到生产镜像支持健康检查
+
+---
+
 ## [v1.9.0] - 2026-02-07
 
 ### Added

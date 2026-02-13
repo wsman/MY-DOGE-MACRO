@@ -1,0 +1,28 @@
+# MY-DOGE-MACRO Frontend Development Dockerfile
+# Hot-reload enabled for development
+
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code (will be overridden by volume mount in dev)
+COPY . .
+
+# Expose Vite dev server port
+EXPOSE 1420
+
+# Environment variables for development
+ENV VITE_API_URL=http://localhost:3000/api
+ENV VITE_WS_URL=ws://localhost:3000/ws
+
+# Start Vite dev server with host binding for Docker
+CMD ["pnpm", "dev"]

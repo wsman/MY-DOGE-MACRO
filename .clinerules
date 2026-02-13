@@ -1,7 +1,7 @@
 # 宪法驱动开发核心索引 (CDD Core Index)
 
-**版本**: v1.8.1
-**状态**: 🟢 引导模式 (Bootloader Mode)
+**版本**: v2.0.0-alpha
+**状态**: 🟢 生产就绪 (Production Ready)
 **说明**: 本文件是MY-DOGE-MACRO项目的宪法入口索引，依据§152单一真理源公理，提供项目核心架构的快速导航。
 
 ---
@@ -14,6 +14,8 @@ MY-DOGE-MACRO是一个基于宪法驱动开发(CDD)的量化交易分析系统�
 - **通达信数据库**: 本地A股/美股历史数据
 
 **核心原则**: 熵减优化、单一真理源、架构同构性。
+
+**部署方式**: Docker容器化部署，支持开发和生产环境。
 
 ---
 
@@ -81,9 +83,9 @@ graph LR
 - **§104功能分层拓扑公理**: 系统严格遵循T0-T3分层架构，层级间单向依赖
 
 ### 5.2 精简操作记录
-- **操作时间**: 2026-02-07
-- **操作内容**: 宪法文件融合与结构精简 (已完成)
-- **宪法依据**: §152单一真理源公理，消除.clinerules目录与memory_bank/t0_core的重复
+- **操作时间**: 2026-02-14
+- **操作内容**: 版本升级至v2.0.0-alpha，同步Docker容器化架构
+- **宪法依据**: §102.3宪法同步公理，版本同步与架构对齐
 - **当前状态**: 真理源统一至`memory_bank/t0_core/`，本文件`.clinerules`作为项目根目录下的宪法入口索引
 
 ---
@@ -108,20 +110,121 @@ graph LR
 3. 更新本索引文件
 4. 记录变更到`active_context.md`
 
+### 6.4 Docker部署
+```bash
+# 开发模式 (端口3000，热重载)
+docker-compose -f docker-compose.dev.yml up --build
+
+# 生产模式 (端口80)
+docker-compose up -d --build
+```
+
 ---
 
 ## 7. 版本信息
 
 | 组件 | 版本 | 状态 |
 |------|------|------|
-| **项目版本** | MY-DOGE-MACRO v1.8.1 | 🟢 活跃 |
-| **宪法版本** | v1.8.1 | 🟢 本索引 |
+| **项目版本** | MY-DOGE-MACRO v2.0.0-alpha | 🟢 生产就绪 |
+| **宪法版本** | v2.0.0-alpha | 🟢 本索引 |
 | **CDD框架** | v1.6.1 | 🟢 运行中 |
-| **架构版本** | 模块化 v1.8.0 | ✅ 已完成 |
+| **架构版本** | 模块化 v2.0.0 | ✅ Docker容器化 |
 
-**最后更新**: 2026-02-07  
+**最后更新**: 2026-02-14  
 **宪法驱动开发**: 代码即数学证明，架构即宪法约束。
 
 ---
 
 > **重要提示**: 所有详细宪法内容请查阅`memory_bank/t0_core/`目录下的具体文件。本文件仅为入口索引，具体实施必须引用真理源。
+
+---
+
+## 8. 北欧主题设计规范 (Nordic Theme)
+
+### 8.1 设计理念
+- **Hygge**: 舒适温馨的用户体验
+- **Lagom**: 恰到好处的视觉设计
+- **负空间美学**: 克制的装饰，强调内容
+
+### 8.2 禁止硬编码颜色类 (严格规则)
+
+#### ❌ 禁止使用的 Tailwind 颜色类
+严禁使用以下硬编码颜色模式：
+- `bg-{color}-{shade}` - 如 `bg-blue-600`, `bg-red-500`
+- `text-{color}-{shade}` - 如 `text-gray-400`, `text-green-600`
+- `border-{color}-{shade}` - 如 `border-red-500`, `border-slate-300`
+- `ring-{color}-{shade}` - 如 `ring-blue-500`
+
+**禁止颜色列表**: red, blue, green, yellow, gray, slate, emerald, amber, cyan, purple, pink, orange, indigo, violet, fuchsia, rose, sky, teal, lime
+
+#### ✅ 必须使用的北欧语义化颜色
+
+**背景色 (Background)**:
+| 语义类 | 用途 | 对应CSS变量 |
+|--------|------|-------------|
+| `bg-[var(--bg-primary)]` | 主背景 | `--nordic-white` / `--nordic-night` |
+| `bg-[var(--bg-secondary)]` | 次背景 | `--nordic-snow` / `--nordic-charcoal` |
+| `bg-[var(--bg-tertiary)]` | 三级背景 | `--nordic-frost` / `--nordic-slate` |
+| `bg-[var(--bg-elevated)]` | 浮起元素背景 | `#FFFFFF` / `#242830` |
+| `bg-[var(--accent-bg)]` | 强调色背景 | `--nordic-pine-light` |
+
+**文字色 (Text)**:
+| 语义类 | 用途 | 对应CSS变量 |
+|--------|------|-------------|
+| `text-[var(--text-primary)]` | 主文字 | `--nordic-charcoal` / `--nordic-snow` |
+| `text-[var(--text-secondary)]` | 次文字 | `--nordic-granite` / `--nordic-cloud` |
+| `text-[var(--text-tertiary)]` | 辅助文字 | `--nordic-stone` |
+| `text-[var(--text-inverse)]` | 反色文字 | `--nordic-white` / `--nordic-night` |
+
+**强调色 (Accent)**:
+| 语义类 | 用途 | 对应CSS变量 |
+|--------|------|-------------|
+| `bg-[var(--accent-primary)]` | 主强调背景 | `--nordic-pine` (#3D7A5F) |
+| `text-[var(--accent-primary)]` | 主强调文字 | `--nordic-pine` |
+| `bg-[var(--accent-hover)]` | 强调悬停 | `--nordic-pine-hover` |
+
+**状态色 (Status)**:
+| 语义类 | 用途 | 对应CSS变量 |
+|--------|------|-------------|
+| `text-[var(--status-success)]` | 成功状态 | `--nordic-aurora-green` (#7FBC8C) |
+| `text-[var(--status-warning)]` | 警告状态 | `--nordic-aurora-amber` (#E4A853) |
+| `text-[var(--status-error)]` | 错误状态 | `--nordic-aurora-rose` (#D16B6B) |
+| `text-[var(--status-info)]` | 信息状态 | `--nordic-fjord` (#4A6FA5) |
+
+**边框色 (Border)**:
+| 语义类 | 用途 | 对应CSS变量 |
+|--------|------|-------------|
+| `border-[var(--border-primary)]` | 主边框 | `--nordic-mist` / `--nordic-slate` |
+| `border-[var(--border-secondary)]` | 次边框 | `--nordic-cloud` / `--nordic-granite` |
+
+### 8.3 宪法依据
+- **§102 熵减原则**: 简洁即美，功能即形式
+- **§152 单一真理源**: 所有颜色定义来自 `libs/design-system/themes/nordic-minimal.css`
+- **§103 一致性公理**: 统一使用语义化颜色确保主题一致性
+
+### 8.4 使用示例
+
+```tsx
+// ❌ 错误 - 硬编码颜色
+<button className="bg-blue-600 text-white hover:bg-blue-700">
+  提交
+</button>
+
+// ✅ 正确 - 语义化颜色
+<button className="nordic-btn nordic-btn--primary">
+  提交
+</button>
+
+// ✅ 正确 - 使用CSS变量
+<div className="bg-[var(--bg-primary)] text-[var(--text-primary)] border-[var(--border-primary)]">
+  内容
+</div>
+```
+
+### 8.5 主题文件位置
+```
+libs/design-system/themes/
+├── nordic-minimal.css    # 核心CSS变量和组件样式
+├── NordicThemeUtils.ts   # 工具函数
+├── NordicThemeContext.tsx # React Context
+└── index.ts              # 统一导出

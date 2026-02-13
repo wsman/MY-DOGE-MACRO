@@ -152,7 +152,7 @@ export const PercentChangeDisplay: React.FC<{
       showSign={showSign}
       animationType="scale"
       duration={400}
-      className={value >= 0 ? 'text-green-600' : 'text-red-600'}
+      className={value >= 0 ? 'text-[var(--status-success)]' : 'text-[var(--status-error)]'}
     />
   );
 };

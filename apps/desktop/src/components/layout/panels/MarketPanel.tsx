@@ -15,16 +15,16 @@ export const MarketPanel: React.FC<IDockviewPanelProps> = () => {
   }, [stocks]);
 
   return (
-    <div className="flex flex-col h-full bg-[#1e1e1e] text-gray-300">
+    <div className="flex flex-col h-full bg-[#1e1e1e] text-[var(--text-primary)]">
       {/* 顶部工具栏 */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-gray-700 bg-[#252526]">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-[var(--border-primary)] bg-[#252526]">
         <div className="flex items-center gap-3">
-          <span className="text-xs font-bold tracking-wide text-gray-400">SCANNER</span>
+          <span className="text-xs font-bold tracking-wide text-[var(--text-secondary)]">SCANNER</span>
           {/* 实时统计 Badge */}
           <div className="flex gap-1 text-[10px] font-mono">
-            <span className="text-red-400">↑{stats.up}</span>
-            <span className="text-gray-600">/</span>
-            <span className="text-green-400">↓{stats.down}</span>
+            <span className="text-[var(--status-error)]">↑{stats.up}</span>
+            <span className="text-[var(--text-secondary)]">/</span>
+            <span className="text-[var(--status-success)]">↓{stats.down}</span>
           </div>
         </div>
 
@@ -33,7 +33,7 @@ export const MarketPanel: React.FC<IDockviewPanelProps> = () => {
           <button
             onClick={() => startScan({ mode: 'CN', path: 'C:/new_tdx' })}
             disabled={isScanning}
-            className={`p-1.5 rounded transition-colors ${isScanning ? 'text-gray-600' : 'text-green-400 hover:bg-gray-700'}`}
+            className={`p-1.5 rounded transition-colors ${isScanning ? 'text-[var(--text-secondary)]' : 'text-[var(--status-success)] hover:bg-[var(--bg-tertiary)]'}`}
             title="Start Full Scan"
           >
             <Play size={14} className={isScanning ? 'animate-pulse' : ''} />
@@ -41,11 +41,11 @@ export const MarketPanel: React.FC<IDockviewPanelProps> = () => {
           <button
             onClick={() => refetch()}
             disabled={isLoading}
-            className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-700 rounded disabled:opacity-50"
+            className="p-1.5 text-[var(--text-secondary)] hover:text-white hover:bg-[var(--bg-tertiary)] rounded disabled:opacity-50"
           >
             <RefreshCw size={14} className={isLoading ? 'animate-spin' : ''} />
           </button>
-          <button className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-700 rounded">
+          <button className="p-1.5 text-[var(--text-secondary)] hover:text-white hover:bg-[var(--bg-tertiary)] rounded">
             <Settings size={14} />
           </button>
         </div>
@@ -54,7 +54,7 @@ export const MarketPanel: React.FC<IDockviewPanelProps> = () => {
       {/* 核心表格区 */}
       <div className="flex-1 overflow-hidden relative">
         {isLoading && stocks.length === 0 ? (
-          <div className="absolute inset-0 flex items-center justify-center text-gray-500">
+          <div className="absolute inset-0 flex items-center justify-center text-[var(--text-secondary)]">
             Loading market data...
           </div>
         ) : (

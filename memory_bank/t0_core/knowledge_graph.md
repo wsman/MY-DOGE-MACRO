@@ -1,53 +1,65 @@
 # 逆熵实验室 - MY-DOGE-MACRO知识图谱 (Knowledge Graph)
 
-**版本**: v1.8.1 (MY-DOGE-MACRO融合图谱版)
-**状态**: 🟢 活跃
+**版本**: v2.0.0-alpha (MY-DOGE-MACRO Docker容器化版)
+**状态**: 🟢 生产就绪 (Production Ready)
 **节点数**: ~70+ (融合全局结构 + 项目具体节点)
-**用途**: 提供MY-DOGE-MACRO项目系统实体间的高维关联导航，精确反映v1.8.1状态。
+**用途**: 提供MY-DOGE-MACRO项目系统实体间的高维关联导航，精确反映v2.0.0-alpha状态。
 **维护机制**: 每次CDD周期结束时更新，宪法变更时强制同步。
 
 ---
 
-## 1. 项目概述 (MY-DOGE-MACRO v1.8.1)
+## 1. 项目概述 (MY-DOGE-MACRO v2.0.0-alpha)
 
 MY-DOGE-MACRO是一个三API驱动的量化交易分析系统，集成：
 - **DeepSeek AI**: 宏观分析与策略生成
 - **Yahoo Finance**: 全球资产价格数据
 - **通达信数据库**: 本地A股/美股历史数据
 
-### 1.1 模块化架构 (v1.8.0 Complete)
+### 1.1 Docker容器化架构 (v2.0.0-alpha Production Ready)
 ```text
 应用层 (apps/)
-├── desktop/               # Tauri + React 19桌面应用 ✅
+├── desktop/               # React 19 + Tauri v2 + Docker ✅
+│   ├── Dockerfile         # 生产镜像
+│   ├── Dockerfile.dev     # 开发镜像 (Vite热重载)
 │   └── src/components/
-│       ├── atoms/        # Button, Badge, Card, Icon, Input, Avatar, StatusDot (7个)
-│       ├── molecules/    # DataCard, SearchBar, FormGroup, StatusIndicator (4个)
-│       ├── organisms/    # MarketOverview, AnalysisPanel, AIReportPanel (3个)
-│       └── charts/       # PriceChart, TechnicalIndicators, SubChart, ChartPanel (4个)
+│       ├── atoms/        # Button, Badge, Card, Icon, Input, Avatar, StatusDot, MarkdownRenderer, PriceDisplay (10个)
+│       ├── molecules/    # DataCard, SearchBar, FormGroup, StatusIndicator, ReportCard, ConnectionIndicator (6个)
+│       ├── organisms/    # MarketOverview, AnalysisPanel, AIReportPanel, AlertRulePanel, NotificationCenter (5个)
+│       ├── charts/       # PriceChart, TechnicalIndicators, SubChart, ChartPanel, CorrelationHeatmap, MultiAssetPanel (6个)
+│       ├── motion/       # MotionButton, RollingNumber, animations (动画系统)
+│       ├── transitions/  # RouteTransition (路由过渡)
+│       └── pages/        # ReportsPage (页面组件)
 └── api/                  # FastAPI后端服务 ✅
-    └── core/websocket.py # 实时价格推送
+    ├── Dockerfile        # 生产镜像
+    ├── core/websocket.py # 实时价格推送
+    ├── routes/auth.py    # 用户认证
+    ├── utils/jwt.py      # JWT工具
+    └── migrations/       # 数据库迁移
 
 库层 (libs/)
 ├── quant-engine/         # 量化分析算法 ✅
 │   ├── analysis/         # technical_indicators.py (MA/EMA/MACD/RSI/KDJ/Bollinger)
-│   └── data/             # tdx_reader.py (通达信集成)
-├── design-system/        # UI组件和设计令牌 ✅
-└── common/               # 共享工具
+│   ├── data/             # tdx_reader.py (通达信集成)
+│   └── ai/               # report_generator.py (DeepSeek集成)
+├── design-system/        # Nordic Theme UI组件和设计令牌 ✅
+│   ├── themes/           # nordic-minimal.css, NordicThemeContext.tsx
+│   └── tokens/           # colors, animations, spacing, typography
+└── novel-engine/         # 小说引擎 ✅
 
 基础设施层 (infrastructure/)
 ├── cdd/                  # 宪法驱动开发工具 ✅
 │   └── tools/            # cdd_audit.py, measure_entropy.py, verify_version.py
-├── ci-cd/                # 持续集成/部署
-└── monitoring/           # 系统监控和告警
 
-数据与配置
-├── data/                 # 原始、处理数据和报告
-└── config/               # 环境和功能配置
+Docker配置
+├── docker-compose.yml       # 生产配置 (端口80)
+├── docker-compose.dev.yml   # 开发配置 (端口3000，热重载)
+└── nginx/                   # Nginx反向代理配置
 
 文档层 (memory_bank/t3_documentation/) # 扁平结构
 ├── api-reference.md      # 完整REST/WebSocket API
 ├── backend-api.md        # 后端接口详情
 ├── deployment.md         # 部署指南
+├── docker-deployment.md  # Docker部署指南
 ├── getting-started.md    # 开发入门
 ├── index.md              # 文档索引
 ├── indicators.md         # 技术指标公式
@@ -254,7 +266,7 @@ graph TD
 
 ### 🔄 项目与孵化 (Projects & Incubation)
 
-- __中心节点__: [MY-DOGE-MACRO v1.8.1], [Negentropy-Lab v1.3.0], [程序法 §230-§232]
+- __中心节点__: [MY-DOGE-MACRO v2.0.0-alpha], [Negentropy-Lab v1.3.0], [程序法 §230-§232]
 
 - __核心关系__: 孵化关系、同步回流、架构演进
 
@@ -289,12 +301,13 @@ graph TD
 
 - __宪法依据__:
 
-  - __§102.3宪法同步公理__: 强制版本一致性，当前统一为v1.8.1
+  - __§102.3宪法同步公理__: 强制版本一致性，当前统一为v2.0.0-alpha
   - __§152单一真理源公理__: 减少索引重叠，`memory_bank/t0_core/`成为唯一真理源
   - __§141熵减验证__: 确保整合后系统有序度提升 (ΔH > 0)
   - __§125数据完整性公理__: 备份与验证确保整合过程安全
 
-- __最近更新__ (2026-02-09):
+- __最近更新__ (2026-02-14):
+  - ✅ 版本升级至v2.0.0-alpha，同步Docker容器化架构
   - ✅ 更新技术法索引，修正DS-001, DS-002, DS-003状态为实际存在
   - ✅ 更新程序法索引，修正WF-204状态为实际存在
   - ✅ 更新知识图谱，反映项目实际状态
@@ -392,6 +405,6 @@ __关键原则__: 始终检查项目实际状态：
 
 ---
 
-**版本信息**: 知识图谱 v1.8.1 | **最后更新**: 2026-02-09 | **项目状态**: MY-DOGE-MACRO v1.8.1 活跃
+**版本信息**: 知识图谱 v2.0.0-alpha | **最后更新**: 2026-02-14 | **项目状态**: MY-DOGE-MACRO v2.0.0-alpha 生产就绪
 
-**宪法约束**: 遵循§152单一真理源公理，本图谱精确反映MY-DOGE-MACRO v1.8.1系统状态。所有导航决策应基于本图谱提供的实际项目状态。
+**宪法约束**: 遵循§152单一真理源公理，本图谱精确反映MY-DOGE-MACRO v2.0.0-alpha系统状态。所有导航决策应基于本图谱提供的实际项目状态。

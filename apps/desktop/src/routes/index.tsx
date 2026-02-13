@@ -18,12 +18,12 @@ const ReportsPage = lazy(() => import('../components/pages/ReportsPage').then(mo
 
 // 错误页面组件
 const ErrorPage = ({ error }: { error?: any }) => (
-  <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
+  <div className="flex items-center justify-center h-screen bg-[var(--bg-primary)] text-[var(--text-inverse)]">
     <div className="text-center">
       <h1 className="text-4xl font-bold mb-4">⚠️ 页面加载失败</h1>
-      <p className="text-gray-400 mb-6">抱歉，页面加载时出现错误。</p>
-      <button 
-        className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700"
+      <p className="text-[var(--text-secondary)] mb-6">抱歉，页面加载时出现错误。</p>
+      <button
+        className="px-4 py-2 bg-[var(--accent-primary)] rounded hover:bg-[var(--accent-hover)]"
         onClick={() => window.location.reload()}
       >
         刷新页面

@@ -57,7 +57,7 @@ export const MotionButton: React.FC<MotionButtonProps> = ({
   const variantClasses = {
     primary: 'bg-accent text-text-primary border-accent hover:bg-accent-hover hover:border-accent-hover',
     secondary: 'bg-secondary text-text-primary border-secondary hover:bg-secondary-hover hover:border-secondary-hover',
-    ghost: 'bg-transparent text-text-primary border-transparent hover:bg-gray-700/30',
+    ghost: 'bg-transparent text-text-primary border-transparent hover:bg-[var(--bg-tertiary)]',
     danger: 'bg-danger text-text-primary border-danger hover:bg-danger-dark hover:border-danger-dark',
   };
   

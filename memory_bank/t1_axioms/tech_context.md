@@ -1,7 +1,58 @@
 # Tech Context - Interface Definitions
 
-> **Version**: v1.0.0  
-> **Last Updated**: 2026-02-01 21:30
+> **Version**: v2.0.0-alpha  
+> **Last Updated**: 2026-02-13
+
+## Docker Containerization (v2.0.0)
+
+### Development Environment
+```yaml
+# docker-compose.dev.yml
+services:
+  api:
+    build: ./apps/api (target: development)
+    port: 8765 (internal)
+    hot_reload: Uvicorn --reload
+    
+  web:
+    build: ./apps/desktop (Dockerfile.dev)
+    port: 1420 (internal)
+    hot_reload: Vite HMR
+    
+  nginx:
+    image: nginx:alpine
+    port: 3000 (external)
+    proxy:
+      - / → web:1420
+      - /api/ → api:8765
+      - /ws/ → api:8765
+```
+
+### Production Environment
+```yaml
+# docker-compose.yml
+services:
+  api:
+    build: ./apps/api (target: production)
+    port: 8765 (internal)
+    
+  web:
+    build: ./apps/desktop (Dockerfile)
+    port: 80 (external)
+    nginx_proxy: enabled
+```
+
+### Key Configuration Files
+| File | Purpose |
+|------|---------|
+| `docker-compose.yml` | 生产环境配置 (端口80) |
+| `docker-compose.dev.yml` | 开发环境配置 (端口3000，热重载) |
+| `apps/api/Dockerfile` | 后端多阶段构建 |
+| `apps/desktop/Dockerfile` | 前端生产镜像 |
+| `apps/desktop/Dockerfile.dev` | 前端开发镜像 |
+| `nginx/nginx.dev.conf` | 开发Nginx配置 |
+
+---
 
 ## API Interfaces
 

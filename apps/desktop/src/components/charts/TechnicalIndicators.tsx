@@ -93,6 +93,165 @@ export function calculateBollinger(data: number[], period = 20, stdDev = 2): {
   return { upper, middle, lower };
 }
 
+// MACD (Moving Average Convergence Divergence)
+export function calculateMACD(data: number[], fastPeriod = 12, slowPeriod = 26, signalPeriod = 9): {
+  macd: (number | null)[];
+  signal: (number | null)[];
+  histogram: (number | null)[];
+} {
+  const fastEMA = calculateEMA(data, fastPeriod);
+  const slowEMA = calculateEMA(data, slowPeriod);
+  const macd: (number | null)[] = [];
+  
+  for (let i = 0; i < data.length; i++) {
+    if (fastEMA[i] === null || slowEMA[i] === null) {
+      macd.push(null);
+    } else {
+      macd.push((fastEMA[i] as number) - (slowEMA[i] as number));
+    }
+  }
+  
+  // Calculate signal line (EMA of MACD)
+  const validMacd = macd.filter(v => v !== null) as number[];
+  const signalEMA = calculateEMA(validMacd, signalPeriod);
+  
+  // Align signal with macd array
+  const signal: (number | null)[] = [];
+  let validIndex = 0;
+  for (let i = 0; i < data.length; i++) {
+    if (macd[i] === null) {
+      signal.push(null);
+    } else {
+      signal.push(signalEMA[validIndex] || null);
+      validIndex++;
+    }
+  }
+  
+  // Calculate histogram
+  const histogram: (number | null)[] = [];
+  for (let i = 0; i < data.length; i++) {
+    if (macd[i] === null || signal[i] === null) {
+      histogram.push(null);
+    } else {
+      histogram.push((macd[i] as number) - (signal[i] as number));
+    }
+  }
+  
+  return { macd, signal, histogram };
+}
+
+// RSI (Relative Strength Index)
+export function calculateRSI(data: number[], period = 14): (number | null)[] {
+  const result: (number | null)[] = [];
+  let gains = 0;
+  let losses = 0;
+  
+  for (let i = 0; i < data.length; i++) {
+    if (i < period) {
+      result.push(null);
+      if (i > 0) {
+        const change = data[i] - data[i - 1];
+        if (change > 0) gains += change;
+        else losses -= change;
+      }
+    } else {
+      const change = data[i] - data[i - 1];
+      if (i === period) {
+        // First RSI value
+        const avgGain = gains / period;
+        const avgLoss = losses / period;
+        if (avgLoss === 0) {
+          result.push(100);
+        } else {
+          const rs = avgGain / avgLoss;
+          result.push(100 - (100 / (1 + rs)));
+        }
+      } else {
+        // Smoothed RSI
+        const prevGain = (result[i - 1] !== null ? (gains / period) : 0);
+        const prevLoss = (result[i - 1] !== null ? (losses / period) : 0);
+        
+        if (change > 0) {
+          gains = (prevGain * (period - 1) + change) / period;
+          losses = (prevLoss * (period - 1)) / period;
+        } else {
+          gains = (prevGain * (period - 1)) / period;
+          losses = (prevLoss * (period - 1) - change) / period;
+        }
+        
+        if (losses === 0) {
+          result.push(100);
+        } else {
+          const rs = gains / losses;
+          result.push(100 - (100 / (1 + rs)));
+        }
+      }
+    }
+  }
+  
+  return result;
+}
+
+// KDJ Indicator
+export function calculateKDJ(highs: number[], lows: number[], closes: number[], period = 9, kPeriod = 3, dPeriod = 3): {
+  k: (number | null)[];
+  d: (number | null)[];
+  j: (number | null)[];
+} {
+  const rsv: (number | null)[] = [];
+  
+  for (let i = 0; i < closes.length; i++) {
+    if (i < period - 1) {
+      rsv.push(null);
+    } else {
+      const highMax = Math.max(...highs.slice(i - period + 1, i + 1));
+      const lowMin = Math.min(...lows.slice(i - period + 1, i + 1));
+      const range = highMax - lowMin;
+      if (range === 0) {
+        rsv.push(50);
+      } else {
+        rsv.push(((closes[i] - lowMin) / range) * 100);
+      }
+    }
+  }
+  
+  // Calculate K (smoothed RSV)
+  const k: (number | null)[] = [];
+  let prevK = 50;
+  for (let i = 0; i < rsv.length; i++) {
+    if (rsv[i] === null) {
+      k.push(null);
+    } else {
+      prevK = (prevK * (kPeriod - 1) + (rsv[i] as number)) / kPeriod;
+      k.push(prevK);
+    }
+  }
+  
+  // Calculate D (smoothed K)
+  const d: (number | null)[] = [];
+  let prevD = 50;
+  for (let i = 0; i < k.length; i++) {
+    if (k[i] === null) {
+      d.push(null);
+    } else {
+      prevD = (prevD * (dPeriod - 1) + (k[i] as number)) / dPeriod;
+      d.push(prevD);
+    }
+  }
+  
+  // Calculate J
+  const j: (number | null)[] = [];
+  for (let i = 0; i < k.length; i++) {
+    if (k[i] === null || d[i] === null) {
+      j.push(null);
+    } else {
+      j.push(3 * (k[i] as number) - 2 * (d[i] as number));
+    }
+  }
+  
+  return { k, d, j };
+}
+
 // ============ Indicator Canvas Component ============
 interface IndicatorCanvasProps {
   data: OHLCData[];

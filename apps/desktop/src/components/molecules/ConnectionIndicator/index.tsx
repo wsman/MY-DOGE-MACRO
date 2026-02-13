@@ -23,17 +23,17 @@ export const ConnectionIndicator: React.FC = () => {
         WS: {config.label}
       </Badge>
       {stats.reconnectAttempts > 0 && status === 'reconnecting' && (
-        <span className="text-xs text-yellow-500">
+        <span className="text-xs text-[var(--status-warning)]">
           ({stats.reconnectAttempts}/10)
         </span>
       )}
       {status === 'connected' && subscriptions.length > 0 && (
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-[var(--text-secondary)]">
           {subscriptions.length}个订阅
         </span>
       )}
       {error && (
-        <span className="text-xs text-red-500 truncate max-w-[120px]" title={error}>
+        <span className="text-xs text-[var(--status-error)] truncate max-w-[120px]" title={error}>
           {error}
         </span>
       )}

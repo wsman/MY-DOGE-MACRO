@@ -4,8 +4,8 @@ import { Terminal } from 'lucide-react';
 
 export const SystemTerminal: React.FC<IDockviewPanelProps> = () => {
   return (
-    <div className="flex flex-col h-full bg-black text-green-500 font-mono text-xs">
-      <div className="flex items-center gap-2 px-3 py-1 bg-[#333] text-gray-300 border-b border-gray-700">
+    <div className="flex flex-col h-full bg-black text-[var(--status-success)] font-mono text-xs">
+      <div className="flex items-center gap-2 px-3 py-1 bg-[#333] text-[var(--text-secondary)] border-b border-[var(--border-primary)]">
         <Terminal size={12} />
         <span>OUTPUT</span>
       </div>

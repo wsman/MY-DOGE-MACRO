@@ -1,0 +1,709 @@
+/**
+ * Nordic Minimal Theme - MY-DOGE-MACRO 北欧极简主题
+ * ============================================================
+ * 来源: Negentropy-Lab 项目
+ * 设计理念: 
+ *   - Hygge (舒适温馨) + Lagom (恰到好处) + 负空间美学
+ *   - 受 Scandinavian Design 启发的现代数字化诠释
+ * 
+ * 宪法依据: §102 熵减原则 (简洁即美，功能即形式)
+ * 版本: 1.0.0
+ * ============================================================
+ */
+
+/* ============================================================
+   SECTION 1: 设计系统变量 (Design Tokens)
+   ============================================================ */
+
+:root {
+  /* ---- 核心色板 (Nordic Color Palette) ---- */
+  
+  /* 自然白色系 - 北欧雪景的层次 */
+  --nordic-white:         #FAFBFC;    /* 纯净雪白 */
+  --nordic-snow:          #F5F7F9;    /* 积雪灰白 */
+  --nordic-frost:         #EEF1F4;    /* 霜降浅灰 */
+  --nordic-mist:          #E4E8EC;    /* 晨雾灰 */
+  --nordic-cloud:         #D1D7DE;    /* 云层灰 */
+  
+  /* 自然灰色系 - 斯堪的纳维亚岩石与木材 */
+  --nordic-stone:         #9BA4AE;    /* 石头灰 */
+  --nordic-granite:       #6E7881;    /* 花岗岩灰 */
+  --nordic-slate:         #4A5259;    /* 板岩灰 */
+  --nordic-charcoal:      #2C3136;    /* 木炭灰 */
+  --nordic-night:         #1A1D20;    /* 北极夜黑 */
+  
+  /* 自然强调色 - 北欧森林与峡湾 */
+  --nordic-pine:          #3D7A5F;    /* 松树绿 - 主强调色 */
+  --nordic-pine-light:    #E8F2EC;    /* 松树绿浅 */
+  --nordic-pine-hover:    #2D5A47;    /* 松树绿深 */
+  
+  --nordic-fjord:         #4A6FA5;    /* 峡湾蓝 - 次强调色 */
+  --nordic-fjord-light:   #E8EEF6;    /* 峡湾蓝浅 */
+  --nordic-fjord-hover:   #3A5A8A;    /* 峡湾蓝深 */
+  
+  --nordic-aurora-green:  #7FBC8C;    /* 极光绿 - 成功状态 */
+  --nordic-aurora-amber:  #E4A853;    /* 琥珀黄 - 警告状态 */
+  --nordic-aurora-rose:   #D16B6B;    /* 玫瑰红 - 错误状态 */
+  --nordic-aurora-purple: #8B7EB8;    /* 极光紫 - 信息状态 */
+  
+  /* 木质暖调 - Hygge温暖感 */
+  --nordic-birch:         #F5EDE4;    /* 白桦木 */
+  --nordic-oak:           #D4C4B0;    /* 橡木色 */
+  --nordic-walnut:        #8B7355;    /* 胡桃木 */
+  
+  /* ---- 排版系统 (Typography System) ---- */
+  
+  /* 字体栈 - 优先无衬线，现代简洁 */
+  --font-primary:   'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:      'JetBrains Mono', 'SF Mono', 'Consolas', 'Monaco', monospace;
+  --font-display:   'Inter', 'SF Pro Display', sans-serif;
+  
+  /* 字重 - 克制使用 */
+  --font-weight-light:    300;
+  --font-weight-normal:   400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  
+  /* 字号阶梯 - 基于 1.25 比例 */
+  --font-size-xs:   0.75rem;    /* 12px */
+  --font-size-sm:   0.875rem;   /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-lg:   1.125rem;   /* 18px */
+  --font-size-xl:   1.25rem;    /* 20px */
+  --font-size-2xl:  1.5rem;     /* 24px */
+  --font-size-3xl:  1.875rem;   /* 30px */
+  --font-size-4xl:  2.25rem;    /* 36px */
+  
+  /* 行高 - 舒适阅读 */
+  --line-height-tight:  1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* 字间距 - 微调 */
+  --letter-spacing-tight:  -0.01em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide:   0.025em;
+  --letter-spacing-wider:  0.05em;
+  
+  /* ---- 间距系统 (Spacing System) ---- */
+  
+  /* 基于 4px 网格 */
+  --space-1:  0.25rem;   /* 4px */
+  --space-2:  0.5rem;    /* 8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+  --space-24: 6rem;      /* 96px */
+  
+  /* ---- 圆角系统 (Border Radius) ---- */
+  
+  --radius-none: 0;
+  --radius-sm:   0.25rem;   /* 4px */
+  --radius-md:   0.5rem;    /* 8px */
+  --radius-lg:   0.75rem;   /* 12px */
+  --radius-xl:   1rem;      /* 16px */
+  --radius-2xl:  1.5rem;    /* 24px */
+  --radius-full: 9999px;
+  
+  /* ---- 阴影系统 (Shadow System) - 极度克制 ---- */
+  
+  --shadow-none: none;
+  --shadow-xs:   0 1px 2px rgba(26, 29, 32, 0.04);
+  --shadow-sm:   0 2px 4px rgba(26, 29, 32, 0.06);
+  --shadow-md:   0 4px 8px rgba(26, 29, 32, 0.08);
+  --shadow-lg:   0 8px 16px rgba(26, 29, 32, 0.10);
+  --shadow-xl:   0 12px 24px rgba(26, 29, 32, 0.12);
+  
+  /* 内发光 - 用于凹陷效果 */
+  --shadow-inset: inset 0 2px 4px rgba(26, 29, 32, 0.04);
+  
+  /* ---- 边框系统 (Border System) ---- */
+  
+  --border-width-thin:   1px;
+  --border-width-normal: 2px;
+  --border-width-thick:  3px;
+  
+  --border-color-light:  var(--nordic-mist);
+  --border-color-normal: var(--nordic-cloud);
+  --border-color-strong: var(--nordic-stone);
+  
+  /* ---- 动画系统 (Animation System) - 平滑自然 ---- */
+  
+  --duration-instant: 100ms;
+  --duration-fast:    150ms;
+  --duration-normal:  250ms;
+  --duration-slow:    400ms;
+  --duration-slower:  600ms;
+  
+  --easing-default:  cubic-bezier(0.4, 0, 0.2, 1);    /* 自然缓动 */
+  --easing-in:       cubic-bezier(0.4, 0, 1, 1);      /* 加速 */
+  --easing-out:      cubic-bezier(0, 0, 0.2, 1);      /* 减速 */
+  --easing-bounce:   cubic-bezier(0.34, 1.56, 0.64, 1); /* 微弹 */
+  
+  /* ---- 层级系统 (Z-Index System) ---- */
+  
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+  --z-tooltip:  600;
+}
+
+/* ============================================================
+   SECTION 2: 主题模式 (Theme Modes)
+   ============================================================ */
+
+/* ---- 浅色模式 (默认) ---- */
+.theme-nordic-light,
+.nordic-theme[data-theme="light"] {
+  --bg-primary:      var(--nordic-white);
+  --bg-secondary:    var(--nordic-snow);
+  --bg-tertiary:     var(--nordic-frost);
+  --bg-elevated:     #FFFFFF;
+  --bg-inset:        var(--nordic-mist);
+  
+  --text-primary:    var(--nordic-charcoal);
+  --text-secondary:  var(--nordic-granite);
+  --text-tertiary:   var(--nordic-stone);
+  --text-inverse:    var(--nordic-white);
+  
+  --border-primary:  var(--nordic-mist);
+  --border-secondary: var(--nordic-cloud);
+  
+  --accent-primary:  var(--nordic-pine);
+  --accent-hover:    var(--nordic-pine-hover);
+  --accent-bg:       var(--nordic-pine-light);
+  
+  --status-success:  var(--nordic-aurora-green);
+  --status-warning:  var(--nordic-aurora-amber);
+  --status-error:    var(--nordic-aurora-rose);
+  --status-info:     var(--nordic-fjord);
+}
+
+/* ---- 深色模式 (Nordic Night) ---- */
+.theme-nordic-dark,
+.nordic-theme[data-theme="dark"] {
+  --bg-primary:      var(--nordic-night);
+  --bg-secondary:    var(--nordic-charcoal);
+  --bg-tertiary:     var(--nordic-slate);
+  --bg-elevated:     #242830;
+  --bg-inset:        #15181B;
+  
+  --text-primary:    var(--nordic-snow);
+  --text-secondary:  var(--nordic-cloud);
+  --text-tertiary:   var(--nordic-stone);
+  --text-inverse:    var(--nordic-night);
+  
+  --border-primary:  var(--nordic-slate);
+  --border-secondary: var(--nordic-granite);
+  
+  --accent-primary:  #5A9E7B;  /* 调亮的松树绿 */
+  --accent-hover:    #7AB896;
+  --accent-bg:       rgba(90, 158, 123, 0.15);
+  
+  --status-success:  #8FCC9C;
+  --status-warning:  #F0BA6A;
+  --status-error:    #E08080;
+  --status-info:     #6A8FBF;
+}
+
+/* ============================================================
+   SECTION 3: 基础样式重置 (Base Styles)
+   ============================================================ */
+
+.nordic-theme {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-normal);
+  
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  
+  transition: 
+    background-color var(--duration-slow) var(--easing-default),
+    color var(--duration-slow) var(--easing-default);
+}
+
+/* ============================================================
+   SECTION 4: 组件样式 (Component Styles)
+   ============================================================ */
+
+/* ---- 卡片组件 (Cards) ---- */
+
+.nordic-card {
+  background: var(--bg-elevated);
+  border: var(--border-width-thin) solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  
+  box-shadow: var(--shadow-xs);
+  transition: 
+    transform var(--duration-normal) var(--easing-default),
+    box-shadow var(--duration-normal) var(--easing-default),
+    border-color var(--duration-fast) var(--easing-default);
+}
+
+.nordic-card:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border-secondary);
+}
+
+.nordic-card--interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.nordic-card--selected {
+  border-color: var(--accent-primary);
+  background: var(--accent-bg);
+}
+
+/* ---- 按钮组件 (Buttons) ---- */
+
+.nordic-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  letter-spacing: var(--letter-spacing-wide);
+  
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  border: var(--border-width-thin) solid transparent;
+  
+  cursor: pointer;
+  user-select: none;
+  
+  transition: 
+    background-color var(--duration-fast) var(--easing-default),
+    border-color var(--duration-fast) var(--easing-default),
+    transform var(--duration-instant) var(--easing-default),
+    box-shadow var(--duration-fast) var(--easing-default);
+}
+
+.nordic-btn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.nordic-btn:active {
+  transform: scale(0.98);
+}
+
+/* Primary Button */
+.nordic-btn--primary {
+  background: var(--accent-primary);
+  color: var(--text-inverse);
+  border-color: var(--accent-primary);
+}
+
+.nordic-btn--primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+/* Secondary Button */
+.nordic-btn--secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: var(--border-secondary);
+}
+
+.nordic-btn--secondary:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--text-tertiary);
+}
+
+/* Ghost Button */
+.nordic-btn--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: transparent;
+}
+
+.nordic-btn--ghost:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+/* Button Sizes */
+.nordic-btn--sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-sm);
+}
+
+.nordic-btn--lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-lg);
+}
+
+/* ---- 输入框组件 (Inputs) ---- */
+
+.nordic-input {
+  width: 100%;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  
+  padding: var(--space-3) var(--space-4);
+  
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  
+  border: var(--border-width-thin) solid var(--border-primary);
+  border-radius: var(--radius-md);
+  
+  transition: 
+    border-color var(--duration-fast) var(--easing-default),
+    box-shadow var(--duration-fast) var(--easing-default);
+}
+
+.nordic-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.nordic-input:hover {
+  border-color: var(--border-secondary);
+}
+
+.nordic-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+/* Textarea */
+.nordic-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* ---- 标签/徽章 (Tags/Badges) ---- */
+
+.nordic-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.nordic-badge--success {
+  background: rgba(127, 188, 140, 0.15);
+  color: var(--status-success);
+}
+
+.nordic-badge--warning {
+  background: rgba(228, 168, 83, 0.15);
+  color: var(--status-warning);
+}
+
+.nordic-badge--error {
+  background: rgba(209, 107, 107, 0.15);
+  color: var(--status-error);
+}
+
+.nordic-badge--info {
+  background: rgba(74, 111, 165, 0.15);
+  color: var(--status-info);
+}
+
+/* ---- 分割线 (Divider) ---- */
+
+.nordic-divider {
+  height: var(--border-width-thin);
+  background: var(--border-primary);
+  border: none;
+  margin: var(--space-4) 0;
+}
+
+.nordic-divider--light {
+  background: var(--bg-tertiary);
+}
+
+/* ---- 工具提示 (Tooltip) ---- */
+
+.nordic-tooltip {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  
+  padding: var(--space-2) var(--space-3);
+  
+  background: var(--nordic-charcoal);
+  color: var(--nordic-snow);
+  
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  
+  z-index: var(--z-tooltip);
+}
+
+/* ============================================================
+   SECTION 5: 布局组件 (Layout Components)
+   ============================================================ */
+
+/* ---- 容器 (Container) ---- */
+
+.nordic-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .nordic-container {
+    padding: 0 var(--space-4);
+  }
+}
+
+/* ---- 网格系统 (Grid) ---- */
+
+.nordic-grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.nordic-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.nordic-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.nordic-grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 1024px) {
+  .nordic-grid--3,
+  .nordic-grid--4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .nordic-grid--2,
+  .nordic-grid--3,
+  .nordic-grid--4 { grid-template-columns: 1fr; }
+}
+
+/* ---- 侧边栏布局 (Sidebar Layout) ---- */
+
+.nordic-layout-sidebar {
+  display: flex;
+  min-height: 100vh;
+}
+
+.nordic-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  
+  background: var(--bg-secondary);
+  border-right: var(--border-width-thin) solid var(--border-primary);
+  
+  padding: var(--space-6);
+}
+
+.nordic-main {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-6);
+}
+
+/* ============================================================
+   SECTION 6: 状态类 (State Classes)
+   ============================================================ */
+
+/* ---- 加载状态 (Loading) ---- */
+
+.nordic-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.nordic-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-primary);
+  opacity: 0.7;
+  border-radius: inherit;
+}
+
+/* ---- 禁用状态 (Disabled) ---- */
+
+.nordic-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* ---- 骨架屏 (Skeleton) ---- */
+
+.nordic-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-tertiary) 25%,
+    var(--bg-secondary) 50%,
+    var(--bg-tertiary) 75%
+  );
+  background-size: 200% 100%;
+  animation: nordic-skeleton-shimmer 1.5s infinite linear;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes nordic-skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================================
+   SECTION 7: 特殊效果 (Special Effects)
+   ============================================================ */
+
+/* ---- 毛玻璃效果 (Frosted Glass) ---- */
+
+.nordic-frosted {
+  background: rgba(250, 251, 252, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.theme-nordic-dark .nordic-frosted {
+  background: rgba(26, 29, 32, 0.8);
+}
+
+/* ---- 渐变强调 (Gradient Accent) ---- */
+
+.nordic-gradient-text {
+  background: linear-gradient(135deg, var(--nordic-pine) 0%, var(--nordic-fjord) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ---- 焦点环 (Focus Ring) ---- */
+
+.nordic-focus-ring:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   SECTION 8: 数据可视化颜色 (Data Visualization)
+   ============================================================ */
+
+.nordic-viz {
+  --viz-positive:  var(--nordic-aurora-green);
+  --viz-negative:  var(--nordic-aurora-rose);
+  --viz-neutral:   var(--nordic-stone);
+  --viz-primary:   var(--nordic-pine);
+  --viz-secondary: var(--nordic-fjord);
+  --viz-tertiary:  var(--nordic-aurora-purple);
+}
+
+/* ---- 熵值状态色 (Entropy Status Colors) ---- */
+
+.nordic-entropy--healthy {
+  --entropy-color: var(--nordic-aurora-green);
+  --entropy-bg: rgba(127, 188, 140, 0.12);
+}
+
+.nordic-entropy--warning {
+  --entropy-color: var(--nordic-aurora-amber);
+  --entropy-bg: rgba(228, 168, 83, 0.12);
+}
+
+.nordic-entropy--critical {
+  --entropy-color: var(--nordic-aurora-rose);
+  --entropy-bg: rgba(209, 107, 107, 0.12);
+}
+
+/* ============================================================
+   SECTION 9: 无障碍增强 (Accessibility)
+   ============================================================ */
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  .nordic-theme {
+    --border-primary: var(--nordic-granite);
+    --border-secondary: var(--nordic-slate);
+  }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .nordic-theme,
+  .nordic-theme * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 暗色模式系统偏好 */
+@media (prefers-color-scheme: dark) {
+  .nordic-theme[data-theme="auto"] {
+    --bg-primary:      var(--nordic-night);
+    --bg-secondary:    var(--nordic-charcoal);
+    --bg-tertiary:     var(--nordic-slate);
+    --bg-elevated:     #242830;
+    --bg-inset:        #15181B;
+    
+    --text-primary:    var(--nordic-snow);
+    --text-secondary:  var(--nordic-cloud);
+    --text-tertiary:   var(--nordic-stone);
+    --text-inverse:    var(--nordic-night);
+    
+    --border-primary:  var(--nordic-slate);
+    --border-secondary: var(--nordic-granite);
+    
+    --accent-primary:  #5A9E7B;
+    --accent-hover:    #7AB896;
+    --accent-bg:       rgba(90, 158, 123, 0.15);
+  }
+}
+
+/* ============================================================
+   SECTION 10: 打印样式 (Print Styles)
+   ============================================================ */
+
+@media print {
+  .nordic-theme {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .nordic-card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    break-inside: avoid;
+  }
+  
+  .nordic-btn,
+  .nordic-sidebar {
+    display: none !important;
+  }
+}

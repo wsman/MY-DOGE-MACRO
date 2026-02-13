@@ -1,0 +1,53 @@
+# MY-DOGE-MACRO Production Docker Compose
+# Single port (80) entry point with Nginx reverse proxy
+
+services:
+  # ==================== Backend API ====================
+  api:
+    build:
+      context: ./apps/api
+      target: production
+    container_name: mydoge-api
+    restart: unless-stopped
+    environment:
+      - MYDOGE_API_TOKEN=${API_TOKEN:-mydoge-token-123456}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+    volumes:
+      - api-data:/app/data
+    networks:
+      - mydoge-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8765/health_check"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ==================== Frontend (Nginx) ====================
+  web:
+    build:
+      context: ./apps/desktop
+      target: production
+    container_name: mydoge-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - mydoge-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+networks:
+  mydoge-network:
+    driver: bridge
+
+volumes:
+  api-data:
+    driver: local

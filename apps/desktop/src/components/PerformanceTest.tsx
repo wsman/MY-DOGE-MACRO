@@ -226,17 +226,17 @@ const PerformanceTest: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-900 text-white rounded-lg shadow-xl">
-      <h2 className="text-2xl font-bold mb-6 text-green-400">🔬 性能基准测试</h2>
+    <div className="p-6 bg-[var(--bg-primary)] text-[var(--text-primary)] rounded-lg shadow-xl">
+      <h2 className="text-2xl font-bold mb-6 text-[var(--status-success)]">🔬 性能基准测试</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {/* 左侧：数据传输性能 */}
-        <div className="bg-gray-800 p-4 rounded-lg">
-          <h3 className="text-lg font-semibold mb-4 text-blue-300">📊 数据传输性能</h3>
+        <div className="bg-[var(--bg-secondary)] p-4 rounded-lg">
+          <h3 className="text-lg font-semibold mb-4 text-[var(--status-info)]">📊 数据传输性能</h3>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-gray-300">测试数据行数:</span>
+              <span className="text-[var(--text-secondary)]">测试数据行数:</span>
               <div className="flex items-center space-x-2">
                 <input
                   type="range"
@@ -258,19 +258,19 @@ const PerformanceTest: React.FC = () => {
               disabled={metrics.status === 'loading'}
               className={`w-full py-2 px-4 rounded font-semibold ${
                 metrics.status === 'loading'
-                  ? 'bg-gray-600 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700'
+                  ? 'bg-[var(--text-secondary)] cursor-not-allowed'
+                  : 'bg-[var(--accent-primary)] hover:bg-[var(--accent-hover)]'
               }`}
             >
               {metrics.status === 'loading' ? '🚀 测试中...' : '▶️ 运行性能测试'}
             </button>
 
             {metrics.status === 'success' && (
-              <div className="space-y-2 p-3 bg-gray-700 rounded">
+              <div className="space-y-2 p-3 bg-[var(--bg-tertiary)] rounded">
                 <div className="flex justify-between">
                   <span>传输时间:</span>
                   <span
-                    className={`font-bold ${metrics.transferTime < 1000 ? 'text-green-400' : 'text-yellow-400'}`}
+                    className={`font-bold ${metrics.transferTime < 1000 ? 'text-[var(--status-success)]' : 'text-[var(--status-warning)]'}`}
                   >
                     {formatTime(metrics.transferTime)}
                   </span>
@@ -281,22 +281,22 @@ const PerformanceTest: React.FC = () => {
                 </div>
                 <div className="flex justify-between">
                   <span>列式传输大小:</span>
-                  <span className="text-green-400">{metrics.compressedSize}</span>
+                  <span className="text-[var(--status-success)]">{metrics.compressedSize}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>体积减少:</span>
-                  <span className="font-bold text-green-400">
+                  <span className="font-bold text-[var(--status-success)]">
                     {metrics.reductionPercent.toFixed(1)}%
                   </span>
                 </div>
 
                 {/* 性能评估 */}
-                <div className="mt-3 pt-3 border-t border-gray-600">
+                <div className="mt-3 pt-3 border-t border-[var(--border-primary)]">
                   <div className="flex justify-between items-center">
                     <span className="text-sm">性能评估:</span>
                     <span
                       className={`text-sm font-bold ${
-                        metrics.transferTime < 1000 ? 'text-green-400' : 'text-yellow-400'
+                        metrics.transferTime < 1000 ? 'text-[var(--status-success)]' : 'text-[var(--status-warning)]'
                       }`}
                     >
                       {metrics.transferTime < 1000 ? '✅ 优秀 (<1秒)' : '⚠️ 需要优化'}
@@ -307,7 +307,7 @@ const PerformanceTest: React.FC = () => {
             )}
 
             {metrics.status === 'error' && (
-              <div className="p-3 bg-red-900 text-red-200 rounded">
+              <div className="p-3 bg-[var(--status-error)]/20 text-[var(--status-error)] rounded">
                 ❌ 测试失败，请检查Python服务是否运行
               </div>
             )}
@@ -315,59 +315,59 @@ const PerformanceTest: React.FC = () => {
         </div>
 
         {/* 右侧：系统信息 */}
-        <div className="bg-gray-800 p-4 rounded-lg">
-          <h3 className="text-lg font-semibold mb-4 text-purple-300">⚙️ 系统状态</h3>
+        <div className="bg-[var(--bg-secondary)] p-4 rounded-lg">
+          <h3 className="text-lg font-semibold mb-4 text-[var(--status-info)]">⚙️ 系统状态</h3>
 
           {isLoadingSystem ? (
             <div className="text-center py-4">加载中...</div>
           ) : systemInfo ? (
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-300">Python版本:</span>
+                <span className="text-[var(--text-secondary)]">Python版本:</span>
                 <span className="font-mono text-sm">{systemInfo.python_version.split(' ')[0]}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-300">服务运行:</span>
+                <span className="text-[var(--text-secondary)]">服务运行:</span>
                 <span>{Math.round(systemInfo.service_uptime)}秒</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-300">内存使用:</span>
+                <span className="text-[var(--text-secondary)]">内存使用:</span>
                 <span>
                   {systemInfo.memory_usage.process_mb}MB / {systemInfo.memory_usage.total_mb}MB
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-300">内存占用率:</span>
+                <span className="text-[var(--text-secondary)]">内存占用率:</span>
                 <span
                   className={
                     systemInfo.memory_usage.percent < 50
-                      ? 'text-green-400'
+                      ? 'text-[var(--status-success)]'
                       : systemInfo.memory_usage.percent < 80
-                        ? 'text-yellow-400'
-                        : 'text-red-400'
+                        ? 'text-[var(--status-warning)]'
+                        : 'text-[var(--status-error)]'
                   }
                 >
                   {systemInfo.memory_usage.percent}%
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-300">活跃任务:</span>
+                <span className="text-[var(--text-secondary)]">活跃任务:</span>
                 <span>{systemInfo.task_stats.active_tasks} 个</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-300">缓存命中:</span>
+                <span className="text-[var(--text-secondary)]">缓存命中:</span>
                 <span>{systemInfo.task_stats.cache_size} 项</span>
               </div>
             </div>
           ) : (
-            <div className="text-yellow-400">⚠️ 无法获取系统信息</div>
+            <div className="text-[var(--status-warning)]">⚠️ 无法获取系统信息</div>
           )}
         </div>
       </div>
 
       {/* 扫描任务控制面板 */}
-      <div className="bg-gray-800 p-4 rounded-lg mb-6">
-        <h3 className="text-lg font-semibold mb-4 text-orange-300">🔍 市场扫描测试</h3>
+      <div className="bg-[var(--bg-secondary)] p-4 rounded-lg mb-6">
+        <h3 className="text-lg font-semibold mb-4 text-[var(--status-warning)]">🔍 市场扫描测试</h3>
 
         <div className="space-y-4">
           <div className="flex space-x-4">
@@ -376,8 +376,8 @@ const PerformanceTest: React.FC = () => {
               disabled={startScanMutation.isPending || !!taskId}
               className={`py-2 px-6 rounded font-semibold ${
                 startScanMutation.isPending || taskId
-                  ? 'bg-gray-600 cursor-not-allowed'
-                  : 'bg-orange-600 hover:bg-orange-700'
+                  ? 'bg-[var(--text-secondary)] cursor-not-allowed'
+                  : 'bg-[var(--status-warning)] hover:bg-[var(--status-warning)]/80'
               }`}
             >
               {startScanMutation.isPending ? '启动中...' : '🚀 开始市场扫描'}
@@ -390,7 +390,7 @@ const PerformanceTest: React.FC = () => {
                   setScanProgress(0);
                   setScanMessage('');
                 }}
-                className="py-2 px-6 rounded font-semibold bg-gray-600 hover:bg-gray-700"
+                className="py-2 px-6 rounded font-semibold bg-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]"
               >
                 重置任务
               </button>
@@ -401,7 +401,7 @@ const PerformanceTest: React.FC = () => {
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span>任务ID:</span>
-                <span className="font-mono text-gray-300">{taskId.slice(0, 8)}...</span>
+                <span className="font-mono text-[var(--text-secondary)]">{taskId.slice(0, 8)}...</span>
               </div>
 
               <div>
@@ -409,21 +409,21 @@ const PerformanceTest: React.FC = () => {
                   <span>扫描进度:</span>
                   <span>{scanProgress}%</span>
                 </div>
-                <div className="w-full bg-gray-700 rounded-full h-2.5">
+                <div className="w-full bg-[var(--bg-tertiary)] rounded-full h-2.5">
                   <div
-                    className="bg-green-500 h-2.5 rounded-full transition-all duration-300"
+                    className="bg-[var(--status-success)] h-2.5 rounded-full transition-all duration-300"
                     style={{ width: `${scanProgress}%` }}
                   ></div>
                 </div>
               </div>
 
-              <div className="p-3 bg-gray-700 rounded">
-                <div className="text-sm text-gray-300">状态消息:</div>
+              <div className="p-3 bg-[var(--bg-tertiary)] rounded">
+                <div className="text-sm text-[var(--text-secondary)]">状态消息:</div>
                 <div className="font-medium">{scanMessage}</div>
               </div>
 
-              <div className="text-xs text-gray-400">
-                ℹ️ 使用Server-Sent Events(SSE)实时更新进度，延迟 &lt;500ms
+              <div className="text-xs text-[var(--text-secondary)]">
+                ℹ️ 使用Server-Sent Events(SSE)实时更新进度，延迟 <500ms
               </div>
             </div>
           )}
@@ -431,23 +431,23 @@ const PerformanceTest: React.FC = () => {
       </div>
 
       {/* 性能总结 */}
-      <div className="bg-gray-800 p-4 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-green-300">🎯 性能目标达成情况</h3>
+      <div className="bg-[var(--bg-secondary)] p-4 rounded-lg">
+        <h3 className="text-lg font-semibold mb-4 text-[var(--status-success)]">🎯 性能目标达成情况</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-center space-x-3">
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center ${
                 metrics.transferTime > 0 && metrics.transferTime < 1000
-                  ? 'bg-green-500'
-                  : 'bg-gray-600'
+                  ? 'bg-[var(--status-success)]'
+                  : 'bg-[var(--text-secondary)]'
               }`}
             >
               {metrics.transferTime > 0 && metrics.transferTime < 1000 ? '✅' : '⏳'}
             </div>
             <div>
-              <div className="font-medium">5000行传输 &lt;1秒</div>
-              <div className="text-sm text-gray-400">
+              <div className="font-medium">5000行传输 <1秒</div>
+              <div className="text-sm text-[var(--text-secondary)]">
                 {metrics.transferTime > 0 ? `${formatTime(metrics.transferTime)}` : '未测试'}
               </div>
             </div>
@@ -456,14 +456,14 @@ const PerformanceTest: React.FC = () => {
           <div className="flex items-center space-x-3">
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                metrics.reductionPercent > 50 ? 'bg-green-500' : 'bg-gray-600'
+                metrics.reductionPercent > 50 ? 'bg-[var(--status-success)]' : 'bg-[var(--text-secondary)]'
               }`}
             >
               {metrics.reductionPercent > 50 ? '✅' : '⏳'}
             </div>
             <div>
               <div className="font-medium">体积减少 50-70%</div>
-              <div className="text-sm text-gray-400">
+              <div className="text-sm text-[var(--text-secondary)]">
                 {metrics.reductionPercent > 0
                   ? `${metrics.reductionPercent.toFixed(1)}%`
                   : '未测试'}
@@ -472,12 +472,12 @@ const PerformanceTest: React.FC = () => {
           </div>
 
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-green-500">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[var(--status-success)]">
               ✅
             </div>
             <div>
               <div className="font-medium">SSE实时进度</div>
-              <div className="text-sm text-gray-400">延迟 &lt;500ms</div>
+              <div className="text-sm text-[var(--text-secondary)]">延迟 <500ms</div>
             </div>
           </div>
 
@@ -485,8 +485,8 @@ const PerformanceTest: React.FC = () => {
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center ${
                 systemInfo?.memory_usage?.process_mb && systemInfo.memory_usage.process_mb < 200
-                  ? 'bg-green-500'
-                  : 'bg-gray-600'
+                  ? 'bg-[var(--status-success)]'
+                  : 'bg-[var(--text-secondary)]'
               }`}
             >
               {systemInfo?.memory_usage?.process_mb && systemInfo.memory_usage.process_mb < 200
@@ -494,8 +494,8 @@ const PerformanceTest: React.FC = () => {
                 : '⏳'}
             </div>
             <div>
-              <div className="font-medium">内存占用 &lt;200MB</div>
-              <div className="text-sm text-gray-400">
+              <div className="font-medium">内存占用 <200MB</div>
+              <div className="text-sm text-[var(--text-secondary)]">
                 {systemInfo?.memory_usage?.process_mb
                   ? `${systemInfo.memory_usage.process_mb}MB`
                   : '未获取'}

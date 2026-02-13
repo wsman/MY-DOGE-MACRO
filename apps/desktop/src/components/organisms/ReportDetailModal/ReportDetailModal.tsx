@@ -102,10 +102,10 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
         className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
         onClick={handleBackdropClick}
       >
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+        <div className="nordic-card p-8">
           <div className="flex items-center justify-center gap-3">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <span className="text-gray-700 dark:text-gray-300">加载研报详情...</span>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--accent-primary)]"></div>
+            <span className="text-[var(--text-secondary)]">加载研报详情...</span>
           </div>
         </div>
       </div>
@@ -118,11 +118,11 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
         className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
         onClick={handleBackdropClick}
       >
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-md w-full">
+        <div className="nordic-card p-6 max-w-md w-full">
           <div className="text-center">
-            <div className="text-red-500 text-4xl mb-4">❌</div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">加载失败</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">{error || '研报不存在'}</p>
+            <div className="text-[var(--status-error)] text-4xl mb-4">❌</div>
+            <h3 className="text-lg font-medium text-[var(--text-primary)] mb-2">加载失败</h3>
+            <p className="text-[var(--text-secondary)] mb-4">{error || '研报不存在'}</p>
             <div className="flex justify-center gap-2">
               <Button variant="primary" onClick={() => window.location.reload()}>
                 重试
@@ -143,13 +143,13 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
       onClick={handleBackdropClick}
     >
       <div 
-        className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-4xl my-8"
+        className="nordic-modal w-full max-w-4xl my-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-4 md:p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-4 md:p-6 border-b border-[var(--border-primary)]">
           <div className="flex-1">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] mb-2">
               {report.title}
             </h2>
             <div className="flex flex-wrap items-center gap-2">
@@ -160,10 +160,10 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
                   {config.label}
                 </Badge>
               )}
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-[var(--text-secondary)]">
                 置信度: <span className="font-bold">{Math.round((report.confidence || 0) * 100)}%</span>
               </span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-[var(--text-secondary)]">
                 模型: <span className="font-medium">{report.model}</span>
               </span>
             </div>
@@ -201,10 +201,10 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
           {/* Summary */}
           {report.summary && (
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">摘要</h3>
-              <Card className="bg-gray-50 dark:bg-gray-700/50">
+              <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-3">摘要</h3>
+              <Card className="bg-[var(--bg-tertiary)]">
                 <CardContent className="p-4">
-                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                  <p className="text-[var(--text-secondary)] whitespace-pre-wrap">
                     {report.summary}
                   </p>
                 </CardContent>
@@ -214,16 +214,16 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
 
           {/* Full Content */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">详细分析</h3>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-3">详细分析</h3>
+            <div className="prose prose-[var(--text-secondary)] dark:prose-invert max-w-none">
               <MarkdownRenderer content={report.content} />
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="p-4 md:p-6 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+        <div className="p-4 md:p-6 border-t border-[var(--border-primary)]">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 text-sm text-[var(--text-secondary)]">
             <div>
               <span>生成时间: {new Date(report.created_at).toLocaleString('zh-CN')}</span>
               {report.file_path && (
