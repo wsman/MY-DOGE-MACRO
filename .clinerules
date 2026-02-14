@@ -110,14 +110,58 @@ graph LR
 3. 更新本索引文件
 4. 记录变更到`active_context.md`
 
-### 6.4 Docker部署
+### 6.4 Docker部署 (MY-DOGE-MACRO v2.0.0-alpha)
+
+**架构特点**:
+- **单端口入口**: Nginx反向代理统一80/3000端口
+- **热重载**: 开发模式支持前后端代码实时更新
+- **多阶段构建**: 生产镜像体积优化，开发镜像代码挂载
+- **健康检查**: 容器状态自动监控，服务依赖管理
+
+**部署文件**:
+| 文件 | 用途 | 状态 |
+|------|------|------|
+| `docker-compose.yml` | 生产配置 (端口80) | ✅ 生产就绪 |
+| `docker-compose.dev.yml` | 开发配置 (端口3000，热重载) | ✅ 开发就绪 |
+| `apps/api/Dockerfile` | 后端多阶段构建 | ✅ 优化完成 |
+| `apps/desktop/Dockerfile` | 前端生产镜像 | ✅ 优化完成 |
+| `apps/desktop/Dockerfile.dev` | 前端开发镜像 (Vite热重载) | ✅ 热重载支持 |
+| `apps/desktop/nginx.conf` | Nginx反向代理配置 | ✅ 配置完成 |
+| `nginx/nginx.dev.conf` | 开发环境代理配置 | ✅ 配置完成 |
+| `.dockerignore` | 构建排除文件 | ✅ 配置完成 |
+
+**使用命令**:
 ```bash
 # 开发模式 (端口3000，热重载)
 docker-compose -f docker-compose.dev.yml up --build
 
-# 生产模式 (端口80)
+# 生产模式 (端口80，后台运行)
 docker-compose up -d --build
+
+# 查看容器状态
+docker-compose ps
+
+# 查看容器日志
+docker-compose logs -f api
+docker-compose logs -f web
+
+# 停止服务
+docker-compose down
+
+# 清理所有容器和卷
+docker-compose down -v --rmi local
 ```
+
+**健康检查验证**:
+```bash
+# 验证后端API健康
+curl http://localhost:8765/health_check
+
+# 验证前端健康
+curl http://localhost/health
+```
+
+**宪法依据**: §141熵减验证公理 (架构熵减)、§102.3宪法同步公理 (版本同步)
 
 ---
 

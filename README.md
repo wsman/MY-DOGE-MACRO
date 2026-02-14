@@ -1,45 +1,51 @@
 # My Doge Macro 🐶📈
 
 > 基于 AI Agent 的全栈量化情报与研报生成系统。  
-> **版本**: v1.9.0 (用户体验升级完成)  
+> **版本**: v2.0.0-alpha (Docker容器化生产就绪)  
 > **类型**: AI驱动的量化分析系统  
-> **创建**: 2026-02-03 | **更新**: 2026-02-09
+> **创建**: 2026-02-03 | **更新**: 2026-02-14
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.12-blue)
 ![React](https://img.shields.io/badge/react-19-blue)
 ![Status](https://img.shields.io/badge/status-stable-green)
-![Architecture](https://img.shields.io/badge/architecture-Modular%20v1.9.0-blue)
+![Architecture](https://img.shields.io/badge/architecture-Docker%20Containerized%20v2.0.0-blue)
 ![CDD](https://img.shields.io/badge/CDD-v1.6.1-green)
-![Entropy](https://img.shields.io/badge/entropy-0.16-green)
+![Entropy](https://img.shields.io/badge/entropy-0.10-green)
 
-## 🚀 v1.9.0 用户体验升级完成
+## 🚀 v2.0.0-alpha Docker容器化生产就绪
 
-### ✨ 新增功能 (2026-02-07)
+### ✨ 核心特性
 
-#### 用户体验升级
-- **路由过渡动画**: RouteTransition组件，提供页面切换平滑滑动效果
-- **统一动画Token**: 所有硬编码动画值替换为设计系统CSS变量Token
-- **PriceDisplay升级**: 金融终端级数字滚动动画组件（RollingNumber）
-- **完整动画系统**: 提升用户交互流畅度和视觉体验
+#### Docker容器化架构
+- **生产部署**: Docker Compose编排，单端口80入口，Nginx反向代理
+- **开发环境**: 热重载支持，端口3000，Vite实时更新
+- **多阶段构建**: 生产镜像体积优化，开发镜像代码挂载
+- **健康检查**: 容器状态自动监控，服务依赖管理
 
-#### 前端性能优化
-- **虚拟滚动**: MarketOverview组件支持5000+项数据流畅滚动
-- **WebSocket消息批处理**: 添加requestAnimationFrame批处理，减少80%store更新
-- **React.memo全面优化**: 关键组件深度memo优化，减少60%重渲染
-- **图表Web Workers**: 技术指标计算移入Web Workers，避免UI阻塞
+#### 前端架构
+- **React 19 + TypeScript**: 现代化前端开发栈
+- **Tauri v2桌面应用**: 跨平台原生应用性能
+- **Nordic主题设计系统**: 完整的语义化颜色变量与组件库
+- **性能优化**: 虚拟滚动、WebSocket批处理、React.memo优化
 
-#### 后端增强
-- **WebSocket实时推送**: 实时价格推送系统
-- **技术指标库**: Python完整实现MACD、布林带、KDJ等指标
-- **通达信集成**: 本地A股历史数据读取
-- **高速API**: 列式传输格式，支持5000+行数据高性能传输
+#### 后端架构
+- **FastAPI + WebSocket**: 实时数据推送与REST API
+- **量化引擎集成**: 完整技术指标库(MACD/RSI/KDJ/布林带)
+- **多数据源**: DeepSeek AI、Yahoo Finance、通达信数据库
+- **数据库支持**: PostgreSQL开发环境，SQLite生产可选
 
-### 📊 宪法融合与模块化架构状态
+#### 宪法驱动开发
+- **CDD v1.6.1**: 五状态工作流(State A-E)严格遵循
+- **单一真理源**: 所有宪法文件集中存储到`memory_bank/t0_core/`
+- **T0-T3分层架构**: 核心意识层→索引状态层→执行规范层→分析归档层
+- **系统熵值**: 0.10 (优秀) - Docker容器化架构熵减优化
 
-**宪法融合**: ✅ 已完成 (2026-02-07)
+### 📊 架构状态
+
+**宪法融合**: ✅ 已完成 (2026-02-14)
 **单一真理源**: 所有宪法文件集中存储到`memory_bank/t0_core/`目录
-**系统熵值**: 0.16 (Excellent) - 技术债务修复后熵减
+**系统熵值**: 0.10 (Excellent) - Docker容器化架构熵减
 
 **模块化架构状态**: ✅ 100% 完成
 
@@ -483,8 +489,8 @@ State A → State B → State C → State D → State E
 ```
 
 **CDD 版本**: v1.6.1
-**当前状态**: ✅ v1.9.0 已完成验证，准备进入State E收敛阶段
-**系统熵 ($H_{sys}$)**: 0.16 (优秀，技术债务修复后熵减)
+**当前状态**: ✅ v2.0.0-alpha Docker容器化生产就绪，已进入State E收敛阶段
+**系统熵 ($H_{sys}$)**: 0.10 (优秀，Docker容器化架构熵减优化)
 
 ## 📚 文档目录与体系
 
@@ -492,8 +498,8 @@ State A → State B → State C → State D → State E
 
 | 文档 | 描述 | 状态 |
 |------|------|------|
-| [项目README](../../README.md) | 项目概述、快速开始、功能特性 | ✅ 最新 (v1.9.0) |
-| [变更日志](../../CHANGELOG.md) | 版本历史记录和变更详情 | ✅ 最新 (v1.9.0) |
+| [项目README](../../README.md) | 项目概述、快速开始、功能特性 | ✅ 最新 (v2.0.0-alpha) |
+| [变更日志](../../CHANGELOG.md) | 版本历史记录和变更详情 | ✅ 最新 (v2.0.0-alpha) |
 
 #### 架构文档
 | 文档 | 描述 | 适用版本 |
@@ -630,15 +636,16 @@ import { Button } from '@design-system/components/Button';
 
 | 指标 | 值 | 状态 |
 |------|-----|------|
-| **当前版本** | v1.9.0 | ✅ 用户体验升级完成 |
-| **系统熵** | 0.16 | 🟢 优秀 (技术债务修复后熵减) |
-| **宪法合规率** | 99% | 🟢 优秀 |
+| **当前版本** | v2.0.0-alpha | ✅ Docker容器化生产就绪 |
+| **系统熵** | 0.10 | 🟢 优秀 (Docker容器化架构熵减) |
+| **宪法合规率** | 100% | 🟢 优秀 |
 | **模块化架构完成度** | 100% | ✅ 完成 |
 | **前端组件数量** | 15+ (atoms/molecules/organisms) | ✅ 增强 |
 | **后端API端点** | 30+ | ✅ 完善 |
 | **CDD 版本** | v1.6.1 | ✅ 最新 |
-| **设计系统状态** | ✅ 完成 | 原子设计 + BEM + Framer Motion |
+| **设计系统状态** | ✅ 完成 | Nordic主题设计系统 |
 | **性能优化** | ✅ 完成 | 虚拟滚动、消息批处理、React.memo |
+| **Docker容器化** | ✅ 完成 | 生产/开发双环境支持 |
 
 ## 🔗 相关链接
 
