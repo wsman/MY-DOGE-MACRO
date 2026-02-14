@@ -1,3 +1,14 @@
+# MY-DOGE-MACRO API - 生产环境依赖
+# 版本: v2.0.0
+# 日期: 2026-02-14
+
+# ========== 内部共享库 ==========
+# 安装方式: pip install -e ../../libs/ai-adapters
+ai-adapters @ file://../../libs/ai-adapters
+websocket-hub @ file://../../libs/websocket-hub
+vector-store @ file://../../libs/vector-store
+
+# ========== Web 框架 ==========
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 pydantic==2.5.0

@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shared-cache"
+version = "1.0.0"
+description = "Unified Caching Library"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "cachetools>=5.3.0",
+]
+
+[project.optional-dependencies]
+redis = ["redis>=5.0.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

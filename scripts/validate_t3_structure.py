@@ -30,7 +30,7 @@ def validate_t3_structure():
         for subdir in subdirs:
             print(f"   - {subdir}")
         print("\n📋 宪法要求: t3_documentation 目录应保持扁平结构")
-        print("   根据 §152 Single Source of Truth, memory_bank 是执行规范的单一路径")
+        print("   根据 §107 Single Source of Truth, memory_bank 是执行规范的单一路径")
         return False
     
     # 检查关键文件是否存在

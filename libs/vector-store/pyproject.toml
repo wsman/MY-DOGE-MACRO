@@ -1,0 +1,58 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vector-store"
+version = "1.0.0"
+description = "Unified Vector Store Library - ChromaDB, Memory, and semantic search utilities"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Auto-Pen & MY-DOGE-MACRO Team" }
+]
+keywords = ["vector", "embedding", "chromadb", "semantic-search", "rag"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "pydantic>=2.0.0",
+    "typing-extensions>=4.0.0",
+    "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+chromadb = [
+    "chromadb>=0.4.0",
+]
+all = [
+    "chromadb>=0.4.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/shared-libs/vector-store"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vector_store"]
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py312']
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4"]
