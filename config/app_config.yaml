@@ -1,0 +1,140 @@
+# MY-DOGE-MACRO 应用配置
+# 版本: v2.0.0-alpha
+# 宪法依据: §152单一真理源公理
+
+# API配置
+api:
+  host: "0.0.0.0"
+  port: 8765
+  auth_token: "mydoge-token-123456"
+  rate_limit:
+    window_seconds: 60
+    max_requests: 100
+    exempt_ips: ["127.0.0.1", "localhost", "::1"]
+
+# 数据库配置
+database:
+  url: "sqlite:///data/mydoge.db"
+  cache_size: 1000
+  sync_enabled: true
+
+# AI配置
+ai:
+  default_provider: "deepseek"
+  providers:
+    deepseek:
+      enabled: true
+      api_key: "${DEEPSEEK_API_KEY}"
+      model: "deepseek-chat"
+      base_url: "https://api.deepseek.com"
+      cost: 0.0005
+    openai:
+      enabled: false
+      api_key: "${OPENAI_API_KEY}"
+      model: "gpt-4o-mini"
+      base_url: "https://api.openai.com/v1"
+      cost: 0.001
+    gemini:
+      enabled: false
+      api_key: "${GEMINI_API_KEY}"
+      model: "gemini-pro"
+      base_url: "https://generativelanguage.googleapis.com/v1"
+      cost: 0.00075
+
+# WebSocket配置
+websocket:
+  heartbeat_interval: 30
+  timeout: 300
+  reconnect_timeout: 5
+  channels:
+    price_updates:
+      permission: "public"
+      description: "价格更新频道"
+    notifications:
+      permission: "public"
+      description: "系统通知频道"
+    progress:
+      permission: "public"
+      description: "任务进度频道"
+
+# 缓存配置
+cache:
+  maxsize: 1000
+  default_ttl: 3600
+  redis:
+    enabled: false
+    url: "redis://localhost:6379"
+    key_prefix: "mydoge"
+
+# 向量存储配置
+vector_store:
+  default_dimension: 1536
+  collections:
+    memory_cache:
+      dimension: 1536
+      metric: "cosine"
+      persist: false
+    research_reports:
+      dimension: 1536
+      metric: "cosine"
+      persist: true
+      persist_directory: "./data/chroma"
+
+# 数据源配置
+data_sources:
+  tdx:
+    enabled: true
+    default_path: "D:/Games/New Tdx Vip2020"
+  yahoo_finance:
+    enabled: true
+    cache_duration: 300
+  local_database:
+    enabled: true
+    path: "./data/market_data.db"
+
+# 扫描器配置
+scanner:
+  cn:
+    min_volume: 200000000
+    max_change_pct: 400
+    rsrs_window: 18
+  us:
+    min_volume: 20000000
+    max_change_pct: 400
+    rsrs_window: 18
+    blacklist: ["SQQQ", "TQQQ", "SOXL", "SOXS", "SPXU", "SPXS", "SDS", "SSO", "UPRO", "QID", "QLD", "TNA", "TZA", "UVXY", "VIXY", "SVXY", "LABU", "LABD", "YANG", "YINN", "FNGU", "FNGD", "WEBL", "WEBS", "KOLD", "BOIL", "TSLY", "NVDY", "AMDY", "MSTY", "CONY", "APLY", "GOOY", "MSFY", "AMZY", "FBY", "OARK", "XOMO", "JPMO", "DISO", "NFLY", "SQY", "PYPY", "AIYY", "YMAX", "YMAG", "ULTY", "SVOL", "TLTW", "HYGW", "LQDW"]
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+  file:
+    enabled: true
+    path: "./logs/mydoge-api.log"
+    max_size: 10485760  # 10MB
+    backup_count: 5
+
+# 监控配置
+monitoring:
+  health_check_interval: 60
+  metrics_enabled: true
+  alerting:
+    enabled: true
+    email: "${ADMIN_EMAIL}"
+    slack_webhook: "${SLACK_WEBHOOK_URL}"
+
+# 安全配置
+security:
+  cors:
+    origins: ["*"]
+    methods: ["*"]
+    headers: ["*"]
+  https:
+    enabled: false
+    cert_path: ""
+    key_path: ""
+  headers:
+    x_frame_options: "DENY"
+    x_content_type_options: "nosniff"
+    x_xss_protection: "1; mode=block"
+    referrer_policy: "strict-origin-when-cross-origin"

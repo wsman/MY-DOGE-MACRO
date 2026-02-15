@@ -28,8 +28,8 @@ from .core.macro_api_routes import router as macro_router
 from .core.sync_routes import router as sync_router
 # 导入认证路由
 from .routes.auth import router as auth_router
-# 导入WebSocket模块
-from .core.websocket_new import websocket_endpoint, manager, price_push_loop
+# 导入统一的WebSocket模块
+from .core.websocket_hub_integration import websocket_endpoint, manager, price_push_loop
 
 # --- 1. 数据模型严谨性 ---
 class StockPrice(BaseModel):

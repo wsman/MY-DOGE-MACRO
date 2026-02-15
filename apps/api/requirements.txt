@@ -5,8 +5,11 @@
 # ========== 内部共享库 ==========
 # 安装方式: pip install -e ../../libs/ai-adapters
 ai-adapters @ file://../../libs/ai-adapters
+config-manager @ file://../../libs/config-manager
 websocket-hub @ file://../../libs/websocket-hub
 vector-store @ file://../../libs/vector-store
+shared-logger @ file://../../libs/logger
+shared-cache @ file://../../libs/cache
 
 # ========== Web 框架 ==========
 fastapi==0.104.1

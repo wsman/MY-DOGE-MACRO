@@ -144,12 +144,22 @@ def optimize_dataframe_transmission(df: pd.DataFrame) -> Dict[str, Any]:
     return result
 
 
-# 缓存装饰器，用于热点数据
+# 缓存装饰器，用于热点数据（使用统一的shared_cache）
 def cached_dataframe_response(ttl: int = 300):
     """
     缓存DataFrame响应的装饰器
     适合K线数据等变化不频繁的热点数据
+    依据§152单一真理源公理，使用统一的缓存组件
     """
+    try:
+        # 优先使用统一的缓存组件
+        from ..core.services import cached
+        if cached:
+            return cached(ttl=ttl, key_prefix="dataframe")
+    except ImportError:
+        pass
+    
+    # 回退到cachetools实现（兼容性）
     from cachetools import TTLCache
     from functools import wraps
     import hashlib

@@ -1,24 +1,55 @@
 import logging
-from openai import OpenAI
 import pandas as pd
 from .config import MacroConfig
 import os
 from datetime import datetime
+
+# 尝试使用统一的AI适配器
+try:
+    from ...core.services import get_llm_adapter, get_llm_router, logger as core_logger
+    AI_ADAPTERS_AVAILABLE = True
+except ImportError:
+    AI_ADAPTERS_AVAILABLE = False
+    from openai import OpenAI
 
 logger = logging.getLogger(__name__)
 
 class DeepSeekStrategist:
     def __init__(self, config: MacroConfig):
         self.config = config
-        if config.api_key:
-            self.client = OpenAI(
-                api_key=config.api_key,
-                base_url=config.base_url
-            )
-            logger.info("初始化 DeepSeek 策略分析师 (Precision Mode)")
+        self.client = None
+        
+        if AI_ADAPTERS_AVAILABLE:
+            # 使用统一的AI适配器
+            try:
+                self.client = get_llm_adapter("deepseek")
+                if self.client:
+                    logger.info("✅ 已加载DeepSeek AI适配器 (统一组件)")
+                else:
+                    logger.warning("⚠️ DeepSeek AI适配器加载失败，尝试使用独立客户端")
+                    if config.api_key:
+                        self.client = OpenAI(
+                            api_key=config.api_key,
+                            base_url=config.base_url
+                        )
+            except Exception as e:
+                logger.error(f"AI适配器加载失败: {e}")
+                if config.api_key:
+                    self.client = OpenAI(
+                        api_key=config.api_key,
+                        base_url=config.base_url
+                    )
         else:
-            self.client = None
-            logger.warning("DeepSeek API密钥未配置，策略分析功能将受限")
+            # 回退到独立客户端
+            if config.api_key:
+                self.client = OpenAI(
+                    api_key=config.api_key,
+                    base_url=config.base_url
+                )
+                logger.info("初始化 DeepSeek 策略分析师 (独立模式)")
+            else:
+                self.client = None
+                logger.warning("DeepSeek API密钥未配置，策略分析功能将受限")
 
     def generate_strategy_report(self, metrics: dict, market_data: pd.DataFrame) -> str:
         if not self.client:
